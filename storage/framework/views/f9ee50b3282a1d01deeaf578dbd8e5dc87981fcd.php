@@ -1,6 +1,6 @@
-@extends('layouts.app')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 <div class="mb-4">
     <h3 class="fw-bold mb-1 text-dark">Dashboard Utama</h3>
     <p class="text-muted mb-0">Selamat datang di Sistem Informasi Pengelolaan Surat Kominfo.</p>
@@ -12,7 +12,7 @@
             <div class="d-flex justify-content-between align-items-start mb-3">
                 <div>
                     <h6 class="text-muted fw-normal mb-1">Total Surat Masuk</h6>
-                    <h2 class="fw-bold mb-0 text-dark">{{ number_format($stats['total']) }}</h2>
+                    <h2 class="fw-bold mb-0 text-dark"><?php echo e(number_format($stats['total'])); ?></h2>
                 </div>
                 <div class="icon-box icon-box-primary">
                     <i class="bi bi-envelope"></i>
@@ -31,7 +31,7 @@
             <div class="d-flex justify-content-between align-items-start mb-3">
                 <div>
                     <h6 class="text-muted fw-normal mb-1">Menunggu Verifikasi</h6>
-                    <h2 class="fw-bold mb-0" style="color: #D97706;">{{ number_format($stats['pending']) }}</h2>
+                    <h2 class="fw-bold mb-0" style="color: #D97706;"><?php echo e(number_format($stats['pending'])); ?></h2>
                 </div>
                 <div class="icon-box icon-box-warning">
                     <i class="bi bi-clipboard-check"></i>
@@ -50,7 +50,7 @@
             <div class="d-flex justify-content-between align-items-start mb-3">
                 <div>
                     <h6 class="text-muted fw-normal mb-1">Sudah Terverifikasi</h6>
-                    <h2 class="fw-bold mb-0 text-primary">{{ number_format($stats['selesai']) }}</h2>
+                    <h2 class="fw-bold mb-0 text-primary"><?php echo e(number_format($stats['selesai'])); ?></h2>
                 </div>
                 <div class="icon-box icon-box-info bg-opacity-10 text-primary">
                     <i class="bi bi-check2-all"></i>
@@ -88,62 +88,62 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse($surats as $surat)
+                <?php $__empty_1 = true; $__currentLoopData = $surats; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $surat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 <tr>
-                    <td class="ps-4 fw-bold text-primary-blue" style="font-size: 0.9rem;">SK - {{ date('Y') }} - {{ str_pad($surat->id, 3, '0', STR_PAD_LEFT) }}</td>
+                    <td class="ps-4 fw-bold text-primary-blue" style="font-size: 0.9rem;">SK - <?php echo e(date('Y')); ?> - <?php echo e(str_pad($surat->id, 3, '0', STR_PAD_LEFT)); ?></td>
                     <td>
-                        <div class="fw-bold text-dark" style="font-size: 0.95rem;">{{ $surat->keterangan ?? 'Perihal tidak diisi' }}</div>
-                        <div class="text-muted small">{{ $surat->user->name }}</div>
+                        <div class="fw-bold text-dark" style="font-size: 0.95rem;"><?php echo e($surat->keterangan ?? 'Perihal tidak diisi'); ?></div>
+                        <div class="text-muted small"><?php echo e($surat->user->name); ?></div>
                     </td>
-                    <td class="text-muted" style="font-size: 0.9rem;">{{ $surat->created_at->format('d M Y, H:i') }}</td>
+                    <td class="text-muted" style="font-size: 0.9rem;"><?php echo e($surat->created_at->format('d M Y, H:i')); ?></td>
                     <td>
-                        @if($surat->status === 'pending')
+                        <?php if($surat->status === 'pending'): ?>
                             <span class="badge-pending">Pending</span>
-                        @elseif($surat->status === 'diproses')
+                        <?php elseif($surat->status === 'diproses'): ?>
                             <span class="badge-diproses">Verified</span>
-                        @elseif($surat->status === 'dikirim')
+                        <?php elseif($surat->status === 'dikirim'): ?>
                             <span class="badge-dikirim">Diteruskan</span>
-                        @elseif($surat->status === 'selesai')
+                        <?php elseif($surat->status === 'selesai'): ?>
                             <span class="badge-selesai">Selesai</span>
-                        @endif
+                        <?php endif; ?>
                     </td>
                     <td class="pe-4 text-end">
                         <div class="d-flex justify-content-end gap-2">
-                            <a href="{{ route('admin.surat.show', $surat->id) }}" class="btn btn-sm btn-light text-muted rounded-circle" title="Verifikasi"><i class="bi bi-shield-check"></i></a>
+                            <a href="<?php echo e(route('admin.surat.show', $surat->id)); ?>" class="btn btn-sm btn-light text-muted rounded-circle" title="Verifikasi"><i class="bi bi-shield-check"></i></a>
                             <a href="#" class="btn btn-sm btn-light text-muted rounded-circle" title="Print"><i class="bi bi-printer"></i></a>
                             <a href="#" class="btn btn-sm btn-light text-muted rounded-circle" title="Edit"><i class="bi bi-pencil"></i></a>
                         </div>
                     </td>
                 </tr>
-                @empty
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                 <tr>
                     <td colspan="5" class="text-center py-4 text-muted">Belum ada surat masuk.</td>
                 </tr>
-                @endforelse
+                <?php endif; ?>
             </tbody>
         </table>
     </div>
     
-    @if($surats->hasPages())
+    <?php if($surats->hasPages()): ?>
     <div class="p-3 border-top d-flex justify-content-between align-items-center bg-light bg-opacity-50">
-        <div class="text-muted small">Menampilkan {{ $surats->firstItem() }}-{{ $surats->lastItem() }} dari {{ $surats->total() }} surat</div>
+        <div class="text-muted small">Menampilkan <?php echo e($surats->firstItem()); ?>-<?php echo e($surats->lastItem()); ?> dari <?php echo e($surats->total()); ?> surat</div>
         <nav aria-label="Page navigation">
             <ul class="pagination pagination-sm mb-0">
-                <li class="page-item {{ $surats->onFirstPage() ? 'disabled' : '' }}">
-                    <a class="page-link text-muted" href="{{ $surats->previousPageUrl() }}"><i class="bi bi-chevron-left"></i></a>
+                <li class="page-item <?php echo e($surats->onFirstPage() ? 'disabled' : ''); ?>">
+                    <a class="page-link text-muted" href="<?php echo e($surats->previousPageUrl()); ?>"><i class="bi bi-chevron-left"></i></a>
                 </li>
                 <!-- Pagination elements would go here, simplified for display -->
                 <li class="page-item active"><a class="page-link bg-primary-blue border-primary-blue" href="#">1</a></li>
                 <li class="page-item"><a class="page-link text-muted" href="#">2</a></li>
                 <li class="page-item"><a class="page-link text-muted" href="#">3</a></li>
                 <li class="page-item disabled"><a class="page-link text-muted border-0 bg-transparent" href="#">...</a></li>
-                <li class="page-item {{ !$surats->hasMorePages() ? 'disabled' : '' }}">
-                    <a class="page-link text-muted" href="{{ $surats->nextPageUrl() }}"><i class="bi bi-chevron-right"></i></a>
+                <li class="page-item <?php echo e(!$surats->hasMorePages() ? 'disabled' : ''); ?>">
+                    <a class="page-link text-muted" href="<?php echo e($surats->nextPageUrl()); ?>"><i class="bi bi-chevron-right"></i></a>
                 </li>
             </ul>
         </nav>
     </div>
-    @endif
+    <?php endif; ?>
 </div>
 
 <div class="d-flex justify-content-between align-items-center pt-2">
@@ -158,7 +158,10 @@
         <span class="text-muted small ms-2">Tim Verifikator sedang aktif hari ini</span>
     </div>
     <div class="text-muted small text-uppercase" style="letter-spacing: 0.05em; font-size: 0.7rem;">
-        Kementerian Komunikasi dan Informatika &copy; {{ date('Y') }}
+        Kementerian Komunikasi dan Informatika &copy; <?php echo e(date('Y')); ?>
+
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\e-surat-kominfo\resources\views/admin/dashboard.blade.php ENDPATH**/ ?>

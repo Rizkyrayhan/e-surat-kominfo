@@ -1,13 +1,13 @@
-@extends('layouts.app')
 
-@section('content')
-<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+
+<?php $__env->startSection('content'); ?>
+<div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h3 class="fw-bold mb-1 text-dark">Dashboard Utama</h3>
         <p class="text-muted mb-0">Selamat datang kembali, berikut ringkasan pengelolaan surat hari ini.</p>
     </div>
     <div>
-        <a href="{{ route('opd.surat.create') }}" class="btn btn-info rounded-pill px-4 py-2 fw-semibold shadow-sm d-flex align-items-center justify-content-center gap-2">
+        <a href="<?php echo e(route('opd.surat.create')); ?>" class="btn btn-info rounded-pill px-4 py-2 fw-semibold shadow-sm d-flex align-items-center gap-2">
             <i class="bi bi-plus-lg"></i> Kirim Surat Baru
         </a>
     </div>
@@ -19,7 +19,7 @@
             <div class="d-flex justify-content-between align-items-start mb-3">
                 <div>
                     <h6 class="text-muted fw-normal mb-1">Total Surat</h6>
-                    <h2 class="fw-bold mb-0 text-dark">{{ number_format($stats['total']) }}</h2>
+                    <h2 class="fw-bold mb-0 text-dark"><?php echo e(number_format($stats['total'])); ?></h2>
                 </div>
                 <div class="icon-box icon-box-primary">
                     <i class="bi bi-envelope"></i>
@@ -38,7 +38,7 @@
             <div class="d-flex justify-content-between align-items-start mb-3">
                 <div>
                     <h6 class="text-muted fw-normal mb-1">Pending Approval</h6>
-                    <h2 class="fw-bold mb-0" style="color: #D97706;">{{ number_format($stats['pending']) }}</h2>
+                    <h2 class="fw-bold mb-0" style="color: #D97706;"><?php echo e(number_format($stats['pending'])); ?></h2>
                 </div>
                 <div class="icon-box icon-box-warning">
                     <i class="bi bi-chat-dots"></i>
@@ -57,7 +57,7 @@
             <div class="d-flex justify-content-between align-items-start mb-3">
                 <div>
                     <h6 class="text-muted fw-normal mb-1">Sedang Diproses</h6>
-                    <h2 class="fw-bold mb-0 text-primary">{{ number_format($stats['diproses']) }}</h2>
+                    <h2 class="fw-bold mb-0 text-primary"><?php echo e(number_format($stats['diproses'])); ?></h2>
                 </div>
                 <div class="icon-box icon-box-info bg-opacity-10 text-primary">
                     <i class="bi bi-arrow-repeat"></i>
@@ -76,7 +76,7 @@
             <div class="d-flex justify-content-between align-items-start mb-3">
                 <div>
                     <h6 class="text-muted fw-normal mb-1">Surat Selesai</h6>
-                    <h2 class="fw-bold mb-0 text-success">{{ number_format($stats['selesai']) }}</h2>
+                    <h2 class="fw-bold mb-0 text-success"><?php echo e(number_format($stats['selesai'])); ?></h2>
                 </div>
                 <div class="icon-box icon-box-success bg-opacity-10">
                     <i class="bi bi-check-circle"></i>
@@ -92,11 +92,11 @@
 </div>
 
 <div class="table-card mb-5">
-    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center p-4 border-bottom gap-3">
+    <div class="d-flex justify-content-between align-items-center p-4 border-bottom">
         <h5 class="fw-bold mb-0 text-primary-blue">Daftar Surat Terbaru</h5>
-        <div class="d-flex flex-column flex-md-row gap-2">
-            <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 btn-responsive">Filter</button>
-            <a href="{{ route('opd.history') }}" class="btn btn-outline-primary btn-sm rounded-pill px-3 btn-responsive">Lihat Semua</a>
+        <div class="d-flex gap-2">
+            <button class="btn btn-outline-secondary btn-sm rounded-pill px-3">Filter</button>
+            <a href="<?php echo e(route('opd.history')); ?>" class="btn btn-outline-primary btn-sm rounded-pill px-3">Lihat Semua</a>
         </div>
     </div>
     <div class="table-responsive">
@@ -111,39 +111,39 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse($surats as $surat)
+                <?php $__empty_1 = true; $__currentLoopData = $surats; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $surat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 <tr>
-                    <td class="ps-4 fw-bold text-primary-blue" style="font-size: 0.9rem;">{{ $surat->nomor_surat }}</td>
+                    <td class="ps-4 fw-bold text-primary-blue" style="font-size: 0.9rem;"><?php echo e($surat->nomor_surat); ?></td>
                     <td>
                         <div class="d-flex align-items-center">
-                            <span class="badge bg-light text-dark border me-2">{{ substr($surat->tujuan, 0, 3) }}</span>
-                            <span class="text-dark fw-medium" style="font-size: 0.9rem;">{{ $surat->tujuan }}</span>
+                            <span class="badge bg-light text-dark border me-2"><?php echo e(substr($surat->tujuan, 0, 3)); ?></span>
+                            <span class="text-dark fw-medium" style="font-size: 0.9rem;"><?php echo e($surat->tujuan); ?></span>
                         </div>
                     </td>
-                    <td class="text-muted" style="font-size: 0.9rem;">{{ $surat->tanggal->format('d M Y, H:i') }}</td>
+                    <td class="text-muted" style="font-size: 0.9rem;"><?php echo e($surat->tanggal->format('d M Y, H:i')); ?></td>
                     <td>
-                        @if($surat->status === 'pending')
-                            <span class="badge-pending">Pending</span>
-                        @elseif($surat->status === 'diproses')
-                            <span class="badge-diproses">Diproses</span>
-                        @elseif($surat->status === 'dikirim')
-                            <span class="badge-dikirim">Dikirim</span>
-                        @elseif($surat->status === 'selesai')
-                            <span class="badge-selesai">Selesai</span>
-                        @endif
+                        <?php if($surat->status === 'pending'): ?>
+                            <span class="badge-pending"><span class="badge bg-warning rounded-circle p-1 me-1 d-inline-block"></span>Pending</span>
+                        <?php elseif($surat->status === 'diproses'): ?>
+                            <span class="badge-diproses"><span class="badge bg-primary rounded-circle p-1 me-1 d-inline-block"></span>Diproses</span>
+                        <?php elseif($surat->status === 'dikirim'): ?>
+                            <span class="badge-dikirim"><span class="badge rounded-circle p-1 me-1 d-inline-block" style="background-color: #7E22CE;"></span>Dikirim</span>
+                        <?php elseif($surat->status === 'selesai'): ?>
+                            <span class="badge-selesai"><span class="badge bg-success rounded-circle p-1 me-1 d-inline-block"></span>Selesai</span>
+                        <?php endif; ?>
                     </td>
                     <td class="pe-4 text-end">
-                        <a href="{{ asset('storage/' . $surat->file) }}" target="_blank" class="btn btn-sm btn-light text-muted me-1 rounded-circle">
+                        <a href="<?php echo e(asset('storage/' . $surat->file)); ?>" target="_blank" class="btn btn-sm btn-light text-muted me-1 rounded-circle">
                             <i class="bi bi-eye"></i>
                         </a>
                         <button class="btn btn-sm btn-light text-muted rounded-circle"><i class="bi bi-three-dots"></i></button>
                     </td>
                 </tr>
-                @empty
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                 <tr>
                     <td colspan="5" class="text-center py-4 text-muted">Belum ada surat yang dikirim.</td>
                 </tr>
-                @endforelse
+                <?php endif; ?>
             </tbody>
         </table>
     </div>
@@ -178,4 +178,6 @@
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\e-surat-kominfo\resources\views/opd/dashboard.blade.php ENDPATH**/ ?>
