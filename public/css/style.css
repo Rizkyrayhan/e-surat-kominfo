@@ -1,0 +1,212 @@
+/* E-Surat Kominfo Custom Styles */
+
+:root {
+    --primary-blue: #1E3A8A;
+    --secondary-blue: #2563EB;
+    --light-blue: #EFF6FF;
+    --bg-light-gray: #F9FAFB;
+    --text-dark: #111827;
+    --text-muted: #6B7280;
+    --border-color: #E5E7EB;
+    
+    --status-pending-bg: #FEF3C7;
+    --status-pending-text: #D97706;
+    
+    --status-proses-bg: #DBEAFE;
+    --status-proses-text: #1D4ED8;
+    
+    --status-selesai-bg: #D1FAE5;
+    --status-selesai-text: #059669;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-dark);
+}
+
+.bg-light-gray {
+    background-color: var(--bg-light-gray);
+}
+
+.text-primary-blue { color: var(--primary-blue); }
+.text-secondary-blue { color: var(--secondary-blue); }
+
+.bg-primary-blue { background-color: var(--primary-blue); }
+.bg-secondary-blue { background-color: var(--secondary-blue); }
+
+.btn-primary {
+    background-color: var(--primary-blue);
+    border-color: var(--primary-blue);
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-blue);
+    border-color: var(--secondary-blue);
+}
+
+.btn-info {
+    background-color: #06B6D4;
+    border-color: #06B6D4;
+    color: white;
+}
+
+.btn-info:hover {
+    background-color: #0891B2;
+    border-color: #0891B2;
+    color: white;
+}
+
+/* Authentication Pages */
+.auth-split-bg {
+    background-color: var(--primary-blue);
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-split-bg::after {
+    content: '';
+    position: absolute;
+    bottom: -10%;
+    right: -10%;
+    width: 50%;
+    height: 50%;
+    background: radial-gradient(circle, rgba(37,99,235,0.2) 0%, rgba(30,58,138,0) 70%);
+}
+
+.auth-card {
+    border-radius: 12px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    background-color: white;
+}
+
+.feature-card {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 1rem;
+    color: white;
+}
+
+/* Dashboard Layout */
+#wrapper {
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+#sidebar-wrapper {
+    min-height: 100vh;
+    width: 250px;
+    background-color: var(--primary-blue);
+    transition: margin 0.25s ease-out;
+}
+
+.sidebar-bg {
+    background: linear-gradient(180deg, var(--primary-blue) 0%, #152C69 100%);
+}
+
+#page-content-wrapper {
+    min-width: 0;
+    background-color: var(--bg-light-gray);
+}
+
+.active-sidebar {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border-left: 4px solid white;
+}
+
+.list-group-item-action:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Dashboard Cards */
+.stat-card {
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background-color: white;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card.border-warning { border-color: #FCD34D !important; border-width: 2px !important; }
+.stat-card.border-success { border-color: #34D399 !important; border-width: 2px !important; }
+
+.icon-box {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.icon-box-primary { background-color: var(--light-blue); color: var(--primary-blue); }
+.icon-box-warning { background-color: var(--status-pending-bg); color: var(--status-pending-text); }
+.icon-box-info { background-color: var(--status-proses-bg); color: var(--status-proses-text); }
+.icon-box-success { background-color: var(--status-selesai-bg); color: var(--status-selesai-text); }
+
+/* Status Badges */
+.badge-pending { background-color: var(--status-pending-bg); color: var(--status-pending-text); padding: 0.35em 0.8em; border-radius: 20px; font-weight: 500; }
+.badge-diproses { background-color: var(--status-proses-bg); color: var(--status-proses-text); padding: 0.35em 0.8em; border-radius: 20px; font-weight: 500; }
+.badge-selesai { background-color: var(--status-selesai-bg); color: var(--status-selesai-text); padding: 0.35em 0.8em; border-radius: 20px; font-weight: 500; }
+.badge-dikirim { background-color: #F3E8FF; color: #7E22CE; padding: 0.35em 0.8em; border-radius: 20px; font-weight: 500; }
+
+/* Tables */
+.table > :not(caption) > * > * {
+    padding: 1rem;
+    border-bottom-color: var(--border-color);
+}
+
+.table th {
+    font-weight: 600;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.table-card {
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    background-color: white;
+    overflow: hidden;
+}
+
+/* Upload Area */
+.upload-area {
+    border: 2px dashed var(--border-color);
+    border-radius: 12px;
+    padding: 3rem 2rem;
+    text-align: center;
+    background-color: var(--bg-light-gray);
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.upload-area:hover {
+    border-color: var(--primary-blue);
+    background-color: var(--light-blue);
+}
+
+.upload-icon {
+    font-size: 3rem;
+    color: var(--secondary-blue);
+    margin-bottom: 1rem;
+}
+
+/* Custom Input */
+.form-control, .form-select {
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    border-color: var(--border-color);
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.1);
+}
