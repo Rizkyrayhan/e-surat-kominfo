@@ -1,6 +1,6 @@
-@extends('layouts.app')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
     <div class="container-fluid min-vh-100 p-0">
         <div class="row g-0 min-vh-100">
             <!-- Left Side - Illustration/Info -->
@@ -50,8 +50,8 @@
                     <p class="text-muted mb-4">Silakan masuk menggunakan akun kedinasan Anda untuk melanjutkan akses sistem.
                     </p>
 
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
+                    <form method="POST" action="<?php echo e(route('login')); ?>">
+                        <?php echo csrf_field(); ?>
 
                         <div class="mb-4">
                             <label for="email" class="form-label fw-medium small">Alamat Email Pegawai</label>
@@ -59,13 +59,27 @@
                                 <span class="input-group-text bg-transparent text-muted"><i
                                         class="bi bi-envelope"></i></span>
                                 <input type="email"
-                                    class="form-control border-start-0 ps-0 @error('email') is-invalid @enderror" id="email"
-                                    name="email" value="{{ old('email') }}" placeholder="nama.pegawai@kominfo.go.id"
+                                    class="form-control border-start-0 ps-0 <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" id="email"
+                                    name="email" value="<?php echo e(old('email')); ?>" placeholder="nama.pegawai@kominfo.go.id"
                                     required autofocus>
                             </div>
-                            @error('email')
-                                <div class="text-danger small mt-1">{{ $message }}</div>
-                            @enderror
+                            <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <div class="text-danger small mt-1"><?php echo e($message); ?></div>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
 
                         <div class="mb-4">
@@ -76,14 +90,28 @@
                             <div class="input-group">
                                 <span class="input-group-text bg-transparent text-muted"><i class="bi bi-lock"></i></span>
                                 <input type="password"
-                                    class="form-control border-start-0 border-end-0 ps-0 @error('password') is-invalid @enderror"
+                                    class="form-control border-start-0 border-end-0 ps-0 <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                     id="password" name="password" placeholder="••••••••••••" required>
                                 <span class="input-group-text bg-transparent text-muted" style="cursor: pointer;"><i
                                         class="bi bi-eye"></i></span>
                             </div>
-                            @error('password')
-                                <div class="text-danger small mt-1">{{ $message }}</div>
-                            @enderror
+                            <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <div class="text-danger small mt-1"><?php echo e($message); ?></div>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
 
                         <div class="mb-4 form-check">
@@ -99,7 +127,7 @@
 
                         <div class="text-center mt-4">
                             <p class="text-muted small mb-2">Belum memiliki akses atau akun pegawai?</p>
-                            <a href="{{ route('register') }}"
+                            <a href="<?php echo e(route('register')); ?>"
                                 class="btn btn-outline-primary rounded-pill px-4 py-2 text-decoration-none small d-inline-flex align-items-center gap-2">
                                 <i class="bi bi-person-plus"></i> Daftar Akun Baru
                             </a>
@@ -111,10 +139,11 @@
                             <a href="#" class="text-muted text-decoration-none">Panduan Pengguna</a>
                             <a href="#" class="text-muted text-decoration-none">Kebijakan Privasi</a>
                         </div>
-                        <div>&copy; {{ date('Y') }} Kementerian Komunikasi dan Informatika RI</div>
+                        <div>&copy; <?php echo e(date('Y')); ?> Kementerian Komunikasi dan Informatika RI</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\e-surat-kominfo\resources\views/auth/login.blade.php ENDPATH**/ ?>
