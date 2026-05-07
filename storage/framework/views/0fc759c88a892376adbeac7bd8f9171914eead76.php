@@ -1,11 +1,13 @@
+
+
 <?php $__env->startSection('content'); ?>
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
     <div>
         <h3 class="fw-bold mb-1 text-dark">Dashboard Utama</h3>
         <p class="text-muted mb-0">Selamat datang kembali, berikut ringkasan pengelolaan surat hari ini.</p>
     </div>
     <div>
-        <a href="<?php echo e(route('opd.surat.create')); ?>" class="btn btn-info rounded-pill px-4 py-2 fw-semibold shadow-sm d-flex align-items-center gap-2">
+        <a href="<?php echo e(route('opd.surat.create')); ?>" class="btn btn-info rounded-pill px-4 py-2 fw-semibold shadow-sm d-flex align-items-center justify-content-center gap-2">
             <i class="bi bi-plus-lg"></i> Kirim Surat Baru
         </a>
     </div>
@@ -90,18 +92,24 @@
 </div>
 
 <div class="table-card mb-5">
-    <div class="d-flex justify-content-between align-items-center p-4 border-bottom">
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center p-4 border-bottom gap-3">
         <h5 class="fw-bold mb-0 text-primary-blue">Daftar Surat Terbaru</h5>
-        <div class="d-flex gap-2">
-            <button class="btn btn-outline-secondary btn-sm rounded-pill px-3">Filter</button>
-            <a href="<?php echo e(route('opd.history')); ?>" class="btn btn-outline-primary btn-sm rounded-pill px-3">Lihat Semua</a>
+        <div class="d-flex flex-column flex-md-row gap-2">
+            <button id="btn-bulk-delete" class="btn btn-outline-danger btn-sm rounded-pill px-3 d-none align-items-center justify-content-center gap-1 btn-responsive">
+                <i class="bi bi-trash"></i> Hapus Terpilih (<span id="selected-count">0</span>)
+            </button>
+            <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 btn-responsive">Filter</button>
+            <a href="<?php echo e(route('opd.history')); ?>" class="btn btn-outline-primary btn-sm rounded-pill px-3 btn-responsive">Lihat Semua</a>
         </div>
     </div>
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0">
             <thead class="bg-light">
                 <tr>
-                    <th scope="col" class="ps-4">NOMOR SURAT</th>
+                    <th scope="col" class="ps-4" style="width: 40px;">
+                        <input type="checkbox" class="form-check-input" id="check-all">
+                    </th>
+                    <th scope="col">NOMOR SURAT</th>
                     <th scope="col">TUJUAN / INSTANSI</th>
                     <th scope="col">TANGGAL MASUK</th>
                     <th scope="col">STATUS</th>
@@ -110,8 +118,11 @@
             </thead>
             <tbody>
                 <?php $__empty_1 = true; $__currentLoopData = $surats; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $surat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                <tr>
-                    <td class="ps-4 fw-bold text-primary-blue" style="font-size: 0.9rem;"><?php echo e($surat->nomor_surat); ?></td>
+                <tr id="surat-row-<?php echo e($surat->id); ?>">
+                    <td class="ps-4">
+                        <input type="checkbox" class="form-check-input surat-checkbox" value="<?php echo e($surat->id); ?>">
+                    </td>
+                    <td class="fw-bold text-primary-blue" style="font-size: 0.9rem;"><?php echo e($surat->nomor_surat); ?></td>
                     <td>
                         <div class="d-flex align-items-center">
                             <span class="badge bg-light text-dark border me-2"><?php echo e(substr($surat->tujuan, 0, 3)); ?></span>
@@ -121,13 +132,13 @@
                     <td class="text-muted" style="font-size: 0.9rem;"><?php echo e($surat->tanggal->format('d M Y, H:i')); ?></td>
                     <td>
                         <?php if($surat->status === 'pending'): ?>
-                            <span class="badge-pending"><span class="badge bg-warning rounded-circle p-1 me-1 d-inline-block"></span>Pending</span>
+                            <span class="badge-pending">Pending</span>
                         <?php elseif($surat->status === 'diproses'): ?>
-                            <span class="badge-diproses"><span class="badge bg-primary rounded-circle p-1 me-1 d-inline-block"></span>Diproses</span>
+                            <span class="badge-diproses">Diproses</span>
                         <?php elseif($surat->status === 'dikirim'): ?>
-                            <span class="badge-dikirim"><span class="badge rounded-circle p-1 me-1 d-inline-block" style="background-color: #7E22CE;"></span>Dikirim</span>
+                            <span class="badge-dikirim">Dikirim</span>
                         <?php elseif($surat->status === 'selesai'): ?>
-                            <span class="badge-selesai"><span class="badge bg-success rounded-circle p-1 me-1 d-inline-block"></span>Selesai</span>
+                            <span class="badge-selesai">Selesai</span>
                         <?php endif; ?>
                     </td>
                     <td class="pe-4 text-end">
@@ -176,6 +187,84 @@
         </div>
     </div>
 </div>
+<?php $__env->startPush('scripts'); ?>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const checkAll = document.getElementById('check-all');
+    const checkboxes = document.querySelectorAll('.surat-checkbox');
+    const btnBulkDelete = document.getElementById('btn-bulk-delete');
+    const selectedCount = document.getElementById('selected-count');
+
+    function updateBulkDeleteButton() {
+        const checkedCount = document.querySelectorAll('.surat-checkbox:checked').length;
+        if (checkedCount > 0) {
+            btnBulkDelete.classList.remove('d-none');
+            btnBulkDelete.classList.add('d-flex');
+            selectedCount.textContent = checkedCount;
+        } else {
+            btnBulkDelete.classList.add('d-none');
+            btnBulkDelete.classList.remove('d-flex');
+        }
+    }
+
+    if (checkAll) {
+        checkAll.addEventListener('change', function() {
+            checkboxes.forEach(cb => {
+                cb.checked = checkAll.checked;
+            });
+            updateBulkDeleteButton();
+        });
+    }
+
+    checkboxes.forEach(cb => {
+        cb.addEventListener('change', function() {
+            updateBulkDeleteButton();
+            if (!this.checked) {
+                checkAll.checked = false;
+            } else if (document.querySelectorAll('.surat-checkbox:checked').length === checkboxes.length) {
+                checkAll.checked = true;
+            }
+        });
+    });
+
+    if (btnBulkDelete) {
+        btnBulkDelete.addEventListener('click', function() {
+            if (confirm('Apakah Anda yakin ingin menghapus surat yang dipilih dari dashboard? Surat tetap akan tersimpan di Riwayat.')) {
+                const selectedIds = Array.from(document.querySelectorAll('.surat-checkbox:checked')).map(cb => cb.value);
+                
+                fetch('<?php echo e(route("opd.surat.bulk-delete")); ?>', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
+                    },
+                    body: JSON.stringify({ ids: selectedIds })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        selectedIds.forEach(id => {
+                            const row = document.getElementById(`surat-row-${id}`);
+                            if (row) row.remove();
+                        });
+                        updateBulkDeleteButton();
+                        checkAll.checked = false;
+                        alert(data.message);
+                        location.reload(); // Reload to refresh stats and pagination
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan saat menghapus surat.');
+                });
+            }
+        });
+    }
+});
+</script>
+<?php $__env->stopPush(); ?>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\ACER\.gemini\antigravity\scratch\e-surat-kominfo\resources\views/opd/dashboard.blade.php ENDPATH**/ ?>

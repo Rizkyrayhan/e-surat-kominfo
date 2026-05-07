@@ -35,7 +35,7 @@
                         <i class="bi bi-envelope-plus me-2"></i> Kirim Surat
                     </a>
                 <?php endif; ?>
-                <a href="<?php echo e(Auth::user()->role === 'admin' ? '#' : route('opd.history')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('opd.history') ? 'active-sidebar' : ''); ?>">
+                <a href="<?php echo e(Auth::user()->role === 'admin' ? route('admin.history') : route('opd.history')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('admin.history') || request()->routeIs('opd.history') ? 'active-sidebar' : ''); ?>">
                     <i class="bi bi-clock-history me-2"></i> Riwayat
                 </a>
                 <a href="<?php echo e(route('profile')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('profile') ? 'active-sidebar' : ''); ?>">
@@ -53,21 +53,28 @@
         </div>
         <!-- /#sidebar-wrapper -->
 
+        <!-- Sidebar Overlay -->
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
         <!-- Page Content -->
         <div id="page-content-wrapper" class="w-100">
             <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom py-3 px-4">
-                <div class="d-flex align-items-center w-100">
-                    <div class="input-group search-bar" style="max-width: 400px;">
+                <div class="container-fluid p-0 d-flex align-items-center">
+                    <button class="btn btn-light d-lg-none me-3" id="menu-toggle">
+                        <i class="bi bi-list fs-4"></i>
+                    </button>
+                    
+                    <div class="input-group search-bar d-none d-md-flex" style="max-width: 400px;">
                         <span class="input-group-text bg-light border-0"><i class="bi bi-search text-muted"></i></span>
                         <input type="text" class="form-control bg-light border-0" placeholder="Cari surat atau dokumen...">
                     </div>
                     
                     <div class="ms-auto d-flex align-items-center">
                         <a href="#" class="text-muted fs-5 me-3"><i class="bi bi-bell"></i></a>
-                        <a href="#" class="text-muted fs-5 me-4"><i class="bi bi-gear"></i></a>
+                        <a href="#" class="text-muted fs-5 me-4 d-none d-sm-inline"><i class="bi bi-gear"></i></a>
                         
                         <div class="d-flex align-items-center border-start ps-4">
-                            <div class="text-end me-3">
+                            <div class="text-end me-3 d-none d-sm-block">
                                 <div class="fw-bold text-dark"><?php echo e(Auth::user()->name); ?></div>
                                 <div class="text-muted" style="font-size: 0.8rem;"><?php echo e(Auth::user()->role === 'admin' ? 'Admin Kominfo' : 'Admin OPD'); ?></div>
                             </div>
@@ -108,6 +115,27 @@
 
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const wrapper = document.getElementById('wrapper');
+            const menuToggle = document.getElementById('menu-toggle');
+            const overlay = document.getElementById('sidebar-overlay');
+
+            if (menuToggle) {
+                menuToggle.onclick = function() {
+                    wrapper.classList.toggle('toggled');
+                };
+            }
+
+            if (overlay) {
+                overlay.onclick = function() {
+                    wrapper.classList.remove('toggled');
+                };
+            }
+        });
+    </script>
+    <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
 </html>
 <?php /**PATH C:\Users\ACER\.gemini\antigravity\scratch\e-surat-kominfo\resources\views/layouts/app.blade.php ENDPATH**/ ?>

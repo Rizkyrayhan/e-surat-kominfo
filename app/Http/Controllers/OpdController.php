@@ -28,9 +28,20 @@ class OpdController extends Controller
     public function history()
     {
         $user = Auth::user();
-        $surats = Surat::where('user_id', $user->id)->latest()->paginate(15);
+        $surats = Surat::withTrashed()->where('user_id', $user->id)->latest()->paginate(15);
         
         return view('opd.history', compact('surats'));
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $user = Auth::user();
+        $ids = $request->input('ids', []);
+        if (!empty($ids)) {
+            Surat::where('user_id', $user->id)->whereIn('id', $ids)->delete();
+            return response()->json(['success' => true, 'message' => 'Surat berhasil dihapus dari dashboard.']);
+        }
+        return response()->json(['success' => false, 'message' => 'Tidak ada surat yang dipilih.'], 400);
     }
 
     public function create()

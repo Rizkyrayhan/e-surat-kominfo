@@ -29,6 +29,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 Route::middleware(['auth', 'role:opd'])->prefix('opd')->name('opd.')->group(function () {
     Route::get('/dashboard', [OpdController::class, 'dashboard'])->name('dashboard');
     Route::get('/riwayat', [OpdController::class, 'history'])->name('history');
+    Route::post('/surat/bulk-delete', [OpdController::class, 'bulkDelete'])->name('surat.bulk-delete');
     Route::get('/surat/create', [OpdController::class, 'create'])->name('surat.create');
     Route::post('/surat', [OpdController::class, 'store'])->name('surat.store');
 });
@@ -36,6 +37,8 @@ Route::middleware(['auth', 'role:opd'])->prefix('opd')->name('opd.')->group(func
 // Admin Routes
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/riwayat', [AdminController::class, 'history'])->name('history');
+    Route::post('/surat/bulk-delete', [AdminController::class, 'bulkDelete'])->name('surat.bulk-delete');
     Route::get('/surat/{surat}', [AdminController::class, 'show'])->name('surat.show');
     Route::get('/surat/{surat}/print', [AdminController::class, 'print'])->name('surat.print');
     Route::patch('/surat/{surat}/status', [AdminController::class, 'updateStatus'])->name('surat.update-status');

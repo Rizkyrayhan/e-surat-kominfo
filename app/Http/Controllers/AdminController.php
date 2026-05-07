@@ -20,6 +20,22 @@ class AdminController extends Controller
         return view('admin.dashboard', compact('stats', 'surats'));
     }
 
+    public function history()
+    {
+        $surats = Surat::withTrashed()->with('user')->latest()->paginate(15);
+        return view('admin.history', compact('surats'));
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->input('ids', []);
+        if (!empty($ids)) {
+            Surat::whereIn('id', $ids)->delete();
+            return response()->json(['success' => true, 'message' => 'Surat berhasil dihapus dari dashboard.']);
+        }
+        return response()->json(['success' => false, 'message' => 'Tidak ada surat yang dipilih.'], 400);
+    }
+
     public function show(Surat $surat)
     {
         $surat->load('user');
