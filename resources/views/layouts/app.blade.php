@@ -35,7 +35,7 @@
                         <i class="bi bi-envelope-plus me-2"></i> Kirim Surat
                     </a>
                 @endif
-                <a href="{{ Auth::user()->role === 'admin' ? '#' : route('opd.history') }}" class="list-group-item list-group-item-action bg-transparent text-white {{ request()->routeIs('opd.history') ? 'active-sidebar' : '' }}">
+                <a href="{{ Auth::user()->role === 'admin' ? route('admin.history') : route('opd.history') }}" class="list-group-item list-group-item-action bg-transparent text-white {{ request()->routeIs('admin.history') || request()->routeIs('opd.history') ? 'active-sidebar' : '' }}">
                     <i class="bi bi-clock-history me-2"></i> Riwayat
                 </a>
                 <a href="{{ route('profile') }}" class="list-group-item list-group-item-action bg-transparent text-white {{ request()->routeIs('profile') ? 'active-sidebar' : '' }}">
@@ -64,10 +64,7 @@
                         <i class="bi bi-list fs-4"></i>
                     </button>
                     
-                    <div class="input-group search-bar d-none d-md-flex" style="max-width: 400px;">
-                        <span class="input-group-text bg-light border-0"><i class="bi bi-search text-muted"></i></span>
-                        <input type="text" class="form-control bg-light border-0" placeholder="Cari surat atau dokumen...">
-                    </div>
+
                     
                     <div class="ms-auto d-flex align-items-center">
                         <a href="#" class="text-muted fs-5 me-3"><i class="bi bi-bell"></i></a>
@@ -134,5 +131,6 @@
             }
         });
     </script>
+    @stack('scripts')
 </body>
 </html>

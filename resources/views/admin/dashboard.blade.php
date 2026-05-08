@@ -72,6 +72,7 @@
             <p class="text-muted small mb-0">Menampilkan 10 surat masuk terbaru yang membutuhkan perhatian.</p>
         </div>
         <div class="d-flex flex-column flex-md-row gap-2">
+
             <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 d-flex align-items-center justify-content-center gap-1 btn-responsive"><i class="bi bi-filter"></i> Filter</button>
             <button class="btn btn-primary btn-sm rounded-pill px-3 d-flex align-items-center justify-content-center gap-1 btn-responsive" style="background-color: #0A256B;"><i class="bi bi-plus-lg"></i> Input Surat Baru</button>
         </div>
@@ -80,7 +81,8 @@
         <table class="table table-hover align-middle mb-0">
             <thead class="bg-light">
                 <tr>
-                    <th scope="col" class="ps-4">NO. AGENDA</th>
+
+                    <th scope="col">NO. AGENDA</th>
                     <th scope="col">PERIHAL & PENGIRIM</th>
                     <th scope="col">TANGGAL DITERIMA</th>
                     <th scope="col">STATUS</th>
@@ -89,8 +91,9 @@
             </thead>
             <tbody>
                 @forelse($surats as $surat)
-                <tr>
-                    <td class="ps-4 fw-bold text-primary-blue" style="font-size: 0.9rem;">SK - {{ date('Y') }} - {{ str_pad($surat->id, 3, '0', STR_PAD_LEFT) }}</td>
+                <tr id="surat-row-{{ $surat->id }}">
+
+                    <td class="fw-bold text-primary-blue" style="font-size: 0.9rem;">SK - {{ date('Y') }} - {{ str_pad($surat->id, 3, '0', STR_PAD_LEFT) }}</td>
                     <td>
                         <div class="fw-bold text-dark" style="font-size: 0.95rem;">{{ $surat->keterangan ?? 'Perihal tidak diisi' }}</div>
                         <div class="text-muted small">{{ $surat->user->name }}</div>
@@ -161,4 +164,5 @@
         Kementerian Komunikasi dan Informatika &copy; {{ date('Y') }}
     </div>
 </div>
+
 @endsection

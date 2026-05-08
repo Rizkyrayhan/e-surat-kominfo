@@ -95,6 +95,9 @@
     <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center p-4 border-bottom gap-3">
         <h5 class="fw-bold mb-0 text-primary-blue">Daftar Surat Terbaru</h5>
         <div class="d-flex flex-column flex-md-row gap-2">
+            <button id="btn-bulk-delete" class="btn btn-outline-danger btn-sm rounded-pill px-3 d-none align-items-center justify-content-center gap-1 btn-responsive">
+                <i class="bi bi-trash"></i> Hapus Terpilih (<span id="selected-count">0</span>)
+            </button>
             <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 btn-responsive">Filter</button>
             <a href="{{ route('opd.history') }}" class="btn btn-outline-primary btn-sm rounded-pill px-3 btn-responsive">Lihat Semua</a>
         </div>
@@ -103,7 +106,10 @@
         <table class="table table-hover align-middle mb-0">
             <thead class="bg-light">
                 <tr>
-                    <th scope="col" class="ps-4">NOMOR SURAT</th>
+                    <th scope="col" class="ps-4" style="width: 40px;">
+                        <input type="checkbox" class="form-check-input" id="check-all">
+                    </th>
+                    <th scope="col">NOMOR SURAT</th>
                     <th scope="col">TUJUAN / INSTANSI</th>
                     <th scope="col">TANGGAL MASUK</th>
                     <th scope="col">STATUS</th>
@@ -112,8 +118,11 @@
             </thead>
             <tbody>
                 @forelse($surats as $surat)
-                <tr>
-                    <td class="ps-4 fw-bold text-primary-blue" style="font-size: 0.9rem;">{{ $surat->nomor_surat }}</td>
+                <tr id="surat-row-{{ $surat->id }}">
+                    <td class="ps-4">
+                        <input type="checkbox" class="form-check-input surat-checkbox" value="{{ $surat->id }}">
+                    </td>
+                    <td class="fw-bold text-primary-blue" style="font-size: 0.9rem;">{{ $surat->nomor_surat }}</td>
                     <td>
                         <div class="d-flex align-items-center">
                             <span class="badge bg-light text-dark border me-2">{{ substr($surat->tujuan, 0, 3) }}</span>
@@ -141,7 +150,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5" class="text-center py-4 text-muted">Belum ada surat yang dikirim.</td>
+                    <td colspan="6" class="text-center py-4 text-muted">Belum ada surat yang dikirim.</td>
                 </tr>
                 @endforelse
             </tbody>
@@ -178,4 +187,77 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const checkAll = document.getElementById('check-all');
+    const checkboxes = document.querySelectorAll('.surat-checkbox');
+    const btnBulkDelete = document.getElementById('btn-bulk-delete');
+    const selectedCount = document.getElementById('selected-count');
+
+    function updateBulkDeleteButton() {
+        const checkedCount = document.querySelectorAll('.surat-checkbox:checked').length;
+        if (checkedCount > 0) {
+            btnBulkDelete.classList.remove('d-none');
+            btnBulkDelete.classList.add('d-flex');
+            selectedCount.textContent = checkedCount;
+        } else {
+            btnBulkDelete.classList.add('d-none');
+            btnBulkDelete.classList.remove('d-flex');
+        }
+    }
+
+    if (checkAll) {
+        checkAll.addEventListener('change', function() {
+            checkboxes.forEach(cb => {
+                cb.checked = checkAll.checked;
+            });
+            updateBulkDeleteButton();
+        });
+    }
+
+    checkboxes.forEach(cb => {
+        cb.addEventListener('change', function() {
+            updateBulkDeleteButton();
+            if (!this.checked) {
+                checkAll.checked = false;
+            } else if (document.querySelectorAll('.surat-checkbox:checked').length === checkboxes.length) {
+                checkAll.checked = true;
+            }
+        });
+    });
+
+    if (btnBulkDelete) {
+        btnBulkDelete.addEventListener('click', function() {
+            if (confirm('Apakah Anda yakin ingin menghapus surat yang dipilih secara permanen? Tindakan ini tidak dapat dibatalkan.')) {
+                const selectedIds = Array.from(document.querySelectorAll('.surat-checkbox:checked')).map(cb => cb.value);
+                
+                fetch('{{ route("opd.surat.bulk-delete") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ ids: selectedIds })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        location.reload(); 
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan saat menghapus surat.');
+                });
+            }
+        });
+    }
+});
+</script>
+@endpush
 @endsection
