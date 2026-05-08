@@ -15,14 +15,27 @@ class AdminController extends Controller
             'selesai' => Surat::where('status', 'selesai')->count(),
         ];
 
-        $surats = Surat::with('user')->latest()->paginate(10);
+        $surats = Surat::whereIn('status', ['pending', 'diproses', 'dikirim'])->with('user')->latest()->paginate(10);
 
         return view('admin.dashboard', compact('stats', 'surats'));
     }
 
-    public function history()
+    public function history(Request $request)
     {
-        $surats = Surat::withTrashed()->with('user')->latest()->paginate(15);
+        $search = $request->input('search');
+        $query = Surat::withTrashed()->with('user');
+
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('nomor_surat', 'like', "%{$search}%")
+                  ->orWhere('keterangan', 'like', "%{$search}%")
+                  ->orWhereHas('user', function($qu) use ($search) {
+                      $qu->where('name', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        $surats = $query->latest()->paginate(15)->withQueryString();
         return view('admin.history', compact('surats'));
     }
 

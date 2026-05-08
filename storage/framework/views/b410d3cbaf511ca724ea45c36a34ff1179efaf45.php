@@ -64,10 +64,7 @@
                         <i class="bi bi-list fs-4"></i>
                     </button>
                     
-                    <div class="input-group search-bar d-none d-md-flex" style="max-width: 400px;">
-                        <span class="input-group-text bg-light border-0"><i class="bi bi-search text-muted"></i></span>
-                        <input type="text" class="form-control bg-light border-0" placeholder="Cari surat atau dokumen...">
-                    </div>
+
                     
                     <div class="ms-auto d-flex align-items-center">
                         <a href="#" class="text-muted fs-5 me-3"><i class="bi bi-bell"></i></a>

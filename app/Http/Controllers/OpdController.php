@@ -20,15 +20,26 @@ class OpdController extends Controller
             'selesai' => Surat::where('user_id', $user->id)->where('status', 'selesai')->count(),
         ];
 
-        $surats = Surat::where('user_id', $user->id)->latest()->take(10)->get();
+        $surats = Surat::where('user_id', $user->id)->whereIn('status', ['pending', 'diproses', 'dikirim'])->latest()->take(10)->get();
 
         return view('opd.dashboard', compact('stats', 'surats'));
     }
 
-    public function history()
+    public function history(Request $request)
     {
         $user = Auth::user();
-        $surats = Surat::withTrashed()->where('user_id', $user->id)->latest()->paginate(15);
+        $search = $request->input('search');
+        $query = Surat::withTrashed()->where('user_id', $user->id);
+
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('nomor_surat', 'like', "%{$search}%")
+                  ->orWhere('keterangan', 'like', "%{$search}%")
+                  ->orWhere('tujuan', 'like', "%{$search}%");
+            });
+        }
+
+        $surats = $query->latest()->paginate(15)->withQueryString();
         
         return view('opd.history', compact('surats'));
     }
@@ -38,8 +49,8 @@ class OpdController extends Controller
         $user = Auth::user();
         $ids = $request->input('ids', []);
         if (!empty($ids)) {
-            Surat::where('user_id', $user->id)->whereIn('id', $ids)->delete();
-            return response()->json(['success' => true, 'message' => 'Surat berhasil dihapus dari dashboard.']);
+            Surat::where('user_id', $user->id)->whereIn('id', $ids)->forceDelete();
+            return response()->json(['success' => true, 'message' => 'Surat berhasil dihapus secara permanen.']);
         }
         return response()->json(['success' => false, 'message' => 'Tidak ada surat yang dipilih.'], 400);
     }

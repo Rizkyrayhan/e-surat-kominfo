@@ -72,9 +72,7 @@
             <p class="text-muted small mb-0">Menampilkan 10 surat masuk terbaru yang membutuhkan perhatian.</p>
         </div>
         <div class="d-flex flex-column flex-md-row gap-2">
-            <button id="btn-bulk-delete" class="btn btn-outline-danger btn-sm rounded-pill px-3 d-none align-items-center justify-content-center gap-1 btn-responsive">
-                <i class="bi bi-trash"></i> Hapus Terpilih (<span id="selected-count">0</span>)
-            </button>
+
             <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 d-flex align-items-center justify-content-center gap-1 btn-responsive"><i class="bi bi-filter"></i> Filter</button>
             <button class="btn btn-primary btn-sm rounded-pill px-3 d-flex align-items-center justify-content-center gap-1 btn-responsive" style="background-color: #0A256B;"><i class="bi bi-plus-lg"></i> Input Surat Baru</button>
         </div>
@@ -83,9 +81,7 @@
         <table class="table table-hover align-middle mb-0">
             <thead class="bg-light">
                 <tr>
-                    <th scope="col" class="ps-4" style="width: 40px;">
-                        <input type="checkbox" class="form-check-input" id="check-all">
-                    </th>
+
                     <th scope="col">NO. AGENDA</th>
                     <th scope="col">PERIHAL & PENGIRIM</th>
                     <th scope="col">TANGGAL DITERIMA</th>
@@ -96,9 +92,7 @@
             <tbody>
                 <?php $__empty_1 = true; $__currentLoopData = $surats; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $surat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 <tr id="surat-row-<?php echo e($surat->id); ?>">
-                    <td class="ps-4">
-                        <input type="checkbox" class="form-check-input surat-checkbox" value="<?php echo e($surat->id); ?>">
-                    </td>
+
                     <td class="fw-bold text-primary-blue" style="font-size: 0.9rem;">SK - <?php echo e(date('Y')); ?> - <?php echo e(str_pad($surat->id, 3, '0', STR_PAD_LEFT)); ?></td>
                     <td>
                         <div class="fw-bold text-dark" style="font-size: 0.95rem;"><?php echo e($surat->keterangan ?? 'Perihal tidak diisi'); ?></div>
@@ -171,84 +165,7 @@
 
     </div>
 </div>
-<?php $__env->startPush('scripts'); ?>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const checkAll = document.getElementById('check-all');
-    const checkboxes = document.querySelectorAll('.surat-checkbox');
-    const btnBulkDelete = document.getElementById('btn-bulk-delete');
-    const selectedCount = document.getElementById('selected-count');
 
-    function updateBulkDeleteButton() {
-        const checkedCount = document.querySelectorAll('.surat-checkbox:checked').length;
-        if (checkedCount > 0) {
-            btnBulkDelete.classList.remove('d-none');
-            btnBulkDelete.classList.add('d-flex');
-            selectedCount.textContent = checkedCount;
-        } else {
-            btnBulkDelete.classList.add('d-none');
-            btnBulkDelete.classList.remove('d-flex');
-        }
-    }
-
-    if (checkAll) {
-        checkAll.addEventListener('change', function() {
-            checkboxes.forEach(cb => {
-                cb.checked = checkAll.checked;
-            });
-            updateBulkDeleteButton();
-        });
-    }
-
-    checkboxes.forEach(cb => {
-        cb.addEventListener('change', function() {
-            updateBulkDeleteButton();
-            if (!this.checked) {
-                checkAll.checked = false;
-            } else if (document.querySelectorAll('.surat-checkbox:checked').length === checkboxes.length) {
-                checkAll.checked = true;
-            }
-        });
-    });
-
-    if (btnBulkDelete) {
-        btnBulkDelete.addEventListener('click', function() {
-            if (confirm('Apakah Anda yakin ingin menghapus surat yang dipilih dari dashboard? Surat tetap akan tersimpan di Riwayat.')) {
-                const selectedIds = Array.from(document.querySelectorAll('.surat-checkbox:checked')).map(cb => cb.value);
-                
-                fetch('<?php echo e(route("admin.surat.bulk-delete")); ?>', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
-                    },
-                    body: JSON.stringify({ ids: selectedIds })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        selectedIds.forEach(id => {
-                            const row = document.getElementById(`surat-row-${id}`);
-                            if (row) row.remove();
-                        });
-                        updateBulkDeleteButton();
-                        checkAll.checked = false;
-                        alert(data.message);
-                        location.reload(); // Reload to refresh stats and pagination
-                    } else {
-                        alert(data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Terjadi kesalahan saat menghapus surat.');
-                });
-            }
-        });
-    }
-});
-</script>
-<?php $__env->stopPush(); ?>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\ACER\.gemini\antigravity\scratch\e-surat-kominfo\resources\views/admin/dashboard.blade.php ENDPATH**/ ?>

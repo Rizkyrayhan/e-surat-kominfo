@@ -150,7 +150,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5" class="text-center py-4 text-muted">Belum ada surat yang dikirim.</td>
+                    <td colspan="6" class="text-center py-4 text-muted">Belum ada surat yang dikirim.</td>
                 </tr>
                 @endforelse
             </tbody>
@@ -187,6 +187,7 @@
         </div>
     </div>
 </div>
+
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -229,7 +230,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (btnBulkDelete) {
         btnBulkDelete.addEventListener('click', function() {
-            if (confirm('Apakah Anda yakin ingin menghapus surat yang dipilih dari dashboard? Surat tetap akan tersimpan di Riwayat.')) {
+            if (confirm('Apakah Anda yakin ingin menghapus surat yang dipilih secara permanen? Tindakan ini tidak dapat dibatalkan.')) {
                 const selectedIds = Array.from(document.querySelectorAll('.surat-checkbox:checked')).map(cb => cb.value);
                 
                 fetch('{{ route("opd.surat.bulk-delete") }}', {
@@ -243,14 +244,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        selectedIds.forEach(id => {
-                            const row = document.getElementById(`surat-row-${id}`);
-                            if (row) row.remove();
-                        });
-                        updateBulkDeleteButton();
-                        checkAll.checked = false;
                         alert(data.message);
-                        location.reload(); // Reload to refresh stats and pagination
+                        location.reload(); 
                     } else {
                         alert(data.message);
                     }

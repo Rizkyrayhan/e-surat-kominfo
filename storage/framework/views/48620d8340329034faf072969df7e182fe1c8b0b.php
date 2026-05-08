@@ -1,3 +1,5 @@
+
+
 <?php $__env->startSection('content'); ?>
 <div class="mb-4">
     <nav aria-label="breadcrumb">
@@ -18,13 +20,13 @@
                 </div>
                 <div>
                     <?php if($surat->status === 'pending'): ?>
-                        <span class="badge-pending"><span class="badge bg-warning rounded-circle p-1 me-1 d-inline-block"></span>Pending Verifikasi</span>
+                        <span class="badge-pending">Pending Verifikasi</span>
                     <?php elseif($surat->status === 'diproses'): ?>
-                        <span class="badge-diproses"><span class="badge bg-primary rounded-circle p-1 me-1 d-inline-block"></span>Diproses</span>
+                        <span class="badge-diproses">Diproses</span>
                     <?php elseif($surat->status === 'dikirim'): ?>
-                        <span class="badge-dikirim"><span class="badge rounded-circle p-1 me-1 d-inline-block" style="background-color: #7E22CE;"></span>Dikirim</span>
+                        <span class="badge-dikirim">Dikirim</span>
                     <?php elseif($surat->status === 'selesai'): ?>
-                        <span class="badge-selesai"><span class="badge bg-success rounded-circle p-1 me-1 d-inline-block"></span>Selesai</span>
+                        <span class="badge-selesai">Selesai</span>
                     <?php endif; ?>
                 </div>
             </div>

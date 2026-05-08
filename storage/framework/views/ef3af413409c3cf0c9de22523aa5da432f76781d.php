@@ -7,16 +7,24 @@
 <div class="table-card mb-4">
     <div class="p-4 border-bottom d-flex justify-content-between align-items-center">
         <h5 class="fw-bold mb-0 text-primary-blue">Semua Dokumen</h5>
-        <div class="input-group input-group-sm" style="max-width: 300px;">
-            <input type="text" class="form-control" placeholder="Cari nomor surat atau tujuan...">
-            <button class="btn btn-outline-secondary" type="button"><i class="bi bi-search"></i></button>
+        <div class="d-flex align-items-center gap-2">
+            <button id="btn-bulk-delete" class="btn btn-outline-danger btn-sm rounded-pill px-3 d-none align-items-center justify-content-center gap-1">
+                <i class="bi bi-trash"></i> Hapus Terpilih (<span id="selected-count">0</span>)
+            </button>
+            <form action="<?php echo e(route('opd.history')); ?>" method="GET" class="input-group input-group-sm" style="max-width: 300px;">
+                <input type="text" name="search" class="form-control" placeholder="Cari nomor surat atau tujuan..." value="<?php echo e(request('search')); ?>">
+                <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
+            </form>
         </div>
     </div>
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0">
             <thead class="bg-light">
                 <tr>
-                    <th scope="col" class="ps-4">NOMOR SURAT</th>
+                    <th scope="col" class="ps-4" style="width: 40px;">
+                        <input type="checkbox" class="form-check-input" id="check-all">
+                    </th>
+                    <th scope="col">NOMOR SURAT</th>
                     <th scope="col">TUJUAN</th>
                     <th scope="col">TANGGAL</th>
                     <th scope="col">STATUS</th>
@@ -25,8 +33,11 @@
             </thead>
             <tbody>
                 <?php $__empty_1 = true; $__currentLoopData = $surats; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $surat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                <tr>
-                    <td class="ps-4 fw-bold text-primary-blue"><?php echo e($surat->nomor_surat); ?></td>
+                <tr id="surat-row-<?php echo e($surat->id); ?>">
+                    <td class="ps-4">
+                        <input type="checkbox" class="form-check-input surat-checkbox" value="<?php echo e($surat->id); ?>">
+                    </td>
+                    <td class="fw-bold text-primary-blue"><?php echo e($surat->nomor_surat); ?></td>
                     <td><?php echo e($surat->tujuan); ?></td>
                     <td class="text-muted"><?php echo e($surat->tanggal->format('d M Y')); ?></td>
                     <td>
@@ -64,6 +75,78 @@
     </div>
     <?php endif; ?>
 </div>
+<?php $__env->startPush('scripts'); ?>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const checkAll = document.getElementById('check-all');
+    const checkboxes = document.querySelectorAll('.surat-checkbox');
+    const btnBulkDelete = document.getElementById('btn-bulk-delete');
+    const selectedCount = document.getElementById('selected-count');
+
+    function updateBulkDeleteButton() {
+        const checkedCount = document.querySelectorAll('.surat-checkbox:checked').length;
+        if (checkedCount > 0) {
+            btnBulkDelete.classList.remove('d-none');
+            btnBulkDelete.classList.add('d-flex');
+            selectedCount.textContent = checkedCount;
+        } else {
+            btnBulkDelete.classList.add('d-none');
+            btnBulkDelete.classList.remove('d-flex');
+        }
+    }
+
+    if (checkAll) {
+        checkAll.addEventListener('change', function() {
+            checkboxes.forEach(cb => {
+                cb.checked = checkAll.checked;
+            });
+            updateBulkDeleteButton();
+        });
+    }
+
+    checkboxes.forEach(cb => {
+        cb.addEventListener('change', function() {
+            updateBulkDeleteButton();
+            if (!this.checked) {
+                checkAll.checked = false;
+            } else if (document.querySelectorAll('.surat-checkbox:checked').length === checkboxes.length) {
+                checkAll.checked = true;
+            }
+        });
+    });
+
+    if (btnBulkDelete) {
+        btnBulkDelete.addEventListener('click', function() {
+            if (confirm('Apakah Anda yakin ingin menghapus surat yang dipilih secara permanen? Tindakan ini tidak dapat dibatalkan.')) {
+                const selectedIds = Array.from(document.querySelectorAll('.surat-checkbox:checked')).map(cb => cb.value);
+                
+                fetch('<?php echo e(route("opd.surat.bulk-delete")); ?>', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
+                    },
+                    body: JSON.stringify({ ids: selectedIds })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        location.reload(); 
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan saat menghapus surat.');
+                });
+            }
+        });
+    }
+});
+</script>
+<?php $__env->stopPush(); ?>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\ACER\.gemini\antigravity\scratch\e-surat-kominfo\resources\views/opd/history.blade.php ENDPATH**/ ?>

@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('content'); ?>
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
     <div>
@@ -150,7 +148,7 @@
                 </tr>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                 <tr>
-                    <td colspan="5" class="text-center py-4 text-muted">Belum ada surat yang dikirim.</td>
+                    <td colspan="6" class="text-center py-4 text-muted">Belum ada surat yang dikirim.</td>
                 </tr>
                 <?php endif; ?>
             </tbody>
@@ -187,6 +185,7 @@
         </div>
     </div>
 </div>
+
 <?php $__env->startPush('scripts'); ?>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -229,7 +228,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (btnBulkDelete) {
         btnBulkDelete.addEventListener('click', function() {
-            if (confirm('Apakah Anda yakin ingin menghapus surat yang dipilih dari dashboard? Surat tetap akan tersimpan di Riwayat.')) {
+            if (confirm('Apakah Anda yakin ingin menghapus surat yang dipilih secara permanen? Tindakan ini tidak dapat dibatalkan.')) {
                 const selectedIds = Array.from(document.querySelectorAll('.surat-checkbox:checked')).map(cb => cb.value);
                 
                 fetch('<?php echo e(route("opd.surat.bulk-delete")); ?>', {
@@ -243,14 +242,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        selectedIds.forEach(id => {
-                            const row = document.getElementById(`surat-row-${id}`);
-                            if (row) row.remove();
-                        });
-                        updateBulkDeleteButton();
-                        checkAll.checked = false;
                         alert(data.message);
-                        location.reload(); // Reload to refresh stats and pagination
+                        location.reload(); 
                     } else {
                         alert(data.message);
                     }
