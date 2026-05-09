@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OpdController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\SuratKeluarController;
+use App\Http\Controllers\SuratMasukController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +34,10 @@ Route::middleware(['auth', 'role:opd'])->prefix('opd')->name('opd.')->group(func
     Route::post('/surat/bulk-delete', [OpdController::class, 'bulkDelete'])->name('surat.bulk-delete');
     Route::get('/surat/create', [OpdController::class, 'create'])->name('surat.create');
     Route::post('/surat', [OpdController::class, 'store'])->name('surat.store');
+    
+    // Surat Masuk from Kominfo
+    Route::get('/surat-masuk', [SuratMasukController::class, 'index'])->name('surat-masuk.index');
+    Route::get('/surat-masuk/{id}', [SuratMasukController::class, 'show'])->name('surat-masuk.show');
 });
 
 // Admin Routes
@@ -42,6 +48,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/surat/{surat}', [AdminController::class, 'show'])->name('surat.show');
     Route::get('/surat/{surat}/print', [AdminController::class, 'print'])->name('surat.print');
     Route::patch('/surat/{surat}/status', [AdminController::class, 'updateStatus'])->name('surat.update-status');
+
+    // Surat Keluar to OPD
+    Route::get('/surat-keluar', [SuratKeluarController::class, 'index'])->name('surat-keluar.index');
+    Route::get('/surat-keluar/create', [SuratKeluarController::class, 'create'])->name('surat-keluar.create');
+    Route::post('/surat-keluar', [SuratKeluarController::class, 'store'])->name('surat-keluar.store');
 });
 
 // Shared Profile Routes

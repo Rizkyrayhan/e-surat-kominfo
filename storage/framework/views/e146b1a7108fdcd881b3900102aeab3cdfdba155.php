@@ -11,10 +11,10 @@
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="<?php echo e(asset('css/style.css')); ?>" rel="stylesheet">
 </head>
 <body class="bg-light-gray">
-    @auth
+    <?php if(auth()->guard()->check()): ?>
     <div class="d-flex" id="wrapper">
         <!-- Sidebar -->
         <div class="sidebar-bg text-white" id="sidebar-wrapper">
@@ -23,37 +23,37 @@
                 <div class="fs-6 fw-normal opacity-75" style="font-size: 0.8rem !important;">INTERNAL MANAGEMENT</div>
             </div>
             <div class="list-group list-group-flush my-3">
-                @if(Auth::user()->role === 'admin')
-                    <a href="{{ route('admin.dashboard') }}" class="list-group-item list-group-item-action bg-transparent text-white {{ request()->routeIs('admin.dashboard') ? 'active-sidebar' : '' }}">
+                <?php if(Auth::user()->role === 'admin'): ?>
+                    <a href="<?php echo e(route('admin.dashboard')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('admin.dashboard') ? 'active-sidebar' : ''); ?>">
                         <i class="bi bi-grid me-2"></i> Dashboard
                     </a>
-                    <a href="{{ route('admin.surat-keluar.create') }}" class="list-group-item list-group-item-action bg-transparent text-white {{ request()->routeIs('admin.surat-keluar.create') ? 'active-sidebar' : '' }}">
+                    <a href="<?php echo e(route('admin.surat-keluar.create')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('admin.surat-keluar.create') ? 'active-sidebar' : ''); ?>">
                         <i class="bi bi-envelope-plus me-2"></i> Kirim Surat
                     </a>
-                    <a href="{{ route('admin.surat-keluar.index') }}" class="list-group-item list-group-item-action bg-transparent text-white {{ request()->routeIs('admin.surat-keluar.index') ? 'active-sidebar' : '' }}">
+                    <a href="<?php echo e(route('admin.surat-keluar.index')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('admin.surat-keluar.index') ? 'active-sidebar' : ''); ?>">
                         <i class="bi bi-send-check me-2"></i> Surat Keluar
                     </a>
-                @else
-                    <a href="{{ route('opd.dashboard') }}" class="list-group-item list-group-item-action bg-transparent text-white {{ request()->routeIs('opd.dashboard') ? 'active-sidebar' : '' }}">
+                <?php else: ?>
+                    <a href="<?php echo e(route('opd.dashboard')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('opd.dashboard') ? 'active-sidebar' : ''); ?>">
                         <i class="bi bi-grid me-2"></i> Dashboard
                     </a>
-                    <a href="{{ route('opd.surat.create') }}" class="list-group-item list-group-item-action bg-transparent text-white {{ request()->routeIs('opd.surat.create') ? 'active-sidebar' : '' }}">
+                    <a href="<?php echo e(route('opd.surat.create')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('opd.surat.create') ? 'active-sidebar' : ''); ?>">
                         <i class="bi bi-envelope-plus me-2"></i> Kirim Surat
                     </a>
-                    <a href="{{ route('opd.surat-masuk.index') }}" class="list-group-item list-group-item-action bg-transparent text-white {{ request()->routeIs('opd.surat-masuk.*') ? 'active-sidebar' : '' }}">
+                    <a href="<?php echo e(route('opd.surat-masuk.index')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('opd.surat-masuk.*') ? 'active-sidebar' : ''); ?>">
                         <i class="bi bi-envelope-check me-2"></i> Surat Masuk Kominfo
                     </a>
-                @endif
-                <a href="{{ Auth::user()->role === 'admin' ? route('admin.history') : route('opd.history') }}" class="list-group-item list-group-item-action bg-transparent text-white {{ request()->routeIs('admin.history') || request()->routeIs('opd.history') ? 'active-sidebar' : '' }}">
+                <?php endif; ?>
+                <a href="<?php echo e(Auth::user()->role === 'admin' ? route('admin.history') : route('opd.history')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('admin.history') || request()->routeIs('opd.history') ? 'active-sidebar' : ''); ?>">
                     <i class="bi bi-clock-history me-2"></i> Riwayat
                 </a>
-                <a href="{{ route('profile') }}" class="list-group-item list-group-item-action bg-transparent text-white {{ request()->routeIs('profile') ? 'active-sidebar' : '' }}">
+                <a href="<?php echo e(route('profile')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('profile') ? 'active-sidebar' : ''); ?>">
                     <i class="bi bi-person me-2"></i> Profil
                 </a>
             </div>
             <div class="mt-auto p-3" style="position: absolute; bottom: 0; width: 100%;">
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
+                <form action="<?php echo e(route('logout')); ?>" method="POST">
+                    <?php echo csrf_field(); ?>
                     <button type="submit" class="list-group-item list-group-item-action bg-transparent text-white border-0 w-100 text-start">
                         <i class="bi bi-box-arrow-right me-2"></i> Logout
                     </button>
@@ -81,42 +81,43 @@
                         
                         <div class="d-flex align-items-center border-start ps-4">
                             <div class="text-end me-3 d-none d-sm-block">
-                                <div class="fw-bold text-dark">{{ Auth::user()->name }}</div>
-                                <div class="text-muted" style="font-size: 0.8rem;">{{ Auth::user()->role === 'admin' ? 'Admin Kominfo' : 'Admin OPD' }}</div>
+                                <div class="fw-bold text-dark"><?php echo e(Auth::user()->name); ?></div>
+                                <div class="text-muted" style="font-size: 0.8rem;"><?php echo e(Auth::user()->role === 'admin' ? 'Admin Kominfo' : 'Admin OPD'); ?></div>
                             </div>
-                            <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=EBF4FF&color=1E3A8A" alt="Profile" class="rounded-circle" width="40" height="40">
+                            <img src="https://ui-avatars.com/api/?name=<?php echo e(urlencode(Auth::user()->name)); ?>&background=EBF4FF&color=1E3A8A" alt="Profile" class="rounded-circle" width="40" height="40">
                         </div>
                     </div>
                 </div>
             </nav>
 
             <div class="container-fluid px-4 py-4 content-area">
-                @if(session('success'))
+                <?php if(session('success')): ?>
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        {{ session('success') }}
+                        <?php echo e(session('success')); ?>
+
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                @endif
+                <?php endif; ?>
                 
-                @if($errors->any())
+                <?php if($errors->any()): ?>
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <ul class="mb-0">
-                            @foreach($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
+                            <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <li><?php echo e($error); ?></li>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </ul>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                @endif
+                <?php endif; ?>
 
-                @yield('content')
+                <?php echo $__env->yieldContent('content'); ?>
             </div>
         </div>
         <!-- /#page-content-wrapper -->
     </div>
-    @else
-        @yield('content')
-    @endauth
+    <?php else: ?>
+        <?php echo $__env->yieldContent('content'); ?>
+    <?php endif; ?>
 
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -140,6 +141,7 @@
             }
         });
     </script>
-    @stack('scripts')
+    <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
 </html>
+<?php /**PATH C:\e-surat-kominfo\resources\views/layouts/app.blade.php ENDPATH**/ ?>
