@@ -42,9 +42,16 @@
                         <a href="<?php echo e(asset('storage/' . $surat->file)); ?>" target="_blank" class="btn btn-sm btn-light text-muted me-1 rounded-circle" title="Lihat PDF">
                             <i class="bi bi-eye"></i>
                         </a>
-                        <a href="<?php echo e(asset('storage/' . $surat->file)); ?>" download class="btn btn-sm btn-light text-muted rounded-circle" title="Download PDF">
+                        <a href="<?php echo e(asset('storage/' . $surat->file)); ?>" download class="btn btn-sm btn-light text-muted rounded-circle me-1" title="Download PDF">
                             <i class="bi bi-download"></i>
                         </a>
+                        <form action="<?php echo e(route('admin.surat-keluar.destroy', $surat->id)); ?>" method="POST" class="d-inline">
+                            <?php echo csrf_field(); ?>
+                            <?php echo method_field('DELETE'); ?>
+                            <button type="submit" class="btn btn-sm btn-light text-danger rounded-circle" title="Hapus Surat" onclick="return confirm('Apakah Anda yakin ingin menghapus surat ini?')">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
                     </td>
                 </tr>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>

@@ -152,13 +152,17 @@
 <div class="d-flex justify-content-between align-items-center pt-2">
     <div class="d-flex align-items-center gap-2">
         <div class="d-flex">
-            <!-- Avatars overlap -->
-            <img src="https://ui-avatars.com/api/?name=A&background=random" class="rounded-circle border border-2 border-white" width="32" height="32" style="z-index: 3;">
-            <img src="https://ui-avatars.com/api/?name=B&background=random" class="rounded-circle border border-2 border-white ms-n2" width="32" height="32" style="z-index: 2;">
-            <img src="https://ui-avatars.com/api/?name=C&background=random" class="rounded-circle border border-2 border-white ms-n2" width="32" height="32" style="z-index: 1;">
-            <div class="rounded-circle border border-2 border-white ms-n2 bg-light d-flex align-items-center justify-content-center text-muted small" style="width: 32px; height: 32px; z-index: 0;">+12</div>
+            @foreach($verifikators->take(3) as $key => $v)
+            <img src="https://ui-avatars.com/api/?name={{ urlencode($v->name) }}&background=random" 
+                 class="rounded-circle border border-2 border-white {{ $key > 0 ? 'ms-n2' : '' }}" 
+                 width="32" height="32" style="z-index: {{ 3 - $key }};" title="{{ $v->name }}">
+            @endforeach
+            @if($verifikators->count() > 3)
+            <div class="rounded-circle border border-2 border-white ms-n2 bg-light d-flex align-items-center justify-content-center text-muted small" 
+                 style="width: 32px; height: 32px; z-index: 0;">+{{ $verifikators->count() - 3 }}</div>
+            @endif
         </div>
-        <span class="text-muted small ms-2">Tim Verifikator sedang aktif hari ini</span>
+        <span class="text-muted small ms-2">{{ $verifikators->count() }} Tim Verifikator sedang aktif hari ini</span>
     </div>
     <div class="text-muted small text-uppercase" style="letter-spacing: 0.05em; font-size: 0.7rem;">
         Kementerian Komunikasi dan Informatika &copy; {{ date('Y') }}

@@ -53,6 +53,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/surat-keluar', [SuratKeluarController::class, 'index'])->name('surat-keluar.index');
     Route::get('/surat-keluar/create', [SuratKeluarController::class, 'create'])->name('surat-keluar.create');
     Route::post('/surat-keluar', [SuratKeluarController::class, 'store'])->name('surat-keluar.store');
+    Route::delete('/surat-keluar/{id}', [SuratKeluarController::class, 'destroy'])->name('surat-keluar.destroy');
 });
 
 // Shared Profile Routes

@@ -48,9 +48,6 @@
                     <td>{{ $surat->tujuan }}</td>
                     <td class="text-muted">{{ $surat->tanggal->format('d M Y') }}</td>
                     <td>
-                        @if($surat->trashed())
-                            <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 mb-1">Dihapus dari Dashboard</span><br>
-                        @endif
                         @if($surat->status === 'pending')
                             <span class="badge bg-warning text-dark opacity-75">Pending</span>
                         @elseif($surat->status === 'diproses')
@@ -128,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (btnBulkDelete) {
         btnBulkDelete.addEventListener('click', function() {
-            if (confirm('Apakah Anda yakin ingin menghapus surat yang dipilih? Surat ini tidak akan muncul lagi di dashboard namun tetap ada di history (sebagai data yang di-soft-delete).')) {
+            if (confirm('Apakah Anda yakin ingin menghapus surat yang dipilih secara permanen? Data yang dihapus tidak dapat dikembalikan.')) {
                 const selectedIds = Array.from(document.querySelectorAll('.surat-checkbox:checked')).map(cb => cb.value);
                 
                 fetch('{{ route("admin.surat.bulk-delete") }}', {

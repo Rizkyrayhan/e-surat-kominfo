@@ -82,7 +82,7 @@
                         <div class="d-flex align-items-center border-start ps-4">
                             <div class="text-end me-3 d-none d-sm-block">
                                 <div class="fw-bold text-dark">{{ Auth::user()->name }}</div>
-                                <div class="text-muted" style="font-size: 0.8rem;">{{ Auth::user()->role === 'admin' ? 'Admin Kominfo' : 'Admin OPD' }}</div>
+                                <div class="text-muted" style="font-size: 0.8rem;">{{ Auth::user()->email }}</div>
                             </div>
                             <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=EBF4FF&color=1E3A8A" alt="Profile" class="rounded-circle" width="40" height="40">
                         </div>

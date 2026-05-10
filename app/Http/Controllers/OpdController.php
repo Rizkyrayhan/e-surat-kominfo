@@ -29,7 +29,7 @@ class OpdController extends Controller
     {
         $user = Auth::user();
         $search = $request->input('search');
-        $query = Surat::withTrashed()->where('user_id', $user->id);
+        $query = Surat::where('user_id', $user->id);
 
         if ($search) {
             $query->where(function($q) use ($search) {
