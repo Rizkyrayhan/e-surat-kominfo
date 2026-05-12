@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="mb-4">
     <h3 class="fw-bold mb-1 text-dark">Riwayat Surat Masuk</h3>
     <p class="text-muted mb-0">Daftar seluruh surat yang masuk dari berbagai OPD.</p>
@@ -13,8 +11,8 @@
             <button id="btn-bulk-delete" class="btn btn-outline-danger btn-sm rounded-pill px-3 d-none align-items-center justify-content-center gap-1">
                 <i class="bi bi-trash"></i> Hapus Terpilih (<span id="selected-count">0</span>)
             </button>
-            <form action="{{ route('admin.history') }}" method="GET" class="input-group input-group-sm" style="max-width: 300px;">
-                <input type="text" name="search" class="form-control" placeholder="Cari nomor surat atau OPD..." value="{{ request('search') }}">
+            <form action="<?php echo e(route('admin.history')); ?>" method="GET" class="input-group input-group-sm" style="max-width: 300px;">
+                <input type="text" name="search" class="form-control" placeholder="Cari nomor surat atau OPD..." value="<?php echo e(request('search')); ?>">
                 <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
             </form>
         </div>
@@ -35,55 +33,56 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse($surats as $surat)
-                <tr id="surat-row-{{ $surat->id }}">
+                <?php $__empty_1 = true; $__currentLoopData = $surats; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $surat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <tr id="surat-row-<?php echo e($surat->id); ?>">
                     <td class="ps-4">
-                        <input type="checkbox" class="form-check-input surat-checkbox" value="{{ $surat->id }}">
+                        <input type="checkbox" class="form-check-input surat-checkbox" value="<?php echo e($surat->id); ?>">
                     </td>
-                    <td class="fw-bold text-primary-blue">{{ $surat->nomor_surat }}</td>
+                    <td class="fw-bold text-primary-blue"><?php echo e($surat->nomor_surat); ?></td>
                     <td>
-                        <div class="fw-medium text-dark">{{ $surat->user->name }}</div>
-                        <small class="text-muted">ID: #{{ $surat->user_id }}</small>
+                        <div class="fw-medium text-dark"><?php echo e($surat->user->name); ?></div>
+                        <small class="text-muted">ID: #<?php echo e($surat->user_id); ?></small>
                     </td>
-                    <td>{{ $surat->tujuan }}</td>
-                    <td class="text-muted">{{ $surat->tanggal->format('d M Y') }}</td>
+                    <td><?php echo e($surat->tujuan); ?></td>
+                    <td class="text-muted"><?php echo e($surat->tanggal->format('d M Y')); ?></td>
                     <td>
-                        @if($surat->status === 'pending')
+                        <?php if($surat->status === 'pending'): ?>
                             <span class="badge bg-warning text-dark opacity-75">Pending</span>
-                        @elseif($surat->status === 'diproses')
+                        <?php elseif($surat->status === 'diproses'): ?>
                             <span class="badge bg-primary opacity-75">Diproses</span>
-                        @elseif($surat->status === 'selesai')
+                        <?php elseif($surat->status === 'selesai'): ?>
                             <span class="badge bg-success opacity-75">Selesai</span>
-                        @else
-                            <span class="badge bg-secondary opacity-75">{{ $surat->status }}</span>
-                        @endif
+                        <?php else: ?>
+                            <span class="badge bg-secondary opacity-75"><?php echo e($surat->status); ?></span>
+                        <?php endif; ?>
                     </td>
                     <td class="pe-4 text-end">
                         <div class="btn-group">
-                            <a href="{{ route('admin.surat.show', $surat) }}" class="btn btn-sm btn-outline-primary rounded-pill me-2">
+                            <a href="<?php echo e(route('admin.surat.show', $surat)); ?>" class="btn btn-sm btn-outline-primary rounded-pill me-2">
                                 <i class="bi bi-eye me-1"></i> Detail
                             </a>
-                            <a href="{{ asset('storage/' . $surat->file) }}" target="_blank" class="btn btn-sm btn-outline-info rounded-pill">
+                            <a href="<?php echo e(asset('storage/' . $surat->file)); ?>" target="_blank" class="btn btn-sm btn-outline-info rounded-pill">
                                 <i class="bi bi-file-earmark-pdf me-1"></i> File
                             </a>
                         </div>
                     </td>
                 </tr>
-                @empty
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                 <tr>
                     <td colspan="6" class="text-center py-5 text-muted">Belum ada surat yang masuk.</td>
                 </tr>
-                @endforelse
+                <?php endif; ?>
             </tbody>
         </table>
     </div>
-    @if($surats->hasPages())
+    <?php if($surats->hasPages()): ?>
     <div class="p-4 border-top">
-        {{ $surats->links() }}
+        <?php echo e($surats->links()); ?>
+
     </div>
-    @endif
+    <?php endif; ?>
 </div>
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const checkAll = document.getElementById('check-all');
@@ -128,11 +127,11 @@ document.addEventListener('DOMContentLoaded', function() {
             if (confirm('Apakah Anda yakin ingin menghapus surat yang dipilih secara permanen? Data yang dihapus tidak dapat dikembalikan.')) {
                 const selectedIds = Array.from(document.querySelectorAll('.surat-checkbox:checked')).map(cb => cb.value);
                 
-                fetch('{{ route("admin.surat.bulk-delete") }}', {
+                fetch('<?php echo e(route("admin.surat.bulk-delete")); ?>', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
                     },
                     body: JSON.stringify({ ids: selectedIds })
                 })
@@ -154,5 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
-@endpush
-@endsection
+<?php $__env->stopPush(); ?>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\e-surat-kominfo\resources\views/admin/history.blade.php ENDPATH**/ ?>

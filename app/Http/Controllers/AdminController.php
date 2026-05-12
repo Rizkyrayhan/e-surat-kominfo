@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Surat;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -16,14 +17,15 @@ class AdminController extends Controller
         ];
 
         $surats = Surat::whereIn('status', ['pending', 'diproses', 'dikirim'])->with('user')->latest()->paginate(10);
+        $verifikators = User::where('role', 'admin')->get();
 
-        return view('admin.dashboard', compact('stats', 'surats'));
+        return view('admin.dashboard', compact('stats', 'surats', 'verifikators'));
     }
 
     public function history(Request $request)
     {
         $search = $request->input('search');
-        $query = Surat::withTrashed()->with('user');
+        $query = Surat::with('user');
 
         if ($search) {
             $query->where(function($q) use ($search) {
@@ -43,8 +45,8 @@ class AdminController extends Controller
     {
         $ids = $request->input('ids', []);
         if (!empty($ids)) {
-            Surat::whereIn('id', $ids)->delete();
-            return response()->json(['success' => true, 'message' => 'Surat berhasil dihapus dari dashboard.']);
+            Surat::whereIn('id', $ids)->forceDelete();
+            return response()->json(['success' => true, 'message' => 'Surat berhasil dihapus secara permanen.']);
         }
         return response()->json(['success' => false, 'message' => 'Tidak ada surat yang dipilih.'], 400);
     }
