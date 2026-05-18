@@ -30,7 +30,7 @@
                                 <i class="bi bi-shield-lock-fill"></i>
                             </div>
                         </div>
-                        <span class="opacity-75 small text-white">Terintegrasi dengan TTE Nasional</span>
+                        <span class="opacity-75 small text-white">Terintegrasi dengan databse </span>
                     </div>
                 </div>
             </div>
