@@ -32,7 +32,9 @@ class SuratKeluarController extends Controller
             'file_pdf' => 'required|file|mimes:pdf|max:10240',
         ]);
 
-        $filePath = $request->file('file_pdf')->store('surat_keluar', 'public');
+        $file = $request->file('file_pdf');
+        $filename = $file->getClientOriginalName();
+        $filePath = $file->storeAs('surat_keluar', $filename, 's3');
 
         SuratKeluar::create([
             'nomor_surat' => $request->nomor_surat,

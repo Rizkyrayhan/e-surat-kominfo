@@ -18,7 +18,7 @@
                     <h4 class="fw-bold text-primary-blue mb-1">Detail Surat Dari Kominfo</h4>
                     <p class="text-muted small mb-0">Informasi lengkap dokumen surat masuk.</p>
                 </div>
-                <a href="{{ asset('storage/' . $surat->file) }}" download class="btn btn-primary rounded-pill px-4 shadow-sm" style="background-color: #0A256B;">
+                <a href="{{ route('download.file', ['path' => $surat->file]) }}" class="btn btn-primary rounded-pill px-4 shadow-sm" style="background-color: #0A256B;">
                     <i class="bi bi-download me-2"></i> Download PDF
                 </a>
             </div>
@@ -59,11 +59,11 @@
         <div class="stat-card p-4 h-100">
             <h5 class="fw-bold text-primary-blue mb-4">Preview Dokumen</h5>
             <div class="ratio ratio-1x1 bg-light rounded-3 overflow-hidden border">
-                <iframe src="{{ asset('storage/' . $surat->file) }}#toolbar=0" class="w-100 h-100" style="border: none;">
+                <iframe src="https://docs.google.com/viewer?url={{ urlencode(Storage::disk('s3')->url($surat->file)) }}&embedded=true" class="w-100 h-100" style="border: none;">
                     <div class="d-flex flex-column justify-content-center align-items-center text-muted h-100">
                         <i class="bi bi-file-earmark-pdf fs-1 mb-3"></i>
                         <p class="small text-center px-4">Browser Anda tidak mendukung preview PDF.<br>Silakan unduh untuk melihat isi lengkap.</p>
-                        <a href="{{ asset('storage/' . $surat->file) }}" target="_blank" class="btn btn-outline-primary btn-sm rounded-pill px-4">
+                        <a href="{{ Storage::disk('s3')->url($surat->file) }}" target="_blank" class="btn btn-outline-primary btn-sm rounded-pill px-4">
                             <i class="bi bi-eye me-2"></i> Buka di Tab Baru
                         </a>
                     </div>

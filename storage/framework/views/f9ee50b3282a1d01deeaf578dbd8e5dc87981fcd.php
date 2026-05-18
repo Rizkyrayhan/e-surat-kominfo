@@ -72,6 +72,7 @@
             <p class="text-muted small mb-0">Menampilkan 10 surat masuk terbaru yang membutuhkan perhatian.</p>
         </div>
         <div class="d-flex flex-column flex-md-row gap-2">
+
             <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 d-flex align-items-center justify-content-center gap-1 btn-responsive"><i class="bi bi-filter"></i> Filter</button>
             <button class="btn btn-primary btn-sm rounded-pill px-3 d-flex align-items-center justify-content-center gap-1 btn-responsive" style="background-color: #0A256B;"><i class="bi bi-plus-lg"></i> Input Surat Baru</button>
         </div>
@@ -80,7 +81,8 @@
         <table class="table table-hover align-middle mb-0">
             <thead class="bg-light">
                 <tr>
-                    <th scope="col" class="ps-4">NO. AGENDA</th>
+
+                    <th scope="col">NO. AGENDA</th>
                     <th scope="col">PERIHAL & PENGIRIM</th>
                     <th scope="col">TANGGAL DITERIMA</th>
                     <th scope="col">STATUS</th>
@@ -89,8 +91,9 @@
             </thead>
             <tbody>
                 <?php $__empty_1 = true; $__currentLoopData = $surats; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $surat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                <tr>
-                    <td class="ps-4 fw-bold text-primary-blue" style="font-size: 0.9rem;">SK - <?php echo e(date('Y')); ?> - <?php echo e(str_pad($surat->id, 3, '0', STR_PAD_LEFT)); ?></td>
+                <tr id="surat-row-<?php echo e($surat->id); ?>">
+
+                    <td class="fw-bold text-primary-blue" style="font-size: 0.9rem;">SK - <?php echo e(date('Y')); ?> - <?php echo e(str_pad($surat->id, 3, '0', STR_PAD_LEFT)); ?></td>
                     <td>
                         <div class="fw-bold text-dark" style="font-size: 0.95rem;"><?php echo e($surat->keterangan ?? 'Perihal tidak diisi'); ?></div>
                         <div class="text-muted small"><?php echo e($surat->user->name); ?></div>
@@ -149,19 +152,24 @@
 <div class="d-flex justify-content-between align-items-center pt-2">
     <div class="d-flex align-items-center gap-2">
         <div class="d-flex">
-            <!-- Avatars overlap -->
-            <img src="https://ui-avatars.com/api/?name=A&background=random" class="rounded-circle border border-2 border-white" width="32" height="32" style="z-index: 3;">
-            <img src="https://ui-avatars.com/api/?name=B&background=random" class="rounded-circle border border-2 border-white ms-n2" width="32" height="32" style="z-index: 2;">
-            <img src="https://ui-avatars.com/api/?name=C&background=random" class="rounded-circle border border-2 border-white ms-n2" width="32" height="32" style="z-index: 1;">
-            <div class="rounded-circle border border-2 border-white ms-n2 bg-light d-flex align-items-center justify-content-center text-muted small" style="width: 32px; height: 32px; z-index: 0;">+12</div>
+            <?php $__currentLoopData = $verifikators->take(3); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $v): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <img src="https://ui-avatars.com/api/?name=<?php echo e(urlencode($v->name)); ?>&background=random" 
+                 class="rounded-circle border border-2 border-white <?php echo e($key > 0 ? 'ms-n2' : ''); ?>" 
+                 width="32" height="32" style="z-index: <?php echo e(3 - $key); ?>;" title="<?php echo e($v->name); ?>">
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php if($verifikators->count() > 3): ?>
+            <div class="rounded-circle border border-2 border-white ms-n2 bg-light d-flex align-items-center justify-content-center text-muted small" 
+                 style="width: 32px; height: 32px; z-index: 0;">+<?php echo e($verifikators->count() - 3); ?></div>
+            <?php endif; ?>
         </div>
-        <span class="text-muted small ms-2">Tim Verifikator sedang aktif hari ini</span>
+        <span class="text-muted small ms-2"><?php echo e($verifikators->count()); ?> Tim Verifikator sedang aktif hari ini</span>
     </div>
     <div class="text-muted small text-uppercase" style="letter-spacing: 0.05em; font-size: 0.7rem;">
         Kementerian Komunikasi dan Informatika &copy; <?php echo e(date('Y')); ?>
 
     </div>
 </div>
+
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\e-surat-kominfo\resources\views/admin/dashboard.blade.php ENDPATH**/ ?>

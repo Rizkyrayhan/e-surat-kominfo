@@ -60,7 +60,7 @@
         <div class="stat-card p-0 overflow-hidden">
             <div class="bg-light p-3 border-bottom d-flex justify-content-between align-items-center">
                 <h6 class="fw-bold mb-0 text-primary-blue"><i class="bi bi-file-earmark-pdf me-2"></i>Pratinjau Dokumen</h6>
-                <a href="{{ asset('storage/' . $surat->file) }}" target="_blank" class="btn btn-sm btn-outline-primary rounded-pill"><i class="bi bi-download me-1"></i> Unduh File</a>
+                <a href="{{ route('download.file', ['path' => $surat->file]) }}" class="btn btn-sm btn-outline-primary rounded-pill"><i class="bi bi-download me-1"></i> Unduh File</a>
             </div>
             <div class="p-4 d-flex justify-content-center bg-dark bg-opacity-10">
                 <div class="bg-white border shadow-sm p-5 text-center" style="width: 100%; max-width: 600px; min-height: 500px;">
@@ -68,7 +68,9 @@
                     <i class="bi bi-filetype-pdf text-danger" style="font-size: 5rem;"></i>
                     <h5 class="mt-4 mb-2">Dokumen Surat.pdf</h5>
                     <p class="text-muted mb-4">Pratinjau dokumen tersedia untuk file PDF</p>
-                    <embed src="{{ asset('storage/' . $surat->file) }}" type="application/pdf" width="100%" height="400px" />
+                    <iframe src="https://docs.google.com/viewer?url={{ urlencode(Storage::disk('s3')->url($surat->file)) }}&embedded=true" width="100%" height="400px" style="border: none;">
+                        Browser Anda tidak mendukung pratinjau. Silakan unduh file.
+                    </iframe>
                 </div>
             </div>
         </div>

@@ -11,7 +11,7 @@
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="<?php echo e(asset('css/style.css')); ?>" rel="stylesheet">
+    <link href="<?php echo e(asset('css/style.css')); ?>?v=<?php echo e(time()); ?>" rel="stylesheet">
 </head>
 <body class="bg-light-gray">
     <?php if(auth()->guard()->check()): ?>
@@ -27,6 +27,12 @@
                     <a href="<?php echo e(route('admin.dashboard')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('admin.dashboard') ? 'active-sidebar' : ''); ?>">
                         <i class="bi bi-grid me-2"></i> Dashboard
                     </a>
+                    <a href="<?php echo e(route('admin.surat-keluar.create')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('admin.surat-keluar.create') ? 'active-sidebar' : ''); ?>">
+                        <i class="bi bi-envelope-plus me-2"></i> Kirim Surat
+                    </a>
+                    <a href="<?php echo e(route('admin.surat-keluar.index')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('admin.surat-keluar.index') ? 'active-sidebar' : ''); ?>">
+                        <i class="bi bi-send-check me-2"></i> Surat Keluar
+                    </a>
                 <?php else: ?>
                     <a href="<?php echo e(route('opd.dashboard')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('opd.dashboard') ? 'active-sidebar' : ''); ?>">
                         <i class="bi bi-grid me-2"></i> Dashboard
@@ -34,8 +40,11 @@
                     <a href="<?php echo e(route('opd.surat.create')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('opd.surat.create') ? 'active-sidebar' : ''); ?>">
                         <i class="bi bi-envelope-plus me-2"></i> Kirim Surat
                     </a>
+                    <a href="<?php echo e(route('opd.surat-masuk.index')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('opd.surat-masuk.*') ? 'active-sidebar' : ''); ?>">
+                        <i class="bi bi-envelope-check me-2"></i> Surat Masuk Kominfo
+                    </a>
                 <?php endif; ?>
-                <a href="<?php echo e(Auth::user()->role === 'admin' ? '#' : route('opd.history')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('opd.history') ? 'active-sidebar' : ''); ?>">
+                <a href="<?php echo e(Auth::user()->role === 'admin' ? route('admin.history') : route('opd.history')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('admin.history') || request()->routeIs('opd.history') ? 'active-sidebar' : ''); ?>">
                     <i class="bi bi-clock-history me-2"></i> Riwayat
                 </a>
                 <a href="<?php echo e(route('profile')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('profile') ? 'active-sidebar' : ''); ?>">
@@ -45,7 +54,7 @@
             <div class="mt-auto p-3" style="position: absolute; bottom: 0; width: 100%;">
                 <form action="<?php echo e(route('logout')); ?>" method="POST">
                     <?php echo csrf_field(); ?>
-                    <button type="submit" class="list-group-item list-group-item-action bg-transparent text-white border-0 w-100 text-start">
+                    <button type="submit" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold border-0 w-100 text-start">
                         <i class="bi bi-box-arrow-right me-2"></i> Logout
                     </button>
                 </form>
@@ -58,16 +67,13 @@
 
         <!-- Page Content -->
         <div id="page-content-wrapper" class="w-100">
-            <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom py-3 px-4">
+            <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom py-3 px-4 sticky-top shadow-sm" style="z-index: 1030;">
                 <div class="container-fluid p-0 d-flex align-items-center">
                     <button class="btn btn-light d-lg-none me-3" id="menu-toggle">
                         <i class="bi bi-list fs-4"></i>
                     </button>
                     
-                    <div class="input-group search-bar d-none d-md-flex" style="max-width: 400px;">
-                        <span class="input-group-text bg-light border-0"><i class="bi bi-search text-muted"></i></span>
-                        <input type="text" class="form-control bg-light border-0" placeholder="Cari surat atau dokumen...">
-                    </div>
+
                     
                     <div class="ms-auto d-flex align-items-center">
                         <a href="#" class="text-muted fs-5 me-3"><i class="bi bi-bell"></i></a>
@@ -76,7 +82,7 @@
                         <div class="d-flex align-items-center border-start ps-4">
                             <div class="text-end me-3 d-none d-sm-block">
                                 <div class="fw-bold text-dark"><?php echo e(Auth::user()->name); ?></div>
-                                <div class="text-muted" style="font-size: 0.8rem;"><?php echo e(Auth::user()->role === 'admin' ? 'Admin Kominfo' : 'Admin OPD'); ?></div>
+                                <div class="text-muted" style="font-size: 0.8rem;"><?php echo e(Auth::user()->email); ?></div>
                             </div>
                             <img src="https://ui-avatars.com/api/?name=<?php echo e(urlencode(Auth::user()->name)); ?>&background=EBF4FF&color=1E3A8A" alt="Profile" class="rounded-circle" width="40" height="40">
                         </div>
@@ -135,6 +141,7 @@
             }
         });
     </script>
+    <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
 </html>
 <?php /**PATH C:\laragon\www\e-surat-kominfo\resources\views/layouts/app.blade.php ENDPATH**/ ?>

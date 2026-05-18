@@ -39,7 +39,7 @@
                         <a href="{{ route('opd.surat-masuk.show', $surat->id) }}" class="btn btn-sm btn-info text-white rounded-pill px-3" style="font-size: 0.8rem;">
                             <i class="bi bi-eye me-1"></i> Detail
                         </a>
-                        <a href="{{ asset('storage/' . $surat->file) }}" download class="btn btn-sm btn-light text-muted rounded-circle ms-1" title="Download PDF">
+                        <a href="{{ route('download.file', ['path' => $surat->file]) }}" class="btn btn-sm btn-light text-muted rounded-circle ms-1" title="Download PDF">
                             <i class="bi bi-download"></i>
                         </a>
                     </td>

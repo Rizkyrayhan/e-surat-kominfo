@@ -59,4 +59,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 // Shared Profile Routes
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
+    Route::get('/download-file', function (\Illuminate\Http\Request $request) {
+        $path = $request->query('path');
+        if (!$path) return abort(404);
+        return \Illuminate\Support\Facades\Storage::disk('s3')->download($path);
+    })->name('download.file');
 });

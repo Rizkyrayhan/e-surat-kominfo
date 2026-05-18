@@ -70,7 +70,9 @@ class OpdController extends Controller
             'file' => 'required|file|mimes:pdf|max:10240', // 10MB max PDF
         ]);
 
-        $filePath = $request->file('file')->store('surat', 'public');
+        $file = $request->file('file');
+        $filename = $file->getClientOriginalName();
+        $filePath = $file->storeAs('surat', $filename, 's3');
 
         Surat::create([
             'user_id' => Auth::id(),

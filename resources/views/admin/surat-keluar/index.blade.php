@@ -41,10 +41,10 @@
                     <td class="text-muted" style="font-size: 0.9rem;">{{ $surat->tanggal->format('d M Y') }}</td>
                     <td style="font-size: 0.9rem; max-width: 300px;" class="text-truncate">{{ $surat->perihal }}</td>
                     <td class="pe-4 text-end">
-                        <a href="{{ asset('storage/' . $surat->file) }}" target="_blank" class="btn btn-sm btn-light text-muted me-1 rounded-circle" title="Lihat PDF">
+                        <a href="{{ Storage::disk('s3')->url($surat->file) }}" target="_blank" class="btn btn-sm btn-light text-muted me-1 rounded-circle" title="Lihat PDF">
                             <i class="bi bi-eye"></i>
                         </a>
-                        <a href="{{ asset('storage/' . $surat->file) }}" download class="btn btn-sm btn-light text-muted rounded-circle me-1" title="Download PDF">
+                        <a href="{{ route('download.file', ['path' => $surat->file]) }}" class="btn btn-sm btn-light text-muted rounded-circle me-1" title="Download PDF">
                             <i class="bi bi-download"></i>
                         </a>
                         <form action="{{ route('admin.surat-keluar.destroy', $surat->id) }}" method="POST" class="d-inline">

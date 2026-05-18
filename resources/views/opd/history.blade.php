@@ -54,8 +54,8 @@
                         @endif
                     </td>
                     <td class="pe-4 text-end">
-                        <a href="{{ asset('storage/' . $surat->file) }}" target="_blank" class="btn btn-sm btn-outline-info rounded-pill">
-                            <i class="bi bi-eye me-1"></i> Lihat
+                        <a href="{{ route('download.file', ['path' => $surat->file]) }}" class="btn btn-sm btn-outline-info rounded-pill">
+                            <i class="bi bi-download me-1"></i> Unduh
                         </a>
                     </td>
                 </tr>
