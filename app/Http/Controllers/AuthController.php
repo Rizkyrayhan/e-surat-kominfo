@@ -22,9 +22,20 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+
+            if ($user->status_akun === 'nonaktif') {
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+                return back()->withErrors([
+                    'email' => 'Akun Anda dinonaktifkan oleh Admin Kominfo.',
+                ])->onlyInput('email');
+            }
+
             $request->session()->regenerate();
 
-            if (Auth::user()->role === 'admin') {
+            if ($user->role === 'admin') {
                 return redirect()->intended('/admin/dashboard');
             }
             
@@ -43,27 +54,7 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'role' => ['required', 'in:admin,opd'], // In real world admin shouldn't be publicly selectable, but keeping it per requirements
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role,
-        ]);
-
-        Auth::login($user);
-
-        if ($user->role === 'admin') {
-            return redirect('/admin/dashboard');
-        }
-
-        return redirect('/opd/dashboard');
+        abort(403, 'Pendaftaran publik dinonaktifkan. Akun hanya dapat dibuat oleh Admin Kominfo.');
     }
 
     public function profile()

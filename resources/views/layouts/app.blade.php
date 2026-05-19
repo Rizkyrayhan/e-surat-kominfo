@@ -27,6 +27,9 @@
                     <a href="{{ route('admin.dashboard') }}" class="list-group-item list-group-item-action bg-transparent text-white {{ request()->routeIs('admin.dashboard') ? 'active-sidebar' : '' }}">
                         <i class="bi bi-grid me-2"></i> Dashboard
                     </a>
+                    <a href="{{ route('admin.opd-accounts.index') }}" class="list-group-item list-group-item-action bg-transparent text-white {{ request()->routeIs('admin.opd-accounts.*') ? 'active-sidebar' : '' }}">
+                        <i class="bi bi-people me-2"></i> Kelola Akun OPD
+                    </a>
                     <a href="{{ route('admin.surat-keluar.create') }}" class="list-group-item list-group-item-action bg-transparent text-white {{ request()->routeIs('admin.surat-keluar.create') ? 'active-sidebar' : '' }}">
                         <i class="bi bi-envelope-plus me-2"></i> Kirim Surat
                     </a>

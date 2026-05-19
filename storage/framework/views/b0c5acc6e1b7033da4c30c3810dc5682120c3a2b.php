@@ -1,3 +1,5 @@
+
+
 <?php $__env->startSection('content'); ?>
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
     <div>
@@ -140,7 +142,7 @@
                         <?php endif; ?>
                     </td>
                     <td class="pe-4 text-end">
-                        <a href="<?php echo e(asset('storage/' . $surat->file)); ?>" target="_blank" class="btn btn-sm btn-light text-muted me-1 rounded-circle">
+                        <a href="<?php echo e(Storage::disk('s3')->url($surat->file)); ?>" target="_blank" class="btn btn-sm btn-light text-muted me-1 rounded-circle">
                             <i class="bi bi-eye"></i>
                         </a>
                         <button class="btn btn-sm btn-light text-muted rounded-circle"><i class="bi bi-three-dots"></i></button>

@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="container-fluid min-vh-100 p-0">
     <div class="row g-0 min-vh-100">
         <!-- Left Side - Illustration/Info -->
@@ -43,7 +41,7 @@
                     <h5 class="fw-bold mb-3">Pendaftaran Publik Dinonaktifkan</h5>
                     <p class="mb-0">Akun OPD hanya dapat dibuat dan dikelola oleh Admin Kominfo.</p>
                     <hr>
-                    <p class="small mb-0">Jika Anda adalah OPD dan belum memiliki akun, silakan hubungi Admin Kominfo. Jika sudah memiliki akun, silakan <a href="{{ route('login') }}" class="fw-bold text-decoration-none">Masuk di sini</a>.</p>
+                    <p class="small mb-0">Jika Anda adalah OPD dan belum memiliki akun, silakan hubungi Admin Kominfo. Jika sudah memiliki akun, silakan <a href="<?php echo e(route('login')); ?>" class="fw-bold text-decoration-none">Masuk di sini</a>.</p>
                 </div>
                 
                 <div class="mt-5 pt-4 border-top d-flex justify-content-between text-muted" style="font-size: 0.7rem;">
@@ -54,4 +52,6 @@
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\e-surat-kominfo\resources\views/auth/register.blade.php ENDPATH**/ ?>

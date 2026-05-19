@@ -6,6 +6,7 @@ use App\Http\Controllers\OpdController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SuratKeluarController;
 use App\Http\Controllers\SuratMasukController;
+use App\Http\Controllers\OpdAccountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +55,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/surat-keluar/create', [SuratKeluarController::class, 'create'])->name('surat-keluar.create');
     Route::post('/surat-keluar', [SuratKeluarController::class, 'store'])->name('surat-keluar.store');
     Route::delete('/surat-keluar/{id}', [SuratKeluarController::class, 'destroy'])->name('surat-keluar.destroy');
+
+    // Kelola Akun OPD
+    Route::resource('opd-accounts', OpdAccountController::class)->except(['show'])->parameters(['opd-accounts' => 'account']);
+    Route::patch('/opd-accounts/{account}/reset-password', [OpdAccountController::class, 'resetPassword'])->name('opd-accounts.reset-password');
+    Route::patch('/opd-accounts/{account}/toggle-status', [OpdAccountController::class, 'toggleStatus'])->name('opd-accounts.toggle-status');
 });
 
 // Shared Profile Routes

@@ -67,7 +67,6 @@
                         <div class="mb-4">
                             <div class="d-flex justify-content-between align-items-center mb-1">
                                 <label for="password" class="form-label fw-medium small mb-0">Kata Sandi</label>
-                                <a href="#" class="text-decoration-none small">Lupa kata sandi?</a>
                             </div>
                             <div class="input-group">
                                 <span class="input-group-text bg-transparent text-muted"><i class="bi bi-lock"></i></span>
@@ -93,14 +92,9 @@
                             Masuk ke Dashboard <i class="bi bi-box-arrow-in-right"></i>
                         </button>
 
-                        <div class="text-center mt-4">
-                            <p class="text-muted small mb-2">Belum memiliki akses atau akun pegawai?</p>
-                            <a href="{{ route('register') }}"
-                                class="btn btn-outline-primary rounded-pill px-4 py-2 text-decoration-none small d-inline-flex align-items-center gap-2">
-                                <i class="bi bi-person-plus"></i> Daftar Akun Baru
-                            </a>
-                        </div>
-                    </form>
+                        <div class="text-center mt-4 p-3 bg-light rounded-3 border border-light-subtle">
+                            <p class="text-muted small mb-0"><i class="bi bi-info-circle me-1 text-primary"></i> Lupa kata sandi? Silakan hubungi <strong>Admin Kominfo</strong> untuk bantuan.</p>
+                        </div>                    </form>
 
                     <div class="mt-5 pt-4 border-top d-flex justify-content-between text-muted" style="font-size: 0.75rem;">
                         <div class="d-flex gap-3">
