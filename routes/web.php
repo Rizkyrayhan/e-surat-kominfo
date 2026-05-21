@@ -39,6 +39,7 @@ Route::middleware(['auth', 'role:opd'])->prefix('opd')->name('opd.')->group(func
     // Surat Masuk from Kominfo
     Route::get('/surat-masuk', [SuratMasukController::class, 'index'])->name('surat-masuk.index');
     Route::get('/surat-masuk/{id}', [SuratMasukController::class, 'show'])->name('surat-masuk.show');
+    Route::post('/surat-masuk/bulk-delete', [SuratMasukController::class, 'bulkDelete'])->name('surat-masuk.bulk-delete');
 });
 
 // Admin Routes

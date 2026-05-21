@@ -113,8 +113,7 @@
                     <td class="pe-4 text-end">
                         <div class="d-flex justify-content-end gap-2">
                             <a href="{{ route('admin.surat.show', $surat->id) }}" class="btn btn-sm btn-light text-muted rounded-circle" title="Verifikasi"><i class="bi bi-shield-check"></i></a>
-                            <a href="#" class="btn btn-sm btn-light text-muted rounded-circle" title="Print"><i class="bi bi-printer"></i></a>
-                            <a href="#" class="btn btn-sm btn-light text-muted rounded-circle" title="Edit"><i class="bi bi-pencil"></i></a>
+                            <a href="{{ route('download.file', ['path' => $surat->file]) }}" class="btn btn-sm btn-light text-muted rounded-circle" title="Download PDF"><i class="bi bi-download"></i></a>
                         </div>
                     </td>
                 </tr>

@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '2506981ab1ad714369975d9d673c091b4dd8a735',
+        'reference' => '09bae90368b833a2ce4a355a3cd4d5ca44fa8538',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -29,9 +29,9 @@
             'dev_requirement' => false,
         ),
         'aws/aws-sdk-php' => array(
-            'pretty_version' => '3.380.3',
-            'version' => '3.380.3.0',
-            'reference' => '16fdf619fdcee1d58e0cb4eb642487041a144cba',
+            'pretty_version' => '3.308.0',
+            'version' => '3.308.0.0',
+            'reference' => '806ad75dcb72b6e6569848159e7a350003526bc9',
             'type' => 'library',
             'install_path' => __DIR__ . '/../aws/aws-sdk-php',
             'aliases' => array(),
@@ -430,7 +430,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '2506981ab1ad714369975d9d673c091b4dd8a735',
+            'reference' => '09bae90368b833a2ce4a355a3cd4d5ca44fa8538',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -1105,15 +1105,6 @@
             'provided' => array(
                 0 => '2.0|3.0',
             ),
-        ),
-        'symfony/filesystem' => array(
-            'pretty_version' => 'v8.0.9',
-            'version' => '8.0.9.0',
-            'reference' => 'd1ec4543d5c6c2dac78503c2fae5ea0b3608ce40',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../symfony/filesystem',
-            'aliases' => array(),
-            'dev_requirement' => false,
         ),
         'symfony/finder' => array(
             'pretty_version' => 'v6.0.19',

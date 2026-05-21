@@ -113,7 +113,6 @@ class DocModel
         return $this->clean($result);
     }
 
-
     private function clean($content)
     {
         if (!$content) {
@@ -127,7 +126,7 @@ class DocModel
             'output-html' => true,
             'show-body-only' => true,
             'drop-empty-paras' => true,
-            'clean' => true,
+            'drop-font-tags' => true,
             'drop-proprietary-attributes' => true,
             'hide-comments' => true,
             'logical-emphasis' => true

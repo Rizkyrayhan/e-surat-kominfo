@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0",
+        "aws/aws-sdk-php": "3.308.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^9.0",
@@ -60,7 +61,10 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true
         },
-        "platform-check": false
+        "platform-check": false,
+        "audit": {
+            "block-insecure": false
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true

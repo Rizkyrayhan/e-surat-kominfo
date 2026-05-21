@@ -79,7 +79,15 @@
 
                     
                     <div class="ms-auto d-flex align-items-center">
-                        <a href="#" class="text-muted fs-5 me-3"><i class="bi bi-bell"></i></a>
+                        <a href="{{ Auth::user()->role === 'opd' ? route('opd.surat-masuk.index') : '#' }}" class="text-muted fs-5 me-3 position-relative">
+                            <i class="bi bi-bell"></i>
+                            @if(isset($unreadSuratCount) && $unreadSuratCount > 0)
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.55rem; padding: 0.25em 0.4em;">
+                                    {{ $unreadSuratCount }}
+                                    <span class="visually-hidden">unread letters</span>
+                                </span>
+                            @endif
+                        </a>
                         <a href="#" class="text-muted fs-5 me-4 d-none d-sm-inline"><i class="bi bi-gear"></i></a>
                         
                         <div class="d-flex align-items-center border-start ps-4">

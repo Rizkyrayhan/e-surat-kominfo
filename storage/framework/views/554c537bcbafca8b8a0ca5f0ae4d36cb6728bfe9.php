@@ -1,3 +1,5 @@
+
+
 <?php $__env->startSection('content'); ?>
 <div class="mb-4">
     <h3 class="fw-bold mb-1 text-dark">Riwayat Pengiriman Surat</h3>
@@ -52,8 +54,8 @@
                         <?php endif; ?>
                     </td>
                     <td class="pe-4 text-end">
-                        <a href="<?php echo e(asset('storage/' . $surat->file)); ?>" target="_blank" class="btn btn-sm btn-outline-info rounded-pill">
-                            <i class="bi bi-eye me-1"></i> Lihat
+                        <a href="<?php echo e(route('download.file', ['path' => $surat->file])); ?>" class="btn btn-sm btn-outline-info rounded-pill">
+                            <i class="bi bi-download me-1"></i> Unduh
                         </a>
                     </td>
                 </tr>

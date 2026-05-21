@@ -20,10 +20,12 @@ class SuratKeluar extends Model
         'perihal',
         'file',
         'created_by',
+        'is_read',
     ];
 
     protected $casts = [
         'tanggal' => 'date',
+        'is_read' => 'boolean',
     ];
 
     /**
