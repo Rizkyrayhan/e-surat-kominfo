@@ -18,8 +18,10 @@ class SuratKeluarController extends Controller
 
     public function create()
     {
-        $opds = User::where('role', 'opd')->orderBy('name')->get();
-        return view('admin.surat-keluar.create', compact('opds'));
+        $categories = \App\Models\Category::with(['accounts' => function($q) {
+            $q->where('role', 'opd')->orderBy('name');
+        }])->orderBy('id')->get();
+        return view('admin.surat-keluar.create', compact('categories'));
     }
 
     public function store(Request $request)

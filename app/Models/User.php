@@ -24,6 +24,7 @@ class User extends Authenticatable
         'role',
         'nama_instansi',
         'status_akun',
+        'category_id',
     ];
 
     /**
@@ -51,5 +52,13 @@ class User extends Authenticatable
     public function surats()
     {
         return $this->hasMany(Surat::class);
+    }
+
+    /**
+     * Get the category for the user.
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
     }
 }

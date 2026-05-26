@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -10,18 +11,20 @@ class OpdAccountController extends Controller
 {
     public function index()
     {
-        $accounts = User::where('role', 'opd')->orderBy('name')->get();
+        $accounts = User::with('category')->where('role', 'opd')->orderBy('name')->get();
         return view('admin.opd_accounts.index', compact('accounts'));
     }
 
     public function create()
     {
-        return view('admin.opd_accounts.create');
+        $categories = Category::all();
+        return view('admin.opd_accounts.create', compact('categories'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
+            'category_id' => 'required|exists:categories,id',
             'nama_instansi' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -29,6 +32,7 @@ class OpdAccountController extends Controller
         ]);
 
         User::create([
+            'category_id' => $request->category_id,
             'nama_instansi' => $request->nama_instansi,
             'name' => $request->name,
             'email' => $request->email,
@@ -45,7 +49,8 @@ class OpdAccountController extends Controller
         if ($account->role !== 'opd') {
             abort(404);
         }
-        return view('admin.opd_accounts.edit', compact('account'));
+        $categories = Category::all();
+        return view('admin.opd_accounts.edit', compact('account', 'categories'));
     }
 
     public function update(Request $request, User $account)
@@ -55,12 +60,14 @@ class OpdAccountController extends Controller
         }
 
         $request->validate([
+            'category_id' => 'required|exists:categories,id',
             'nama_instansi' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $account->id,
         ]);
 
         $account->update([
+            'category_id' => $request->category_id,
             'nama_instansi' => $request->nama_instansi,
             'name' => $request->name,
             'email' => $request->email,

@@ -83,20 +83,39 @@ unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <!-- Scrollable Checkbox List -->
-                    <div class="border rounded p-3 bg-white" style="max-height: 220px; overflow-y: auto; border-color: #dee2e6 !important;">
-                        <div class="row g-2" id="opd-list-container">
-                            <?php $__currentLoopData = $opds; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $opd): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <div class="col-md-6 opd-item">
-                                    <div class="form-check p-2 border rounded cursor-pointer d-flex align-items-center gap-2 opd-card" style="transition: all 0.2s; cursor: pointer; border-color: #e9ecef !important; background-color: #f8f9fa;">
-                                        <input class="form-check-input ms-0 opd-checkbox" type="checkbox" name="tujuan_opd_ids[]" value="<?php echo e($opd->id); ?>" id="opd_<?php echo e($opd->id); ?>" style="cursor: pointer; width: 1.15rem; height: 1.15rem; margin-top: 0;">
-                                        <label class="form-check-label small fw-semibold text-dark flex-grow-1 mb-0 cursor-pointer" for="opd_<?php echo e($opd->id); ?>" style="user-select: none;">
-                                            <?php echo e($opd->name); ?>
+                    <div class="border rounded p-3 bg-white" style="max-height: 400px; overflow-y: auto; border-color: #dee2e6 !important;" id="opd-list-container">
+                        <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php if($category->accounts->count() > 0): ?>
+                            <div class="category-group mb-4">
+                                <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom category-header" data-bs-toggle="collapse" data-bs-target="#collapseCategory<?php echo e($category->id); ?>" aria-expanded="false" style="cursor: pointer;">
+                                    <h6 class="fw-bold text-primary-blue mb-0 d-flex align-items-center">
+                                        <i class="bi bi-chevron-right me-2 transition-transform toggle-icon" style="font-size: 0.8rem; transition: transform 0.3s ease;"></i>
+                                        <i class="bi bi-building me-2"></i><?php echo e($category->nama_kategori); ?>
 
-                                        </label>
+                                    </h6>
+                                    <div class="d-flex align-items-center gap-2" onclick="event.stopPropagation();">
+                                        <span class="badge bg-light text-dark border"><?php echo e($category->accounts->count()); ?> Akun</span>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 btn-select-category" style="font-size: 0.75rem; transition: all 0.2s;">Pilih Semua</button>
                                     </div>
                                 </div>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        </div>
+                                <div class="collapse category-items" id="collapseCategory<?php echo e($category->id); ?>">
+                                    <div class="row g-2 pt-2">
+                                        <?php $__currentLoopData = $category->accounts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $opd): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <div class="col-md-6 opd-item">
+                                                <div class="form-check p-2 border rounded cursor-pointer d-flex align-items-center gap-2 opd-card" style="transition: all 0.2s; cursor: pointer; border-color: #e9ecef !important; background-color: #f8f9fa;">
+                                                    <input class="form-check-input ms-0 opd-checkbox" type="checkbox" name="tujuan_opd_ids[]" value="<?php echo e($opd->id); ?>" id="opd_<?php echo e($opd->id); ?>" style="cursor: pointer; width: 1.15rem; height: 1.15rem; margin-top: 0;">
+                                                    <label class="form-check-label small fw-semibold text-dark flex-grow-1 mb-0 cursor-pointer" for="opd_<?php echo e($opd->id); ?>" style="user-select: none;">
+                                                        <?php echo e($opd->name); ?>
+
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php endif; ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
                     
                     <?php $__errorArgs = ['tujuan_opd_ids'];
@@ -154,10 +173,11 @@ unset($__errorArgs, $__bag); ?>
 
         <!-- File Upload -->
         <div class="col-lg-4">
-            <div class="stat-card p-4 h-100 d-flex flex-column">
-                <h5 class="fw-bold text-primary-blue mb-4">Lampiran Dokumen</h5>
-                
-                <div class="upload-area flex-grow-1 d-flex flex-column justify-content-center align-items-center mb-4 position-relative">
+            <div class="position-sticky" style="top: 100px;">
+                <div class="stat-card p-4 d-flex flex-column" style="height: 620px;">
+                    <h5 class="fw-bold text-primary-blue mb-4">Lampiran Dokumen</h5>
+                    
+                    <div class="upload-area flex-grow-1 d-flex flex-column justify-content-center align-items-center mb-4 position-relative">
                     <input type="file" name="file_pdf" id="file_pdf" class="position-absolute top-0 start-0 w-100 h-100 opacity-0 cursor-pointer" accept=".pdf" required style="cursor: pointer;">
                     <div class="icon-box bg-white text-primary-blue rounded-circle shadow-sm mb-3" style="width: 64px; height: 64px; font-size: 2rem;">
                         <i class="bi bi-file-earmark-pdf"></i>
@@ -182,6 +202,7 @@ unset($__errorArgs, $__bag); ?>
                     <i class="bi bi-send"></i> Kirim Surat Ke OPD
                 </button>
             </div>
+            </div>
         </div>
     </div>
 </form>
@@ -202,23 +223,98 @@ unset($__errorArgs, $__bag); ?>
             });
         }
 
+        // Handle collapse icon rotation
+        const collapses = document.querySelectorAll('.category-items.collapse');
+        collapses.forEach(collapse => {
+            collapse.addEventListener('show.bs.collapse', function () {
+                const icon = this.closest('.category-group').querySelector('.toggle-icon');
+                if (icon) icon.style.transform = 'rotate(90deg)';
+            });
+            collapse.addEventListener('hide.bs.collapse', function () {
+                const icon = this.closest('.category-group').querySelector('.toggle-icon');
+                if (icon) icon.style.transform = 'rotate(0deg)';
+            });
+        });
+
         // Search/filter OPDs
         const searchInput = document.getElementById('search-opd');
-        const opdItems = document.querySelectorAll('.opd-item');
+        const categoryGroups = document.querySelectorAll('.category-group');
 
         if (searchInput) {
             searchInput.addEventListener('input', function() {
                 const query = searchInput.value.toLowerCase().trim();
-                opdItems.forEach(item => {
-                    const opdName = item.querySelector('.form-check-label').textContent.toLowerCase();
-                    if (opdName.includes(query)) {
-                        item.classList.remove('d-none');
+                
+                categoryGroups.forEach(group => {
+                    const items = group.querySelectorAll('.opd-item');
+                    let hasVisibleItem = false;
+                    
+                    items.forEach(item => {
+                        const opdName = item.querySelector('.form-check-label').textContent.toLowerCase();
+                        if (opdName.includes(query)) {
+                            item.classList.remove('d-none');
+                            hasVisibleItem = true;
+                        } else {
+                            item.classList.add('d-none');
+                        }
+                    });
+                    
+                    if (hasVisibleItem) {
+                        group.classList.remove('d-none');
+                        if (query !== '') {
+                            const collapseEl = group.querySelector('.collapse');
+                            if (collapseEl && !collapseEl.classList.contains('show')) {
+                                if (typeof bootstrap !== 'undefined') {
+                                    bootstrap.Collapse.getOrCreateInstance(collapseEl).show();
+                                }
+                            }
+                        }
                     } else {
-                        item.classList.add('d-none');
+                        group.classList.add('d-none');
                     }
                 });
             });
         }
+
+        // Category Select All buttons
+        const btnSelectCategories = document.querySelectorAll('.btn-select-category');
+        btnSelectCategories.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const group = this.closest('.category-group');
+                const checkboxes = group.querySelectorAll('.opd-checkbox');
+                let allChecked = true;
+                
+                checkboxes.forEach(cb => {
+                    const item = cb.closest('.opd-item');
+                    if (!item.classList.contains('d-none') && !cb.checked) {
+                        allChecked = false;
+                    }
+                });
+
+                checkboxes.forEach(cb => {
+                    const item = cb.closest('.opd-item');
+                    if (!item.classList.contains('d-none')) {
+                        cb.checked = !allChecked;
+                        const card = cb.closest('.opd-card');
+                        if (!allChecked) {
+                            card.classList.add('selected');
+                        } else {
+                            card.classList.remove('selected');
+                        }
+                    }
+                });
+                
+                this.textContent = allChecked ? 'Pilih Semua' : 'Batal Pilih';
+                if (allChecked) {
+                    this.classList.remove('btn-primary', 'text-white');
+                    this.classList.add('btn-outline-secondary');
+                } else {
+                    this.classList.remove('btn-outline-secondary');
+                    this.classList.add('btn-primary', 'text-white');
+                }
+                
+                updateSelectedCount();
+            });
+        });
 
         // Checkbox status styling and selected count
         const checkboxes = document.querySelectorAll('.opd-checkbox');

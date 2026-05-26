@@ -24,6 +24,19 @@
                     @method('PUT')
                     
                     <div class="mb-3">
+                        <label for="category_id" class="form-label fw-medium small">Kategori Instansi</label>
+                        <select class="form-select @error('category_id') is-invalid @enderror" id="category_id" name="category_id" required>
+                            <option value="">-- Pilih Kategori --</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ old('category_id', $account->category_id) == $category->id ? 'selected' : '' }}>{{ $category->nama_kategori }}</option>
+                            @endforeach
+                        </select>
+                        @error('category_id')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
                         <label for="nama_instansi" class="form-label fw-medium small">Nama Instansi</label>
                         <input type="text" class="form-control @error('nama_instansi') is-invalid @enderror" id="nama_instansi" name="nama_instansi" value="{{ old('nama_instansi', $account->nama_instansi) }}" required>
                         @error('nama_instansi')
