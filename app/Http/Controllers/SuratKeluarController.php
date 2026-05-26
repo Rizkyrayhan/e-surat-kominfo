@@ -27,7 +27,8 @@ class SuratKeluarController extends Controller
         $request->validate([
             'nomor_surat' => 'required|string|max:255',
             'tanggal' => 'required|date',
-            'tujuan_opd_id' => 'required|exists:users,id',
+            'tujuan_opd_ids' => 'required|array',
+            'tujuan_opd_ids.*' => 'exists:users,id',
             'perihal' => 'required|string|max:255',
             'file_pdf' => 'required|file|mimes:pdf|max:10240',
         ]);
@@ -36,16 +37,18 @@ class SuratKeluarController extends Controller
         $filename = $file->getClientOriginalName();
         $filePath = $file->storeAs('surat_keluar', $filename, 's3');
 
-        SuratKeluar::create([
-            'nomor_surat' => $request->nomor_surat,
-            'tanggal' => $request->tanggal,
-            'tujuan_opd_id' => $request->tujuan_opd_id,
-            'perihal' => $request->perihal,
-            'file' => $filePath,
-            'created_by' => Auth::id(),
-        ]);
+        foreach ($request->tujuan_opd_ids as $opdId) {
+            SuratKeluar::create([
+                'nomor_surat' => $request->nomor_surat,
+                'tanggal' => $request->tanggal,
+                'tujuan_opd_id' => $opdId,
+                'perihal' => $request->perihal,
+                'file' => $filePath,
+                'created_by' => Auth::id(),
+            ]);
+        }
 
-        return redirect()->route('admin.surat-keluar.index')->with('success', 'Surat berhasil dikirim ke OPD.');
+        return redirect()->route('admin.surat-keluar.index')->with('success', 'Surat berhasil dikirim ke OPD tujuan.');
     }
 
     public function destroy($id)

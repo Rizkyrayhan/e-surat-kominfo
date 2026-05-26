@@ -63,31 +63,70 @@ unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <div class="mb-4">
-                    <label for="tujuan_opd_id" class="form-label fw-medium small">Tujuan OPD</label>
-                    <select class="form-select <?php $__errorArgs = ['tujuan_opd_id'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>" id="tujuan_opd_id" name="tujuan_opd_id" required>
-                        <option value="" selected disabled>Pilih OPD Tujuan</option>
-                        <?php $__currentLoopData = $opds; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $opd): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <option value="<?php echo e($opd->id); ?>" <?php echo e(old('tujuan_opd_id') == $opd->id ? 'selected' : ''); ?>><?php echo e($opd->name); ?></option>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                    </select>
-                    <?php $__errorArgs = ['tujuan_opd_id'];
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <label class="form-label fw-medium small mb-0">Tujuan OPD <span class="text-danger">*</span></label>
+                        <span class="badge bg-secondary rounded-pill" id="selected-count" style="font-size: 0.75rem; background-color: #0A256B !important;">0 OPD Terpilih</span>
+                    </div>
+                    
+                    <!-- Search Bar and Select All Controls -->
+                    <div class="row g-2 mb-3 align-items-center">
+                        <div class="col">
+                            <div class="input-group">
+                                <span class="input-group-text bg-white text-muted border-end-0"><i class="bi bi-search"></i></span>
+                                <input type="text" id="search-opd" class="form-control border-start-0 ps-0" placeholder="Cari nama OPD...">
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <button type="button" id="btn-select-all" class="btn btn-outline-primary btn-sm px-3 fw-semibold text-uppercase" style="font-size: 0.75rem; border-color: #0A256B; color: #0A256B; transition: all 0.2s;">Pilih Semua</button>
+                            <button type="button" id="btn-deselect-all" class="btn btn-outline-danger btn-sm px-3 fw-semibold text-uppercase d-none" style="font-size: 0.75rem; transition: all 0.2s;">Batal Semua</button>
+                        </div>
+                    </div>
+
+                    <!-- Scrollable Checkbox List -->
+                    <div class="border rounded p-3 bg-white" style="max-height: 220px; overflow-y: auto; border-color: #dee2e6 !important;">
+                        <div class="row g-2" id="opd-list-container">
+                            <?php $__currentLoopData = $opds; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $opd): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <div class="col-md-6 opd-item">
+                                    <div class="form-check p-2 border rounded cursor-pointer d-flex align-items-center gap-2 opd-card" style="transition: all 0.2s; cursor: pointer; border-color: #e9ecef !important; background-color: #f8f9fa;">
+                                        <input class="form-check-input ms-0 opd-checkbox" type="checkbox" name="tujuan_opd_ids[]" value="<?php echo e($opd->id); ?>" id="opd_<?php echo e($opd->id); ?>" style="cursor: pointer; width: 1.15rem; height: 1.15rem; margin-top: 0;">
+                                        <label class="form-check-label small fw-semibold text-dark flex-grow-1 mb-0 cursor-pointer" for="opd_<?php echo e($opd->id); ?>" style="user-select: none;">
+                                            <?php echo e($opd->name); ?>
+
+                                        </label>
+                                    </div>
+                                </div>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </div>
+                    </div>
+                    
+                    <?php $__errorArgs = ['tujuan_opd_ids'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                        <div class="invalid-feedback"><?php echo e($message); ?></div>
+                        <div class="text-danger small mt-2"><i class="bi bi-exclamation-circle me-1"></i><?php echo e($message); ?></div>
                     <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                 </div>
+
+                <style>
+                    .opd-card:hover {
+                        background-color: #e9ecef !important;
+                        border-color: #ced4da !important;
+                        transform: translateY(-1px);
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                    }
+                    .opd-card.selected {
+                        background-color: #e6f0fa !important;
+                        border-color: #0A256B !important;
+                        box-shadow: 0 0 0 1px #0A256B;
+                    }
+                    .opd-card.selected label {
+                        color: #0A256B !important;
+                    }
+                </style>
 
                 <div class="mb-4">
                     <label for="perihal" class="form-label fw-medium small">Perihal</label>
@@ -148,14 +187,109 @@ unset($__errorArgs, $__bag); ?>
 </form>
 
 <script>
-    document.getElementById('file_pdf').addEventListener('change', function(e) {
-        if(e.target.files.length > 0) {
-            let fileName = e.target.files[0].name;
-            let container = e.target.parentElement;
-            container.querySelector('h6').textContent = fileName;
-            container.querySelector('p').textContent = "File siap dikirim";
-            container.querySelector('.icon-box').classList.replace('text-primary-blue', 'text-success');
+    document.addEventListener('DOMContentLoaded', function() {
+        // File PDF selection styling
+        const fileInput = document.getElementById('file_pdf');
+        if (fileInput) {
+            fileInput.addEventListener('change', function(e) {
+                if(e.target.files.length > 0) {
+                    let fileName = e.target.files[0].name;
+                    let container = e.target.parentElement;
+                    container.querySelector('h6').textContent = fileName;
+                    container.querySelector('p').textContent = "File siap dikirim";
+                    container.querySelector('.icon-box').classList.replace('text-primary-blue', 'text-success');
+                }
+            });
         }
+
+        // Search/filter OPDs
+        const searchInput = document.getElementById('search-opd');
+        const opdItems = document.querySelectorAll('.opd-item');
+
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                const query = searchInput.value.toLowerCase().trim();
+                opdItems.forEach(item => {
+                    const opdName = item.querySelector('.form-check-label').textContent.toLowerCase();
+                    if (opdName.includes(query)) {
+                        item.classList.remove('d-none');
+                    } else {
+                        item.classList.add('d-none');
+                    }
+                });
+            });
+        }
+
+        // Checkbox status styling and selected count
+        const checkboxes = document.querySelectorAll('.opd-checkbox');
+        const selectedCount = document.getElementById('selected-count');
+        const btnSelectAll = document.getElementById('btn-select-all');
+        const btnDeselectAll = document.getElementById('btn-deselect-all');
+
+        function updateSelectedCount() {
+            let count = 0;
+            checkboxes.forEach(cb => {
+                const card = cb.closest('.opd-card');
+                if (cb.checked) {
+                    count++;
+                    card.classList.add('selected');
+                } else {
+                    card.classList.remove('selected');
+                }
+            });
+
+            if (selectedCount) {
+                selectedCount.textContent = `${count} OPD Terpilih`;
+            }
+
+            if (count > 0) {
+                btnSelectAll.classList.add('d-none');
+                btnDeselectAll.classList.remove('d-none');
+            } else {
+                btnSelectAll.classList.remove('d-none');
+                btnDeselectAll.classList.add('d-none');
+            }
+        }
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', updateSelectedCount);
+            
+            // Allow clicking the card container itself to toggle the checkbox
+            const card = cb.closest('.opd-card');
+            card.addEventListener('click', function(e) {
+                if (e.target !== cb && e.target.tagName !== 'LABEL') {
+                    cb.checked = !cb.checked;
+                    updateSelectedCount();
+                }
+            });
+        });
+
+        // Select All button
+        if (btnSelectAll) {
+            btnSelectAll.addEventListener('click', function() {
+                checkboxes.forEach(cb => {
+                    // Only check visible ones (not hidden by search)
+                    const item = cb.closest('.opd-item');
+                    if (!item.classList.contains('d-none')) {
+                        cb.checked = true;
+                    }
+                });
+                updateSelectedCount();
+            });
+        }
+
+        // Deselect All button
+        if (btnDeselectAll) {
+            btnDeselectAll.addEventListener('click', function() {
+                checkboxes.forEach(cb => {
+                    cb.checked = false;
+                });
+                updateSelectedCount();
+            });
+        }
+
+        // Initial update
+        updateSelectedCount();
     });
 </script>
 <?php $__env->stopSection(); ?>

@@ -15,7 +15,7 @@ use App\Http\Controllers\OpdAccountController;
 */
 
 Route::get('/', function () {
-    return redirect()->route('login');
+    return view('landing');
 });
 
 // Authentication Routes

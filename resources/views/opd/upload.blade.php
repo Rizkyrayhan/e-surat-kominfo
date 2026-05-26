@@ -90,33 +90,33 @@
     <div class="col-lg-8">
         <h5 class="fw-bold text-primary-blue mb-4">Riwayat Terakhir</h5>
         <div class="row g-3">
-            <!-- Sample History Cards based on UI -->
+            @forelse($recentSurats as $surat)
             <div class="col-md-6">
                 <div class="stat-card p-4">
                     <div class="d-flex justify-content-between align-items-start mb-3">
-                        <span class="badge bg-success bg-opacity-10 text-success rounded-1 px-2 py-1 small fw-bold">BERHASIL</span>
-                        <span class="text-muted small">Hari ini, 09:20</span>
+                        @if($surat->status == 'selesai')
+                            <span class="badge bg-success bg-opacity-10 text-success rounded-1 px-2 py-1 small fw-bold">SELESAI</span>
+                        @elseif($surat->status == 'diproses' || $surat->status == 'dikirim')
+                            <span class="badge bg-warning bg-opacity-10 text-warning rounded-1 px-2 py-1 small fw-bold" style="color: #D97706 !important;">PROSES</span>
+                        @else
+                            <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-1 px-2 py-1 small fw-bold">PENDING</span>
+                        @endif
+                        <span class="text-muted small">{{ $surat->created_at->diffForHumans() }}</span>
                     </div>
-                    <h6 class="fw-bold text-primary-blue mb-2">021/UND/KOMINFO/2024</h6>
-                    <p class="text-muted small text-truncate mb-3">Undangan Rapat Koordinasi...</p>
+                    <h6 class="fw-bold text-primary-blue mb-2">{{ $surat->nomor_surat }}</h6>
+                    <p class="text-muted small text-truncate mb-3">{{ $surat->keterangan ?? 'Tidak ada keterangan' }}</p>
                     <div class="d-flex align-items-center text-muted small border-top pt-3">
-                        <i class="bi bi-person me-2"></i> Oleh: Budiman
+                        <i class="bi bi-person me-2"></i> Oleh: {{ Auth::user()->name }}
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="stat-card p-4">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <span class="badge bg-warning bg-opacity-10 text-warning rounded-1 px-2 py-1 small fw-bold" style="color: #D97706 !important;">PROSES</span>
-                        <span class="text-muted small">Kemarin, 14:15</span>
-                    </div>
-                    <h6 class="fw-bold text-primary-blue mb-2">019/SP/KOMINFO/2024</h6>
-                    <p class="text-muted small text-truncate mb-3">Surat Perintah Perjalanan Dinas...</p>
-                    <div class="d-flex align-items-center text-muted small border-top pt-3">
-                        <i class="bi bi-person me-2"></i> Oleh: Siti Aminah
-                    </div>
+            @empty
+            <div class="col-12">
+                <div class="stat-card p-4 text-center text-muted">
+                    Belum ada riwayat surat.
                 </div>
             </div>
+            @endforelse
         </div>
     </div>
     

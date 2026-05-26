@@ -7,8 +7,8 @@
             <div class="col-12 col-lg-6 auth-split-bg d-flex align-items-center justify-content-center p-4 p-lg-5 text-white">
                 <div class="max-w-md w-100 position-relative z-1">
                     <div class="mb-5 d-flex align-items-center">
-                        <div class="bg-white text-primary rounded p-2 me-3 d-inline-flex shadow-sm">
-                            <i class="bi bi-file-earmark-text fs-4"></i>
+                        <div class="bg-white rounded-circle p-2 me-3 d-inline-flex align-items-center justify-content-center shadow-sm" style="width: 50px; height: 50px;">
+                            <img src="<?php echo e(asset('images/logo-kominfo.svg')); ?>" alt="Logo Kominfo" style="width: 34px; height: auto;">
                         </div>
                         <div>
                             <h4 class="mb-0 fw-bold">E-Surat</h4>
@@ -39,6 +39,7 @@
             <div class="col-12 col-lg-6 auth-form-container d-flex align-items-center justify-content-center p-4 p-md-5 bg-white flex-grow-1">
                 <div class="w-100" style="max-width: 450px;">
                     <div class="mb-4 text-center d-lg-none mt-2">
+                        <img src="<?php echo e(asset('images/logo-kominfo.svg')); ?>" alt="Logo Kominfo" class="mb-2" style="width: 40px; height: auto;">
                         <h4 class="fw-bold text-primary mb-0">E-Surat Kominfo</h4>
                     </div>
 

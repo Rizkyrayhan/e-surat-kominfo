@@ -57,7 +57,8 @@ class OpdController extends Controller
 
     public function create()
     {
-        return view('opd.upload');
+        $recentSurats = Surat::where('user_id', Auth::id())->latest()->take(2)->get();
+        return view('opd.upload', compact('recentSurats'));
     }
 
     public function store(Request $request)

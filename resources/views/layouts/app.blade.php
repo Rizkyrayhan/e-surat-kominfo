@@ -19,7 +19,10 @@
         <!-- Sidebar -->
         <div class="sidebar-bg text-white" id="sidebar-wrapper">
             <div class="sidebar-heading text-center py-4 fs-5 fw-bold border-bottom border-light border-opacity-10">
-                <i class="bi bi-envelope-paper"></i> E-SURAT
+                <div class="bg-white rounded-circle p-2 d-inline-flex align-items-center justify-content-center mb-2 shadow-sm" style="width: 56px; height: 56px;">
+                    <img src="{{ asset('images/logo-kominfo.svg') }}" alt="Logo Kominfo" style="width: 40px; height: auto;">
+                </div>
+                <div class="d-block">E-SURAT</div>
                 <div class="fs-6 fw-normal opacity-75" style="font-size: 0.8rem !important;">INTERNAL MANAGEMENT</div>
             </div>
             <div class="list-group list-group-flush my-3">
@@ -88,8 +91,7 @@
                                 </span>
                             @endif
                         </a>
-                        <a href="#" class="text-muted fs-5 me-4 d-none d-sm-inline"><i class="bi bi-gear"></i></a>
-                        
+
                         <div class="d-flex align-items-center border-start ps-4">
                             <div class="text-end me-3 d-none d-sm-block">
                                 <div class="fw-bold text-dark">{{ Auth::user()->name }}</div>
