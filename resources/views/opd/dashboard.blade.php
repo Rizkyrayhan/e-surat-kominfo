@@ -118,7 +118,7 @@
             </thead>
             <tbody>
                 @forelse($surats as $surat)
-                <tr id="surat-row-{{ $surat->id }}">
+                <tr id="surat-row-{{ $surat->id }}" onclick="if(event.target.type !== 'checkbox' && !event.target.closest('button') && !event.target.closest('a')) { window.open('{{ Storage::disk('s3')->url($surat->file) }}', '_blank'); }" style="cursor: pointer;" class="hover-shadow-sm transition-all">
                     <td class="ps-4">
                         <input type="checkbox" class="form-check-input surat-checkbox" value="{{ $surat->id }}">
                     </td>

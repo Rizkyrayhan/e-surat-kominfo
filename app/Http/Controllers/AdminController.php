@@ -10,10 +10,16 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
+        $counts = Surat::selectRaw("
+            count(*) as total,
+            sum(case when status = 'pending' then 1 else 0 end) as pending,
+            sum(case when status = 'selesai' then 1 else 0 end) as selesai
+        ")->first();
+
         $stats = [
-            'total' => Surat::count(),
-            'pending' => Surat::where('status', 'pending')->count(),
-            'selesai' => Surat::where('status', 'selesai')->count(),
+            'total' => $counts->total ?? 0,
+            'pending' => $counts->pending ?? 0,
+            'selesai' => $counts->selesai ?? 0,
         ];
 
         $surats = Surat::whereIn('status', ['pending', 'diproses', 'dikirim'])->with('user')->latest()->paginate(10);

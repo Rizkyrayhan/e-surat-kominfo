@@ -59,7 +59,7 @@
         <div class="stat-card p-4 h-100">
             <h5 class="fw-bold text-primary-blue mb-4">Preview Dokumen</h5>
             <div class="ratio ratio-1x1 bg-light rounded-3 overflow-hidden border">
-                <iframe src="https://docs.google.com/viewer?url={{ urlencode(Storage::disk('s3')->url($surat->file)) }}&embedded=true" class="w-100 h-100" style="border: none;">
+                <iframe src="{{ Storage::disk('s3')->url($surat->file) }}" class="w-100 h-100" style="border: none; min-height: 500px;">
                     <div class="d-flex flex-column justify-content-center align-items-center text-muted h-100">
                         <i class="bi bi-file-earmark-pdf fs-1 mb-3"></i>
                         <p class="small text-center px-4">Browser Anda tidak mendukung preview PDF.<br>Silakan unduh untuk melihat isi lengkap.</p>

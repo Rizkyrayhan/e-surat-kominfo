@@ -10,7 +10,7 @@
     </nav>
 </div>
 
-<form action="{{ route('admin.surat-keluar.store') }}" method="POST" enctype="multipart/form-data">
+<form id="surat-form" action="{{ route('admin.surat-keluar.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="row g-4">
         <!-- Form Fields -->
@@ -68,7 +68,7 @@
                                     </h6>
                                     <div class="d-flex align-items-center gap-2" onclick="event.stopPropagation();">
                                         <span class="badge bg-light text-dark border">{{ $category->accounts->count() }} Akun</span>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 btn-select-category" style="font-size: 0.75rem; transition: all 0.2s;">Pilih Semua</button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary btn-select-category" style="font-size: 0.72rem; padding: 2px 6px !important; white-space: nowrap !important; transition: all 0.2s;">Pilih Semua</button>
                                     </div>
                                 </div>
                                 <div class="collapse category-items" id="collapseCategory{{ $category->id }}">
@@ -330,6 +330,35 @@
 
         // Initial update
         updateSelectedCount();
+
+        // Form Submit Loading Overlay
+        const form = document.getElementById('surat-form');
+        const loadingOverlay = document.getElementById('loading-overlay');
+        if (form && loadingOverlay) {
+            form.addEventListener('submit', function() {
+                if (form.checkValidity()) {
+                    loadingOverlay.classList.remove('d-none');
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    if (submitBtn) {
+                        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Mengirim...';
+                        setTimeout(() => {
+                            submitBtn.disabled = true;
+                        }, 50);
+                    }
+                }
+            });
+        }
     });
 </script>
+
+<!-- Loading Overlay -->
+<div id="loading-overlay" class="d-none position-fixed top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center" style="background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(8px); z-index: 9999; transition: all 0.3s ease;">
+    <div class="d-flex flex-column align-items-center">
+        <div class="spinner-border mb-3" role="status" style="width: 3.5rem; height: 3.5rem; border-width: 0.25em; color: #0A256B !important;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <h5 class="fw-bold text-primary-blue mb-1" style="color: #0A256B;">Mengirim Surat</h5>
+        <p class="text-muted small mb-0 px-4 text-center">Mohon tunggu, dokumen sedang diunggah ke penyimpanan cloud...</p>
+    </div>
+</div>
 @endsection

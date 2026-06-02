@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3 mb-4">
     <div>
         <h4 class="fw-bold mb-1">Kelola Akun OPD</h4>
         <p class="text-muted small mb-0">Manajemen akses dan akun pengguna OPD</p>
@@ -28,7 +28,8 @@
                     @forelse($accounts as $account)
                     <tr>
                         <td class="ps-4">
-                            <span class="fw-medium">{{ $account->nama_instansi ?? '-' }}</span>
+                            <span class="fw-medium d-block">{{ $account->nama_instansi ?? '-' }}</span>
+                            <small class="text-muted">{{ $account->category?->nama_kategori ?? 'Tanpa Kategori' }}</small>
                         </td>
                         <td>{{ $account->name }}</td>
                         <td>{{ $account->email }}</td>

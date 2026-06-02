@@ -32,10 +32,14 @@ class SuratKeluarController extends Controller
             'tujuan_opd_ids' => 'required|array',
             'tujuan_opd_ids.*' => 'exists:users,id',
             'perihal' => 'required|string|max:255',
-            'file_pdf' => 'required|file|mimes:pdf|max:10240',
+            'file_pdf' => 'required|file|max:10240', // 10MB max PDF
         ]);
 
         $file = $request->file('file_pdf');
+        if (strtolower($file->getClientOriginalExtension()) !== 'pdf') {
+            return back()->withErrors(['file_pdf' => 'Format file wajib .PDF'])->withInput();
+        }
+
         $filename = $file->getClientOriginalName();
         $filePath = $file->storeAs('surat_keluar', $filename, 's3');
 

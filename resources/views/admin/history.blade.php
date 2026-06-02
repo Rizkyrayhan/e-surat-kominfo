@@ -7,13 +7,13 @@
     </div>
 
     <div class="table-card mb-4">
-        <div class="p-4 border-bottom d-flex justify-content-between align-items-center">
+        <div class="p-4 border-bottom d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3">
             <h5 class="fw-bold mb-0 text-primary-blue">Semua Surat Masuk</h5>
-            <div class="d-flex align-items-center gap-2">
+            <div class="d-flex align-items-center gap-2 w-100 w-sm-auto">
                 <button id="btn-bulk-delete" class="btn btn-outline-danger btn-sm rounded-pill px-3 d-none align-items-center justify-content-center gap-1">
                     <i class="bi bi-trash"></i> Hapus Terpilih (<span id="selected-count">0</span>)
                 </button>
-                <form action="{{ route('admin.history') }}" method="GET" class="input-group input-group-sm" style="max-width: 300px;">
+                <form action="{{ route('admin.history') }}" method="GET" class="input-group input-group-sm flex-grow-1 flex-sm-grow-0" style="max-width: 300px;">
                     <input type="text" name="search" class="form-control" placeholder="Cari nomor surat atau OPD..." value="{{ request('search') }}">
                     <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
                 </form>

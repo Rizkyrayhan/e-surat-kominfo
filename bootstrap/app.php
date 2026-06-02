@@ -17,6 +17,21 @@ $app = new Illuminate\Foundation\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
 
+// Ensure required Laravel storage directories exist for shared hosting
+$storagePath = dirname(__DIR__) . '/storage';
+$requiredDirs = [
+    $storagePath . '/framework/cache',
+    $storagePath . '/framework/cache/data',
+    $storagePath . '/framework/sessions',
+    $storagePath . '/framework/views',
+    $storagePath . '/logs',
+];
+foreach ($requiredDirs as $dir) {
+    if (!is_dir($dir)) {
+        @mkdir($dir, 0775, true);
+    }
+}
+
 /*
 |--------------------------------------------------------------------------
 | Bind Important Interfaces

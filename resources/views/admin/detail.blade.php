@@ -68,7 +68,7 @@
                     <i class="bi bi-filetype-pdf text-danger" style="font-size: 5rem;"></i>
                     <h5 class="mt-4 mb-2">Dokumen Surat.pdf</h5>
                     <p class="text-muted mb-4">Pratinjau dokumen tersedia untuk file PDF</p>
-                    <iframe src="https://docs.google.com/viewer?url={{ urlencode(Storage::disk('s3')->url($surat->file)) }}&embedded=true" width="100%" height="400px" style="border: none;">
+                    <iframe src="{{ Storage::disk('s3')->url($surat->file) }}" width="100%" height="600px" style="border: none;">
                         Browser Anda tidak mendukung pratinjau. Silakan unduh file.
                     </iframe>
                 </div>

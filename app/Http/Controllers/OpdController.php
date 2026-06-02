@@ -13,11 +13,19 @@ class OpdController extends Controller
     {
         $user = Auth::user();
         
+        $counts = Surat::where('user_id', $user->id)
+            ->selectRaw("
+                count(*) as total,
+                sum(case when status = 'pending' then 1 else 0 end) as pending,
+                sum(case when status = 'diproses' then 1 else 0 end) as diproses,
+                sum(case when status = 'selesai' then 1 else 0 end) as selesai
+            ")->first();
+
         $stats = [
-            'total' => Surat::where('user_id', $user->id)->count(),
-            'pending' => Surat::where('user_id', $user->id)->where('status', 'pending')->count(),
-            'diproses' => Surat::where('user_id', $user->id)->where('status', 'diproses')->count(),
-            'selesai' => Surat::where('user_id', $user->id)->where('status', 'selesai')->count(),
+            'total' => $counts->total ?? 0,
+            'pending' => $counts->pending ?? 0,
+            'diproses' => $counts->diproses ?? 0,
+            'selesai' => $counts->selesai ?? 0,
         ];
 
         $surats = Surat::where('user_id', $user->id)->whereIn('status', ['pending', 'diproses', 'dikirim'])->latest()->take(10)->get();
@@ -68,10 +76,14 @@ class OpdController extends Controller
             'tujuan' => 'required|string|max:255',
             'tanggal' => 'required|date',
             'keterangan' => 'nullable|string',
-            'file' => 'required|file|mimes:pdf|max:10240', // 10MB max PDF
+            'file' => 'required|file|max:10240', // 10MB max PDF
         ]);
 
         $file = $request->file('file');
+        if (strtolower($file->getClientOriginalExtension()) !== 'pdf') {
+            return back()->withErrors(['file' => 'Format file wajib .PDF'])->withInput();
+        }
+
         $filename = $file->getClientOriginalName();
         $filePath = $file->storeAs('surat', $filename, 's3');
 

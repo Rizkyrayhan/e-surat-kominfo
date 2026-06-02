@@ -110,7 +110,7 @@
                             <span class="badge-selesai">Selesai</span>
                         @endif
                     </td>
-                    <td class="pe-4 text-end">
+                    <td class="pe-4 text-end" onclick="event.stopPropagation();">
                         <div class="d-flex justify-content-end gap-2">
                             <a href="{{ route('admin.surat.show', $surat->id) }}" class="btn btn-sm btn-light text-muted rounded-circle" title="Verifikasi"><i class="bi bi-shield-check"></i></a>
                             <a href="{{ route('download.file', ['path' => $surat->file]) }}" class="btn btn-sm btn-light text-muted rounded-circle" title="Download PDF"><i class="bi bi-download"></i></a>
