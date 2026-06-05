@@ -99,6 +99,12 @@
                 margin-left: 0 !important;
             }
         }
+        @media (max-width: 767.98px) {
+            .table td, .table th {
+                font-size: 0.78rem !important;
+                padding: 0.6rem 0.4rem !important;
+            }
+        }
     </style>
 </head>
 <body class="bg-light-gray">

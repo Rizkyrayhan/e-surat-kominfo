@@ -421,6 +421,11 @@ body {
         font-size: 0.75rem !important;
         white-space: nowrap !important;
     }
+
+    .table td, .table th {
+        font-size: 0.78rem !important;
+        padding: 0.6rem 0.4rem !important;
+    }
 }
 
 @media (max-width: 991.98px) {
