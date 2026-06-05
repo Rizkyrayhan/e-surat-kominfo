@@ -98,7 +98,7 @@
             <button id="btn-bulk-delete" class="btn btn-outline-danger btn-sm rounded-pill px-3 d-none align-items-center justify-content-center gap-1 btn-responsive">
                 <i class="bi bi-trash"></i> Hapus Terpilih (<span id="selected-count">0</span>)
             </button>
-            <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 btn-responsive">Filter</button>
+            <a href="{{ route('opd.history') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-3 btn-responsive"><i class="bi bi-filter"></i> Filter</a>
             <a href="{{ route('opd.history') }}" class="btn btn-outline-primary btn-sm rounded-pill px-3 btn-responsive">Lihat Semua</a>
         </div>
     </div>
@@ -118,8 +118,11 @@
             </thead>
             <tbody>
                 @forelse($surats as $surat)
-                <tr id="surat-row-{{ $surat->id }}" onclick="if(event.target.type !== 'checkbox' && !event.target.closest('button') && !event.target.closest('a')) { window.open('{{ Storage::disk('s3')->url($surat->file) }}', '_blank'); }" style="cursor: pointer;" class="hover-shadow-sm transition-all">
-                    <td class="ps-4">
+                <tr id="surat-row-{{ $surat->id }}"
+                    class="clickable-row"
+                    onclick="if(event.target.type !== 'checkbox' && !event.target.closest('button') && !event.target.closest('a')) { window.location.href='{{ route('opd.surat.show', $surat->id) }}'; }"
+                    style="cursor: pointer;">
+                    <td class="ps-4" onclick="event.stopPropagation();">
                         <input type="checkbox" class="form-check-input surat-checkbox" value="{{ $surat->id }}">
                     </td>
                     <td class="fw-bold text-primary-blue" style="font-size: 0.9rem;">{{ $surat->nomor_surat }}</td>
@@ -141,11 +144,13 @@
                             <span class="badge-selesai">Selesai</span>
                         @endif
                     </td>
-                    <td class="pe-4 text-end">
-                        <a href="{{ Storage::disk('s3')->url($surat->file) }}" target="_blank" class="btn btn-sm btn-light text-muted me-1 rounded-circle">
-                            <i class="bi bi-eye"></i>
-                        </a>
-                        <button class="btn btn-sm btn-light text-muted rounded-circle"><i class="bi bi-three-dots"></i></button>
+                    <td class="pe-4 text-end text-nowrap" onclick="event.stopPropagation();">
+                        <div class="d-inline-flex justify-content-end gap-1 align-items-center">
+                            <a href="{{ route('opd.surat.show', $surat->id) }}" class="btn btn-sm btn-light text-muted rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" title="Detail Surat">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <button class="btn btn-sm btn-light text-muted rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 32px; height: 32px;"><i class="bi bi-three-dots"></i></button>
+                        </div>
                     </td>
                 </tr>
                 @empty

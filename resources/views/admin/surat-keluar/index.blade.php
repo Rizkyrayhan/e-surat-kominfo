@@ -30,7 +30,8 @@
             </thead>
             <tbody>
                 @forelse($surats as $surat)
-                <tr>
+                <tr class="clickable-row"
+                    onclick="if(!event.target.closest('a') && !event.target.closest('button') && !event.target.closest('form')) { window.location.href='{{ route('admin.surat-keluar.show', $surat->id) }}'; }">
                     <td class="ps-4 fw-bold text-primary-blue" style="font-size: 0.9rem;">{{ $surat->nomor_surat }}</td>
                     <td>
                         <div class="d-flex align-items-center">
@@ -40,20 +41,22 @@
                     </td>
                     <td class="text-muted" style="font-size: 0.9rem;">{{ $surat->tanggal->format('d M Y') }}</td>
                     <td style="font-size: 0.9rem; max-width: 300px;" class="text-truncate">{{ $surat->perihal }}</td>
-                    <td class="pe-4 text-end">
-                        <a href="{{ Storage::disk('s3')->url($surat->file) }}" target="_blank" class="btn btn-sm btn-light text-muted me-1 rounded-circle" title="Lihat PDF">
-                            <i class="bi bi-eye"></i>
-                        </a>
-                        <a href="{{ route('download.file', ['path' => $surat->file]) }}" class="btn btn-sm btn-light text-muted rounded-circle me-1" title="Download PDF">
-                            <i class="bi bi-download"></i>
-                        </a>
-                        <form action="{{ route('admin.surat-keluar.destroy', $surat->id) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-light text-danger rounded-circle" title="Hapus Surat" onclick="return confirm('Apakah Anda yakin ingin menghapus surat ini?')">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </form>
+                    <td class="pe-4 text-end text-nowrap" onclick="event.stopPropagation();">
+                        <div class="d-inline-flex gap-1 justify-content-end align-items-center">
+                            <a href="{{ route('admin.surat-keluar.show', $surat->id) }}" class="btn btn-sm btn-light text-muted rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" title="Detail Surat">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="{{ route('download.file', ['path' => $surat->file]) }}" class="btn btn-sm btn-light text-muted rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" title="Download PDF">
+                                <i class="bi bi-download"></i>
+                            </a>
+                            <form action="{{ route('admin.surat-keluar.destroy', $surat->id) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-light text-danger rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" title="Hapus Surat" onclick="return confirm('Apakah Anda yakin ingin menghapus surat ini?')">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
                 @empty

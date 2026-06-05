@@ -57,6 +57,12 @@ class SuratKeluarController extends Controller
         return redirect()->route('admin.surat-keluar.index')->with('success', 'Surat berhasil dikirim ke OPD tujuan.');
     }
 
+    public function show($id)
+    {
+        $surat = SuratKeluar::with('tujuanOpd')->findOrFail($id);
+        return view('admin.surat-keluar.show', compact('surat'));
+    }
+
     public function destroy($id)
     {
         $surat = SuratKeluar::findOrFail($id);

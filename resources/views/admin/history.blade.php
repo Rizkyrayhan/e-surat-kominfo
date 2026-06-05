@@ -36,8 +36,10 @@
                 </thead>
                 <tbody>
                     @forelse($surats as $surat)
-                    <tr id="surat-row-{{ $surat->id }}">
-                        <td class="ps-4">
+                    <tr id="surat-row-{{ $surat->id }}"
+                        class="clickable-row"
+                        onclick="if(!event.target.closest('a') && !event.target.closest('button')) { window.location.href='{{ route('admin.surat.show', $surat->id) }}'; }">
+                        <td class="ps-4" onclick="event.stopPropagation();">
                             <input type="checkbox" class="form-check-input surat-checkbox" value="{{ $surat->id }}">
                         </td>
                         <td class="fw-bold text-primary-blue">{{ $surat->nomor_surat }}</td>
@@ -58,13 +60,13 @@
                                 <span class="badge bg-secondary opacity-75">{{ $surat->status }}</span>
                             @endif
                         </td>
-                        <td class="pe-4 text-end">
-                            <div class="btn-group">
-                                <a href="{{ route('admin.surat.show', $surat) }}" class="btn btn-sm btn-outline-primary rounded-pill me-2">
-                                    <i class="bi bi-eye me-1"></i> Detail
+                        <td class="pe-4 text-end text-nowrap" onclick="event.stopPropagation();">
+                            <div class="d-inline-flex gap-1 justify-content-end align-items-center">
+                                <a href="{{ route('admin.surat.show', $surat) }}" class="btn btn-sm btn-outline-primary rounded-pill px-2 px-md-3 d-inline-flex align-items-center gap-1" style="font-size: 0.8rem;">
+                                    <i class="bi bi-eye"></i> <span class="d-none d-md-inline">Detail</span>
                                 </a>
-                                <a href="{{ route('download.file', ['path' => $surat->file]) }}" class="btn btn-sm btn-outline-info rounded-pill">
-                                    <i class="bi bi-download me-1"></i> Unduh
+                                <a href="{{ route('download.file', ['path' => $surat->file]) }}" class="btn btn-sm btn-outline-info rounded-pill px-2 px-md-3 d-inline-flex align-items-center gap-1" style="font-size: 0.8rem;">
+                                    <i class="bi bi-download"></i> <span class="d-none d-md-inline">Unduh</span>
                                 </a>
                             </div>
                         </td>

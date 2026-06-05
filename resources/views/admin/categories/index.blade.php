@@ -66,7 +66,7 @@
                                                 <td class="text-muted small">
                                                     {{ $category->created_at ? $category->created_at->format('d M Y, H:i') : '-' }}
                                                 </td>
-                                                <td class="text-end pe-4">
+                                                <td class="text-end pe-4 text-nowrap">
                                                     <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori ini? Instansi yang terhubung dengan kategori ini akan berubah menjadi Tanpa Kategori.');">
                                                         @csrf
                                                         @method('DELETE')

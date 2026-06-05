@@ -33,9 +33,11 @@
     Route::middleware(['auth', 'role:opd'])->prefix('opd')->name('opd.')->group(function () {
         Route::get('/dashboard', [OpdController::class, 'dashboard'])->name('dashboard');
         Route::get('/riwayat', [OpdController::class, 'history'])->name('history');
-        Route::post('/surat/bulk-delete', [OpdController::class, 'bulkDelete'])->name('surat.bulk-delete');
+        // Surat routes — specific routes BEFORE wildcard routes
         Route::get('/surat/create', [OpdController::class, 'create'])->name('surat.create');
+        Route::post('/surat/bulk-delete', [OpdController::class, 'bulkDelete'])->name('surat.bulk-delete');
         Route::post('/surat', [OpdController::class, 'store'])->name('surat.store');
+        Route::get('/surat/{id}', [OpdController::class, 'show'])->name('surat.show');
         
         // Surat Masuk from Kominfo
         Route::get('/surat-masuk', [SuratMasukController::class, 'index'])->name('surat-masuk.index');
@@ -56,6 +58,7 @@
         Route::get('/surat-keluar', [SuratKeluarController::class, 'index'])->name('surat-keluar.index');
         Route::get('/surat-keluar/create', [SuratKeluarController::class, 'create'])->name('surat-keluar.create');
         Route::post('/surat-keluar', [SuratKeluarController::class, 'store'])->name('surat-keluar.store');
+        Route::get('/surat-keluar/{id}', [SuratKeluarController::class, 'show'])->name('surat-keluar.show');
         Route::delete('/surat-keluar/{id}', [SuratKeluarController::class, 'destroy'])->name('surat-keluar.destroy');
 
         // Kelola Akun OPD
@@ -163,3 +166,17 @@
             return '<h2>Error fixing files:</h2><p>' . $e->getMessage() . '</p>';
         }
     });
+
+    // Clear Cache Route for Production Cache Busting
+    Route::get('/clear-cache', function () {
+        try {
+            \Illuminate\Support\Facades\Artisan::call('view:clear');
+            \Illuminate\Support\Facades\Artisan::call('route:clear');
+            \Illuminate\Support\Facades\Artisan::call('config:clear');
+            \Illuminate\Support\Facades\Artisan::call('cache:clear');
+            return '<h1>All Cache Cleared Successfully!</h1>';
+        } catch (\Throwable $e) {
+            return '<h1>Failed to clear cache:</h1><pre>' . $e->getMessage() . '</pre>';
+        }
+    });
+

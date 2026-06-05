@@ -69,11 +69,33 @@ class AppServiceProvider extends ServiceProvider
         });
 
         view()->composer('layouts.app', function ($view) {
-            if (auth()->check() && auth()->user()->role === 'opd') {
-                $unreadCount = \App\Models\SuratKeluar::where('tujuan_opd_id', auth()->id())
-                    ->where('is_read', false)
-                    ->count();
-                $view->with('unreadSuratCount', $unreadCount);
+            if (auth()->check()) {
+                if (auth()->user()->role === 'opd') {
+                    $unreadSurats = \App\Models\SuratKeluar::where('tujuan_opd_id', auth()->id())
+                        ->where('is_read', false)
+                        ->with('pengirim')
+                        ->latest()
+                        ->take(5)
+                        ->get();
+                    $unreadCount = \App\Models\SuratKeluar::where('tujuan_opd_id', auth()->id())
+                        ->where('is_read', false)
+                        ->count();
+                    $view->with([
+                        'unreadSuratCount' => $unreadCount,
+                        'unreadSurats' => $unreadSurats
+                    ]);
+                } else if (auth()->user()->role === 'admin') {
+                    $unreadSurats = \App\Models\Surat::where('status', 'pending')
+                        ->with('user')
+                        ->latest()
+                        ->take(5)
+                        ->get();
+                    $unreadCount = \App\Models\Surat::where('status', 'pending')->count();
+                    $view->with([
+                        'unreadSuratCount' => $unreadCount,
+                        'unreadSurats' => $unreadSurats
+                    ]);
+                }
             }
         });
     }

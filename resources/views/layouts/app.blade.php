@@ -52,9 +52,51 @@
             85% { opacity: 1; transform: translateY(-50%) translateX(0); }
             100% { opacity: 0; transform: translateY(-50%) translateX(8px); }
         }
+
+        /* ===== CRITICAL LAYOUT FIX: Sidebar Fixed, Content Scrolls ===== */
+        html, body {
+            height: 100% !important;
+            overflow: hidden !important;
+            margin: 0 !important;
+        }
+        #wrapper {
+            display: flex !important;
+            height: 100vh !important;
+            overflow: hidden !important;
+        }
+        #sidebar-wrapper {
+            height: 100vh !important;
+            min-height: 100vh !important;
+            width: 250px !important;
+            flex-shrink: 0 !important;
+            overflow: hidden !important;
+            display: flex !important;
+            flex-direction: column !important;
+            position: relative !important;
+        }
+        #page-content-wrapper {
+            flex: 1 !important;
+            height: 100vh !important;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            min-width: 0 !important;
+        }
+
         @media (max-width: 991.98px) {
             .content-area {
                 padding: 6rem 1rem 2rem 1rem !important;
+            }
+            #sidebar-wrapper {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                height: 100vh !important;
+                z-index: 1050 !important;
+                margin-left: -250px;
+                transition: margin 0.25s ease-out;
+            }
+            #wrapper.toggled #sidebar-wrapper {
+                margin-left: 0 !important;
             }
         }
     </style>
@@ -71,7 +113,7 @@
                 <div class="d-block">E-SURAT</div>
                 <div class="fs-6 fw-normal opacity-75" style="font-size: 0.8rem !important;">INTERNAL MANAGEMENT</div>
             </div>
-            <div class="list-group list-group-flush my-3">
+            <div class="list-group list-group-flush my-3 flex-grow-1">
                 @if(Auth::user()->role === 'admin')
                     <a href="{{ route('admin.dashboard') }}" class="list-group-item list-group-item-action bg-transparent text-white {{ request()->routeIs('admin.dashboard') ? 'active-sidebar' : '' }}">
                         <i class="bi bi-grid me-2"></i> Dashboard
@@ -106,7 +148,7 @@
                     <i class="bi bi-person me-2"></i> Profil
                 </a>
             </div>
-            <div class="mt-auto p-3" style="position: absolute; bottom: 0; width: 100%;">
+            <div class="mt-auto p-3 border-top border-light border-opacity-10">
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold border-0 w-100 text-start">
@@ -146,24 +188,61 @@
                                     </div>
                                 @endif
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0" aria-labelledby="notificationDropdown" style="width: 320px; max-height: 400px; overflow-y: auto;">
-                                <li><h6 class="dropdown-header fw-bold">Notifikasi</h6></li>
-                                @if(isset($unreadSuratCount) && $unreadSuratCount > 0)
+                             <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0" aria-labelledby="notificationDropdown" style="width: 340px; max-height: 400px; overflow-y: auto;">
+                                <li><h6 class="dropdown-header fw-bold text-primary-blue d-flex justify-content-between align-items-center mb-0 py-2">
+                                    <span>Notifikasi Baru</span>
+                                    @if(isset($unreadSuratCount) && $unreadSuratCount > 0)
+                                        <span class="badge bg-danger rounded-pill">{{ $unreadSuratCount }}</span>
+                                    @endif
+                                </h6></li>
+                                <li><hr class="dropdown-divider my-1"></li>
+                                @if(isset($unreadSurats) && $unreadSurats->count() > 0)
+                                    @foreach($unreadSurats as $unread)
+                                        @if(Auth::user()->role === 'opd')
+                                            <li>
+                                                <a class="dropdown-item py-3 border-bottom" href="{{ route('opd.surat-masuk.show', $unread->id) }}" style="transition: background-color 0.2s;">
+                                                    <div class="d-flex align-items-start">
+                                                        <div class="rounded-circle me-3 d-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary" style="width: 36px; height: 36px; min-width: 36px;">
+                                                            <i class="bi bi-envelope-open" style="font-size: 1.1rem;"></i>
+                                                        </div>
+                                                        <div style="white-space: normal; width: 100%;">
+                                                            <div class="fw-bold text-dark" style="font-size: 0.85rem; line-height: 1.2;">{{ $unread->nomor_surat }}</div>
+                                                            <div class="text-muted small mt-1 text-truncate" style="max-width: 220px; font-size: 0.78rem;">{{ $unread->perihal }}</div>
+                                                            <div class="text-muted mt-1 d-flex justify-content-between align-items-center" style="font-size: 0.7rem;">
+                                                                <span>Dari: Kominfo</span>
+                                                                <span class="text-secondary fw-semibold">{{ $unread->created_at->diffForHumans() }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        @else
+                                            <li>
+                                                <a class="dropdown-item py-3 border-bottom" href="{{ route('admin.surat.show', $unread->id) }}" style="transition: background-color 0.2s;">
+                                                    <div class="d-flex align-items-start">
+                                                        <div class="rounded-circle me-3 d-flex align-items-center justify-content-center bg-warning bg-opacity-10 text-warning" style="width: 36px; height: 36px; min-width: 36px;">
+                                                            <i class="bi bi-envelope-exclamation" style="font-size: 1.1rem;"></i>
+                                                        </div>
+                                                        <div style="white-space: normal; width: 100%;">
+                                                            <div class="fw-bold text-dark" style="font-size: 0.85rem; line-height: 1.2;">{{ $unread->nomor_surat }}</div>
+                                                            <div class="text-muted small mt-1 text-truncate" style="max-width: 220px; font-size: 0.78rem;">{{ $unread->keterangan ?? 'Perihal tidak diisi' }}</div>
+                                                            <div class="text-muted mt-1 d-flex justify-content-between align-items-center" style="font-size: 0.7rem;">
+                                                                <span class="text-truncate" style="max-width: 130px;">Dari: {{ $unread->user->name }}</span>
+                                                                <span class="text-secondary fw-semibold">{{ $unread->created_at->diffForHumans() }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        @endif
+                                    @endforeach
                                     <li>
-                                        <a class="dropdown-item py-3 border-bottom" href="{{ Auth::user()->role === 'opd' ? route('opd.surat-masuk.index') : '#' }}">
-                                            <div class="d-flex align-items-center">
-                                                <div class="icon-box-warning rounded-circle me-3" style="width: 40px; height: 40px; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; background-color: var(--status-pending-bg); color: var(--status-pending-text);">
-                                                    <i class="bi bi-envelope-exclamation"></i>
-                                                </div>
-                                                <div style="white-space: normal;">
-                                                    <div class="fw-bold fs-6 text-dark">Surat Masuk Baru</div>
-                                                    <div class="text-muted small mt-1">Ada {{ $unreadSuratCount }} surat yang belum dibaca.</div>
-                                                </div>
-                                            </div>
+                                        <a class="dropdown-item text-center text-primary fw-semibold py-2" href="{{ Auth::user()->role === 'opd' ? route('opd.surat-masuk.index') : route('admin.history') }}" style="font-size: 0.8rem;">
+                                            Lihat Semua Surat <i class="bi bi-arrow-right ms-1"></i>
                                         </a>
                                     </li>
                                 @else
-                                    <li><div class="dropdown-item text-center text-muted py-4">Tidak ada notifikasi baru</div></li>
+                                    <li><div class="dropdown-item text-center text-muted py-4"><i class="bi bi-envelope-open text-muted fs-3 mb-2 d-block"></i>Tidak ada notifikasi baru</div></li>
                                 @endif
                             </ul>
                         </div>

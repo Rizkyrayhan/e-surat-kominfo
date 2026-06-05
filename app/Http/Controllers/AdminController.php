@@ -13,12 +13,16 @@ class AdminController extends Controller
         $counts = Surat::selectRaw("
             count(*) as total,
             sum(case when status = 'pending' then 1 else 0 end) as pending,
+            sum(case when status = 'diproses' then 1 else 0 end) as diproses,
+            sum(case when status = 'dikirim' then 1 else 0 end) as dikirim,
             sum(case when status = 'selesai' then 1 else 0 end) as selesai
         ")->first();
 
         $stats = [
             'total' => $counts->total ?? 0,
             'pending' => $counts->pending ?? 0,
+            'diproses' => $counts->diproses ?? 0,
+            'dikirim' => $counts->dikirim ?? 0,
             'selesai' => $counts->selesai ?? 0,
         ];
 

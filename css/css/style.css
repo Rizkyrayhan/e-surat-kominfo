@@ -19,9 +19,16 @@
     --status-selesai-text: #059669;
 }
 
+html {
+    height: 100%;
+    overflow: hidden;
+}
+
 body {
     font-family: 'Inter', sans-serif;
     color: var(--text-dark);
+    height: 100%;
+    overflow: hidden;
 }
 
 .bg-light-gray {
@@ -93,15 +100,23 @@ body {
 
 /* Dashboard Layout */
 #wrapper {
-    overflow-x: hidden;
-    min-height: 100vh;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
 }
 
 #sidebar-wrapper {
+    height: 100vh;
     min-height: 100vh;
     width: 250px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1040;
     background-color: var(--primary-blue);
     transition: margin 0.25s ease-out;
+    overflow: hidden; /* Sidebar tidak bisa di-scroll */
+    display: flex;
+    flex-direction: column;
 }
 
 .sidebar-bg {
@@ -109,7 +124,11 @@ body {
 }
 
 #page-content-wrapper {
+    flex: 1;
     min-width: 0;
+    height: 100vh;
+    overflow-y: auto; /* Hanya konten kanan yang bisa di-scroll */
+    overflow-x: hidden;
     background-color: var(--bg-light-gray);
     animation: fadeIn 0.4s ease-out;
 }
@@ -239,10 +258,18 @@ body {
 }
 
 @media (max-width: 991.98px) {
+    #wrapper {
+        height: 100vh;
+        overflow: hidden;
+    }
+
     #sidebar-wrapper {
         margin-left: -250px;
         position: fixed;
-        z-index: 1000;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 1050;
     }
     
     #wrapper.toggled #sidebar-wrapper {
@@ -256,6 +283,12 @@ body {
     
     .navbar-expand-lg .navbar-nav {
         flex-direction: row;
+    }
+    
+    #page-content-wrapper {
+        margin-left: 0;
+        height: 100vh;
+        overflow-y: auto;
     }
     
     .content-area {

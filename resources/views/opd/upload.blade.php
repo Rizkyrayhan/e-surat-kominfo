@@ -37,13 +37,8 @@
                 </div>
 
                 <div class="mb-4">
-                    <label for="tujuan" class="form-label fw-medium small">Tujuan</label>
-                    <select class="form-select @error('tujuan') is-invalid @enderror" id="tujuan" name="tujuan" required>
-                        <option value="" selected disabled>Pilih Instansi Tujuan</option>
-                        <option value="Kementerian Kominfo" {{ old('tujuan') == 'Kementerian Kominfo' ? 'selected' : '' }}>Kementerian Kominfo</option>
-                        <option value="Sekretariat Daerah" {{ old('tujuan') == 'Sekretariat Daerah' ? 'selected' : '' }}>Sekretariat Daerah</option>
-                        <option value="Badan Kepegawaian Daerah" {{ old('tujuan') == 'Badan Kepegawaian Daerah' ? 'selected' : '' }}>Badan Kepegawaian Daerah</option>
-                    </select>
+                    <label for="tujuan" class="form-label fw-medium small">Tujuan Instansi</label>
+                    <input type="text" class="form-control @error('tujuan') is-invalid @enderror" id="tujuan" name="tujuan" value="{{ old('tujuan') }}" placeholder="Tulis instansi tujuan surat..." required>
                     @error('tujuan')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror

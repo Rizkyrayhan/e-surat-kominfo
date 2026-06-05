@@ -93,15 +93,25 @@ body {
 
 /* Dashboard Layout */
 #wrapper {
-    overflow-x: hidden;
+    overflow-x: clip;
     min-height: 100vh;
 }
 
 #sidebar-wrapper {
     min-height: 100vh;
+    height: 100vh;
+    position: sticky;
+    top: 0;
     width: 250px;
+    z-index: 1040;
     background-color: var(--primary-blue);
     transition: margin 0.25s ease-out;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    flex-shrink: 0;
+    align-self: flex-start;
 }
 
 .sidebar-bg {
@@ -110,6 +120,7 @@ body {
 
 #page-content-wrapper {
     min-width: 0;
+    width: 100%;
     background-color: var(--bg-light-gray);
     animation: fadeIn 0.4s ease-out;
 }
@@ -256,6 +267,10 @@ body {
     
     .navbar-expand-lg .navbar-nav {
         flex-direction: row;
+    }
+    
+    #page-content-wrapper {
+        margin-left: 0;
     }
     
     .content-area {

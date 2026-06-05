@@ -40,10 +40,10 @@
                                 <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25">Nonaktif</span>
                             @endif
                         </td>
-                        <td class="text-end pe-4">
-                            <div class="d-flex justify-content-end gap-2">
+                        <td class="text-end pe-4 text-nowrap">
+                            <div class="d-inline-flex justify-content-end gap-1 align-items-center">
                                 <!-- Edit -->
-                                <a href="{{ route('admin.opd-accounts.edit', $account) }}" class="btn btn-sm btn-light text-primary border" title="Edit">
+                                <a href="{{ route('admin.opd-accounts.edit', $account) }}" class="btn btn-sm btn-light text-primary border d-inline-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" title="Edit">
                                     <i class="bi bi-pencil"></i>
                                 </a>
                                 
@@ -51,16 +51,16 @@
                                 <form action="{{ route('admin.opd-accounts.toggle-status', $account) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('PATCH')
-                                    <button type="submit" class="btn btn-sm btn-light border {{ $account->status_akun === 'aktif' ? 'text-warning' : 'text-success' }}" title="{{ $account->status_akun === 'aktif' ? 'Nonaktifkan' : 'Aktifkan' }}">
+                                    <button type="submit" class="btn btn-sm btn-light border {{ $account->status_akun === 'aktif' ? 'text-warning' : 'text-success' }} d-inline-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" title="{{ $account->status_akun === 'aktif' ? 'Nonaktifkan' : 'Aktifkan' }}">
                                         <i class="bi {{ $account->status_akun === 'aktif' ? 'bi-pause-circle' : 'bi-play-circle' }}"></i>
                                     </button>
                                 </form>
-
+ 
                                 <!-- Delete -->
                                 <form action="{{ route('admin.opd-accounts.destroy', $account) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus akun ini?');">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-light text-danger border" title="Hapus">
+                                    <button type="submit" class="btn btn-sm btn-light text-danger border d-inline-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" title="Hapus">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </form>

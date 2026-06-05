@@ -36,10 +36,10 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             if ($user->role === 'admin') {
-                return redirect()->intended('/admin/dashboard');
+                return redirect('/admin/dashboard');
             }
             
-            return redirect()->intended('/opd/dashboard');
+            return redirect('/opd/dashboard');
         }
 
         return back()->withErrors([

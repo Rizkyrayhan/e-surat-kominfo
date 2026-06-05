@@ -1,6 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+    html, body {
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        height: auto !important;
+    }
+</style>
+
     <div class="container-fluid min-vh-100 p-0">
         <div class="row g-0 min-vh-100 flex-column flex-lg-row">
             <!-- Left Side - Illustration/Info -->

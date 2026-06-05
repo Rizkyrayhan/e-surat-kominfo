@@ -73,8 +73,8 @@
         </div>
         <div class="d-flex flex-column flex-md-row gap-2">
 
-            <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 d-flex align-items-center justify-content-center gap-1 btn-responsive"><i class="bi bi-filter"></i> Filter</button>
-            <button class="btn btn-primary btn-sm rounded-pill px-3 d-flex align-items-center justify-content-center gap-1 btn-responsive" style="background-color: #0A256B;"><i class="bi bi-plus-lg"></i> Input Surat Baru</button>
+            <a href="{{ route('admin.history') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-3 d-flex align-items-center justify-content-center gap-1 btn-responsive"><i class="bi bi-filter"></i> Filter</a>
+            <a href="{{ route('admin.surat-keluar.create') }}" class="btn btn-primary btn-sm rounded-pill px-3 d-flex align-items-center justify-content-center gap-1 btn-responsive" style="background-color: #0A256B;"><i class="bi bi-plus-lg"></i> Input Surat Baru</a>
         </div>
     </div>
     <div class="table-responsive">
@@ -91,7 +91,9 @@
             </thead>
             <tbody>
                 @forelse($surats as $surat)
-                <tr id="surat-row-{{ $surat->id }}">
+                <tr id="surat-row-{{ $surat->id }}"
+                    class="clickable-row"
+                    onclick="if(!event.target.closest('a') && !event.target.closest('button')) { window.location.href='{{ route('admin.surat.show', $surat->id) }}'; }">
 
                     <td class="fw-bold text-primary-blue" style="font-size: 0.9rem;">SK - {{ date('Y') }} - {{ str_pad($surat->id, 3, '0', STR_PAD_LEFT) }}</td>
                     <td>
@@ -110,10 +112,10 @@
                             <span class="badge-selesai">Selesai</span>
                         @endif
                     </td>
-                    <td class="pe-4 text-end" onclick="event.stopPropagation();">
-                        <div class="d-flex justify-content-end gap-2">
-                            <a href="{{ route('admin.surat.show', $surat->id) }}" class="btn btn-sm btn-light text-muted rounded-circle" title="Verifikasi"><i class="bi bi-shield-check"></i></a>
-                            <a href="{{ route('download.file', ['path' => $surat->file]) }}" class="btn btn-sm btn-light text-muted rounded-circle" title="Download PDF"><i class="bi bi-download"></i></a>
+                    <td class="pe-4 text-end text-nowrap" onclick="event.stopPropagation();">
+                        <div class="d-inline-flex justify-content-end gap-1 align-items-center">
+                            <a href="{{ route('admin.surat.show', $surat->id) }}" class="btn btn-sm btn-light text-muted rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" title="Verifikasi"><i class="bi bi-shield-check"></i></a>
+                            <a href="{{ route('download.file', ['path' => $surat->file]) }}" class="btn btn-sm btn-light text-muted rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" title="Download PDF"><i class="bi bi-download"></i></a>
                         </div>
                     </td>
                 </tr>

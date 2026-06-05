@@ -31,8 +31,10 @@
             </thead>
             <tbody>
                 @forelse($surats as $surat)
-                <tr id="surat-row-{{ $surat->id }}">
-                    <td class="ps-4">
+                <tr id="surat-row-{{ $surat->id }}"
+                    class="clickable-row"
+                    onclick="if(event.target.type !== 'checkbox' && !event.target.closest('a') && !event.target.closest('button')) { window.location.href='{{ route('opd.surat-masuk.show', $surat->id) }}'; }">
+                    <td class="ps-4" onclick="event.stopPropagation();">
                         <input type="checkbox" class="form-check-input surat-checkbox" value="{{ $surat->id }}">
                     </td>
                     <td class="fw-bold text-primary-blue" style="font-size: 0.9rem;">
@@ -49,13 +51,15 @@
                     </td>
                     <td class="text-muted" style="font-size: 0.9rem;">{{ $surat->tanggal->format('d M Y') }}</td>
                     <td style="font-size: 0.9rem; max-width: 300px;" class="text-truncate">{{ $surat->perihal }}</td>
-                    <td class="pe-4 text-end">
-                        <a href="{{ route('opd.surat-masuk.show', $surat->id) }}" class="btn btn-sm btn-info text-white rounded-pill px-3" style="font-size: 0.8rem;">
-                            <i class="bi bi-eye me-1"></i> Detail
-                        </a>
-                        <a href="{{ route('download.file', ['path' => $surat->file]) }}" class="btn btn-sm btn-light text-muted rounded-circle ms-1" title="Download PDF">
-                            <i class="bi bi-download"></i>
-                        </a>
+                    <td class="pe-4 text-end text-nowrap" onclick="event.stopPropagation();">
+                        <div class="d-inline-flex gap-1 justify-content-end align-items-center">
+                            <a href="{{ route('opd.surat-masuk.show', $surat->id) }}" class="btn btn-sm btn-info text-white rounded-pill px-2 px-md-3 d-inline-flex align-items-center gap-1" style="font-size: 0.8rem;">
+                                <i class="bi bi-eye"></i> <span class="d-none d-md-inline">Detail</span>
+                            </a>
+                            <a href="{{ route('download.file', ['path' => $surat->file]) }}" class="btn btn-sm btn-light text-muted rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 32px; height: 32px;" title="Download PDF">
+                                <i class="bi bi-download"></i>
+                            </a>
+                        </div>
                     </td>
                 </tr>
                 @empty

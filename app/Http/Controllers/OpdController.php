@@ -63,6 +63,12 @@ class OpdController extends Controller
         return response()->json(['success' => false, 'message' => 'Tidak ada surat yang dipilih.'], 400);
     }
 
+    public function show($id)
+    {
+        $surat = Surat::where('user_id', Auth::id())->findOrFail($id);
+        return view('opd.detail', compact('surat'));
+    }
+
     public function create()
     {
         $recentSurats = Surat::where('user_id', Auth::id())->latest()->take(2)->get();

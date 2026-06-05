@@ -3,13 +3,33 @@
 @section('content')
 <style>
     /* Reset & Base */
-    #page-content-wrapper { padding: 0 !important; background-color: #f8fafc; }
-    .content-area { padding: 0 !important; max-width: 100% !important; margin: 0; }
+    html, body {
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        height: auto !important;
+    }
+    #wrapper {
+        display: block !important;
+        height: auto !important;
+        overflow-y: visible !important;
+    }
+    #page-content-wrapper {
+        padding: 0 !important;
+        background-color: #f8fafc;
+        margin-left: 0 !important;
+        height: auto !important;
+        overflow-y: visible !important;
+    }
+    .content-area {
+        padding: 0 !important;
+        max-width: 100% !important;
+        margin: 0;
+        height: auto !important;
+        overflow-y: visible !important;
+    }
     
     /* Hide Default Layout Elements */
-    #wrapper { display: block; }
     #sidebar-wrapper, #menu-toggle, nav.navbar:not(.landing-nav) { display: none !important; }
-    #wrapper.d-flex { display: block !important; }
 
     /* Custom Variables */
     :root {
