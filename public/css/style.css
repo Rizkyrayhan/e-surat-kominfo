@@ -33,6 +33,7 @@ tr.clickable-row:active td {
 
 html {
     height: 100%;
+    height: 100dvh;
     overflow: hidden;
 }
 
@@ -40,6 +41,7 @@ body {
     font-family: 'Inter', sans-serif;
     color: var(--text-dark);
     height: 100%;
+    height: 100dvh;
     overflow: hidden;
 }
 
@@ -114,12 +116,15 @@ body {
 #wrapper {
     display: flex;
     height: 100vh;
+    height: 100dvh;
     overflow: hidden;
 }
 
 #sidebar-wrapper {
     height: 100vh;
+    height: 100dvh;
     min-height: 100vh;
+    min-height: 100dvh;
     width: 250px;
     flex-shrink: 0;
     position: relative;
@@ -129,6 +134,15 @@ body {
     overflow: hidden; /* Sidebar tidak bisa di-scroll */
     display: flex;
     flex-direction: column;
+}
+
+#sidebar-wrapper .list-group {
+    overflow-y: auto;
+    scrollbar-width: none; /* Firefox */
+}
+
+#sidebar-wrapper .list-group::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
 }
 
 #sidebar-wrapper::-webkit-scrollbar {
@@ -143,6 +157,7 @@ body {
     flex: 1;
     min-width: 0;
     height: 100vh;
+    height: 100dvh;
     overflow-y: auto; /* Hanya konten kanan yang bisa di-scroll */
     overflow-x: hidden;
     background-color: var(--bg-light-gray);
@@ -342,6 +357,7 @@ body {
 @media (max-width: 991.98px) {
     #wrapper {
         height: 100vh;
+        height: 100dvh;
         overflow: hidden;
     }
 
@@ -350,7 +366,8 @@ body {
         position: fixed !important;
         top: 0;
         left: 0;
-        height: 100vh;
+        bottom: 0;
+        height: auto !important;
         z-index: 1050 !important;
     }
     
@@ -376,6 +393,7 @@ body {
     #page-content-wrapper {
         margin-left: 0;
         height: 100vh;
+        height: 100dvh;
         overflow-y: auto;
     }
     

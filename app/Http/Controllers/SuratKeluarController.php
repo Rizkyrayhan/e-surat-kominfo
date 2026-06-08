@@ -40,8 +40,10 @@ class SuratKeluarController extends Controller
             return back()->withErrors(['file_pdf' => 'Format file wajib .PDF'])->withInput();
         }
 
-        $filename = $file->getClientOriginalName();
-        $filePath = $file->storeAs('surat_keluar', $filename, 's3');
+        $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $extension = $file->getClientOriginalExtension();
+        $safeName = time() . '_' . \Illuminate\Support\Str::slug($originalName) . '.' . $extension;
+        $filePath = $file->storeAs('surat_keluar', $safeName, 's3');
 
         foreach ($request->tujuan_opd_ids as $opdId) {
             SuratKeluar::create([

@@ -56,17 +56,21 @@
         /* ===== CRITICAL LAYOUT FIX: Sidebar Fixed, Content Scrolls ===== */
         html, body {
             height: 100% !important;
+            height: 100dvh !important;
             overflow: hidden !important;
             margin: 0 !important;
         }
         #wrapper {
             display: flex !important;
             height: 100vh !important;
+            height: 100dvh !important;
             overflow: hidden !important;
         }
         #sidebar-wrapper {
             height: 100vh !important;
+            height: 100dvh !important;
             min-height: 100vh !important;
+            min-height: 100dvh !important;
             width: 250px !important;
             flex-shrink: 0 !important;
             overflow: hidden !important;
@@ -74,9 +78,17 @@
             flex-direction: column !important;
             position: relative !important;
         }
+        #sidebar-wrapper .list-group {
+            overflow-y: auto !important;
+            scrollbar-width: none !important; /* Firefox */
+        }
+        #sidebar-wrapper .list-group::-webkit-scrollbar {
+            display: none !important; /* Chrome, Safari, Opera */
+        }
         #page-content-wrapper {
             flex: 1 !important;
             height: 100vh !important;
+            height: 100dvh !important;
             overflow-y: auto !important;
             overflow-x: hidden !important;
             min-width: 0 !important;
@@ -90,7 +102,8 @@
                 position: fixed !important;
                 top: 0 !important;
                 left: 0 !important;
-                height: 100vh !important;
+                bottom: 0 !important;
+                height: auto !important;
                 z-index: 1050 !important;
                 margin-left: -250px;
                 transition: margin 0.25s ease-out;

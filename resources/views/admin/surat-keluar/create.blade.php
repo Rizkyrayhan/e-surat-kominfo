@@ -338,12 +338,10 @@
             form.addEventListener('submit', function() {
                 if (form.checkValidity()) {
                     loadingOverlay.classList.remove('d-none');
+                    loadingOverlay.classList.add('d-flex');
                     const submitBtn = form.querySelector('button[type="submit"]');
                     if (submitBtn) {
                         submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Mengirim...';
-                        setTimeout(() => {
-                            submitBtn.disabled = true;
-                        }, 50);
                     }
                 }
             });
@@ -352,7 +350,7 @@
 </script>
 
 <!-- Loading Overlay -->
-<div id="loading-overlay" class="d-none position-fixed top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center" style="background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(8px); z-index: 9999; transition: all 0.3s ease;">
+<div id="loading-overlay" class="d-none position-fixed top-0 start-0 w-100 h-100 flex-column justify-content-center align-items-center" style="background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(8px); z-index: 9999; transition: all 0.3s ease;">
     <div class="d-flex flex-column align-items-center">
         <div class="spinner-border mb-3" role="status" style="width: 3.5rem; height: 3.5rem; border-width: 0.25em; color: #0A256B !important;">
             <span class="visually-hidden">Loading...</span>

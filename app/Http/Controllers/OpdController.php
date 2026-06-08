@@ -90,8 +90,10 @@ class OpdController extends Controller
             return back()->withErrors(['file' => 'Format file wajib .PDF'])->withInput();
         }
 
-        $filename = $file->getClientOriginalName();
-        $filePath = $file->storeAs('surat', $filename, 's3');
+        $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $extension = $file->getClientOriginalExtension();
+        $safeName = time() . '_' . \Illuminate\Support\Str::slug($originalName) . '.' . $extension;
+        $filePath = $file->storeAs('surat', $safeName, 's3');
 
         Surat::create([
             'user_id' => Auth::id(),
