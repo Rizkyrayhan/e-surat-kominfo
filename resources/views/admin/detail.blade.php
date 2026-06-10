@@ -34,7 +34,8 @@
             <div class="row g-4 mb-4">
                 <div class="col-sm-6">
                     <p class="text-muted small mb-1 fw-medium">Pengirim (OPD)</p>
-                    <p class="fw-semibold text-dark mb-0">{{ $surat->user->name }}</p>
+                    <p class="fw-semibold text-dark mb-0">{{ $surat->user->nama_instansi ?: $surat->user->name }}</p>
+                    <span class="text-muted small d-block" style="font-size: 0.8rem; margin-top: 2px;">Akun: {{ $surat->user->name }}</span>
                 </div>
                 <div class="col-sm-6">
                     <p class="text-muted small mb-1 fw-medium">Nomor Surat Asli</p>
@@ -108,7 +109,7 @@
                     <div class="position-absolute bg-primary rounded-circle" style="width: 14px; height: 14px; left: -9px; top: 0;"></div>
                     <div class="ps-3">
                         <h6 class="fw-bold mb-1 fs-6">Surat Dikirim</h6>
-                        <p class="text-muted small mb-1">Oleh {{ $surat->user->name }}</p>
+                        <p class="text-muted small mb-1">Oleh {{ $surat->user->nama_instansi ?: $surat->user->name }}</p>
                         <span class="text-primary small fw-medium">{{ $surat->created_at->format('d M Y, H:i') }}</span>
                     </div>
                 </div>

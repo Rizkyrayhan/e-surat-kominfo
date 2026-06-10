@@ -18,10 +18,11 @@ class DatabaseSeeder extends Seeder
     {
         // Admin Kominfo
         User::create([
-            'name' => 'Admin Kominfo',
+            'name' => 'Dinas Komunikasi dan Informatika Bandar Lampung',
             'email' => 'admin@kominfo.go.id',
             'password' => Hash::make('password'),
             'role' => 'admin',
+            'nama_instansi' => 'Dinas Komunikasi dan Informatika Bandar Lampung',
         ]);
 
         // Admin OPD

@@ -67,6 +67,9 @@
                                                     {{ $category->created_at ? $category->created_at->format('d M Y, H:i') : '-' }}
                                                 </td>
                                                 <td class="text-end pe-4 text-nowrap">
+                                                    <button type="button" class="btn btn-sm btn-outline-primary border-0 rounded-circle me-1" title="Edit Kategori" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ $category->id }}" style="width: 32px; height: 32px; padding: 0;">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </button>
                                                     <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori ini? Instansi yang terhubung dengan kategori ini akan berubah menjadi Tanpa Kategori.');">
                                                         @csrf
                                                         @method('DELETE')
@@ -74,6 +77,32 @@
                                                             <i class="bi bi-trash"></i>
                                                         </button>
                                                     </form>
+
+                                                    <!-- Edit Category Modal -->
+                                                    <div class="modal fade" id="editCategoryModal{{ $category->id }}" tabindex="-1" aria-hidden="true" style="white-space: normal;">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header border-bottom-0 pb-0 pt-4 px-4">
+                                                                    <h5 class="modal-title fw-bold text-dark">Edit Kategori</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <form action="{{ route('admin.categories.update', $category) }}" method="POST">
+                                                                    @csrf
+                                                                    @method('PUT')
+                                                                    <div class="modal-body text-start p-4">
+                                                                        <div class="mb-3">
+                                                                            <label for="edit_nama_kategori_{{ $category->id }}" class="form-label fw-medium small text-dark">Nama Kategori</label>
+                                                                            <input type="text" class="form-control" id="edit_nama_kategori_{{ $category->id }}" name="nama_kategori" value="{{ $category->nama_kategori }}" required>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer border-top-0 px-4 pb-4 pt-0">
+                                                                        <button type="button" class="btn btn-light fw-medium px-4" data-bs-dismiss="modal">Batal</button>
+                                                                        <button type="submit" class="btn btn-primary fw-medium px-4">Simpan Perubahan</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                             </tr>
                                             @empty

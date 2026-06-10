@@ -19,6 +19,9 @@
                 <p class="text-muted small mb-1">Email Terdaftar</p>
                 <p class="fw-medium mb-3">{{ $user->email }}</p>
                 
+                <p class="text-muted small mb-1">Instansi</p>
+                <p class="fw-medium mb-3">{{ $user->role === 'admin' ? 'Dinas Komunikasi dan Informatika Bandar Lampung' : ($user->nama_instansi ?: '-') }}</p>
+                
                 <p class="text-muted small mb-1">Bergabung Sejak</p>
                 <p class="fw-medium mb-0">{{ $user->created_at->format('d F Y') }}</p>
             </div>
@@ -41,6 +44,10 @@
                     <div class="col-12">
                         <label class="form-label text-muted small fw-bold">Role / Peran</label>
                         <input type="text" class="form-control bg-light border-0" value="{{ $user->role === 'admin' ? 'Administrator Sistem' : 'Staff Admin OPD' }}" readonly>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label text-muted small fw-bold">Instansi / Unit Kerja</label>
+                        <input type="text" class="form-control bg-light border-0" value="{{ $user->role === 'admin' ? 'Dinas Komunikasi dan Informatika Bandar Lampung' : ($user->nama_instansi ?: '-') }}" readonly>
                     </div>
                 </div>
                 

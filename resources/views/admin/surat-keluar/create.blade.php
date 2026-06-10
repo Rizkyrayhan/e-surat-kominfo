@@ -78,7 +78,7 @@
                                                 <div class="form-check p-2 border rounded cursor-pointer d-flex align-items-center gap-2 opd-card" style="transition: all 0.2s; cursor: pointer; border-color: #e9ecef !important; background-color: #f8f9fa;">
                                                     <input class="form-check-input ms-0 opd-checkbox" type="checkbox" name="tujuan_opd_ids[]" value="{{ $opd->id }}" id="opd_{{ $opd->id }}" style="cursor: pointer; width: 1.15rem; height: 1.15rem; margin-top: 0;">
                                                     <label class="form-check-label small fw-semibold text-dark flex-grow-1 mb-0 cursor-pointer" for="opd_{{ $opd->id }}" style="user-select: none;">
-                                                        {{ $opd->name }}
+                                                        {{ $opd->nama_instansi ?: $opd->name }}
                                                     </label>
                                                 </div>
                                             </div>

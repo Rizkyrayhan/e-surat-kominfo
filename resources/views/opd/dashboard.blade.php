@@ -132,7 +132,7 @@
                             <span class="text-dark fw-medium" style="font-size: 0.9rem;">{{ $surat->tujuan }}</span>
                         </div>
                     </td>
-                    <td class="text-muted" style="font-size: 0.9rem;">{{ $surat->tanggal->format('d M Y, H:i') }}</td>
+                    <td class="text-muted" style="font-size: 0.9rem;">{{ $surat->created_at->format('d M Y, H:i') }}</td>
                     <td>
                         @if($surat->status === 'pending')
                             <span class="badge-pending">Pending</span>

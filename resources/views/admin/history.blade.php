@@ -44,8 +44,8 @@
                         </td>
                         <td class="fw-bold text-primary-blue">{{ $surat->nomor_surat }}</td>
                         <td>
-                            <div class="fw-medium text-dark">{{ $surat->user->name }}</div>
-                            <small class="text-muted">ID: #{{ $surat->user_id }}</small>
+                            <div class="fw-medium text-dark">{{ $surat->user->nama_instansi ?: $surat->user->name }}</div>
+                            <small class="text-muted">Akun: {{ $surat->user->name }}</small>
                         </td>
                         <td>{{ $surat->tujuan }}</td>
                         <td class="text-muted">{{ $surat->tanggal->format('d M Y') }}</td>

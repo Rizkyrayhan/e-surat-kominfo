@@ -72,18 +72,26 @@ class OpdController extends Controller
     public function create()
     {
         $recentSurats = Surat::where('user_id', Auth::id())->latest()->take(2)->get();
-        return view('opd.upload', compact('recentSurats'));
+        $categories = \App\Models\Category::with(['accounts' => function($q) {
+            $q->where('role', 'opd')->where('id', '!=', Auth::id())->orderBy('name');
+        }])->orderBy('id')->get();
+        return view('opd.upload', compact('recentSurats', 'categories'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'nomor_surat' => 'required|string|max:255',
-            'tujuan' => 'required|string|max:255',
             'tanggal' => 'required|date',
             'keterangan' => 'nullable|string',
             'file' => 'required|file|max:10240', // 10MB max PDF
+            'tujuan_opd_ids' => 'nullable|array',
+            'tujuan_opd_ids.*' => 'exists:users,id',
         ]);
+
+        if (!$request->has('kirim_admin') && empty($request->tujuan_opd_ids)) {
+            return back()->withErrors(['tujuan_opd_ids' => 'Pilih minimal satu tujuan surat (Admin atau OPD).'])->withInput();
+        }
 
         $file = $request->file('file');
         if (strtolower($file->getClientOriginalExtension()) !== 'pdf') {
@@ -95,15 +103,44 @@ class OpdController extends Controller
         $safeName = time() . '_' . \Illuminate\Support\Str::slug($originalName) . '.' . $extension;
         $filePath = $file->storeAs('surat', $safeName, 's3');
 
+        $tujuanArray = [];
+        $kirimAdmin = $request->has('kirim_admin');
+        
+        if ($kirimAdmin) {
+            $tujuanArray[] = 'Dinas Komunikasi dan Informatika Bandar Lampung';
+        }
+
+        if (!empty($request->tujuan_opd_ids)) {
+            $opds = \App\Models\User::whereIn('id', $request->tujuan_opd_ids)->pluck('name')->toArray();
+            $tujuanArray = array_merge($tujuanArray, $opds);
+        }
+
+        $tujuanString = implode(', ', $tujuanArray);
+
+        // Create Surat (Sender's Outbox & Admin Inbox)
         Surat::create([
             'user_id' => Auth::id(),
             'nomor_surat' => $request->nomor_surat,
-            'tujuan' => $request->tujuan,
+            'tujuan' => $tujuanString,
             'tanggal' => $request->tanggal,
             'keterangan' => $request->keterangan,
             'file' => $filePath,
-            'status' => 'pending',
+            'status' => $kirimAdmin ? 'pending' : 'selesai',
         ]);
+
+        // Create SuratKeluar (OPD Inbox)
+        if (!empty($request->tujuan_opd_ids)) {
+            foreach ($request->tujuan_opd_ids as $opdId) {
+                \App\Models\SuratKeluar::create([
+                    'nomor_surat' => $request->nomor_surat,
+                    'tanggal' => $request->tanggal,
+                    'tujuan_opd_id' => $opdId,
+                    'perihal' => $request->keterangan ?? 'Surat dari OPD',
+                    'file' => $filePath,
+                    'created_by' => Auth::id(),
+                ]);
+            }
+        }
 
         return redirect()->route('opd.dashboard')->with('success', 'Surat berhasil diupload.');
     }

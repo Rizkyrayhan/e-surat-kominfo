@@ -98,7 +98,7 @@
                     <td class="fw-bold text-primary-blue" style="font-size: 0.9rem;">SK - {{ date('Y') }} - {{ str_pad($surat->id, 3, '0', STR_PAD_LEFT) }}</td>
                     <td>
                         <div class="fw-bold text-dark" style="font-size: 0.95rem;">{{ $surat->keterangan ?? 'Perihal tidak diisi' }}</div>
-                        <div class="text-muted small">{{ $surat->user->name }}</div>
+                        <div class="text-muted small">{{ $surat->user->nama_instansi ?: $surat->user->name }}</div>
                     </td>
                     <td class="text-muted" style="font-size: 0.9rem;">{{ $surat->created_at->format('d M Y, H:i') }}</td>
                     <td>

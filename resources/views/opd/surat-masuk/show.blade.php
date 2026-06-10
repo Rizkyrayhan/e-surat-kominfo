@@ -34,7 +34,13 @@
                 </div>
                 <div class="col-sm-6">
                     <p class="text-muted small mb-1 fw-medium">Pengirim</p>
-                    <p class="fw-semibold text-dark mb-0">Admin Kominfo ({{ $surat->pengirim->name }})</p>
+                    <p class="fw-semibold text-dark mb-0">
+                        @if($surat->pengirim->role === 'admin')
+                            Dinas Komunikasi dan Informatika Bandar Lampung
+                        @else
+                            {{ $surat->pengirim->nama_instansi ?: $surat->pengirim->name }}
+                        @endif
+                    </p>
                 </div>
                 <div class="col-sm-6">
                     <p class="text-muted small mb-1 fw-medium">Tanggal Surat</p>
@@ -85,7 +91,7 @@
                 </div>
                 <div>
                     <div class="fw-bold text-dark">Diterima & Dibaca</div>
-                    <div class="text-muted small">Status: Terkirim dari Kominfo</div>
+                    <div class="text-muted small">Status: Terkirim dari {{ $surat->pengirim->role === 'admin' ? 'Dinas Komunikasi dan Informatika Bandar Lampung' : ($surat->pengirim->nama_instansi ?: $surat->pengirim->name) }}</div>
                 </div>
             </div>
             <div class="mt-3 pt-3 border-top">
@@ -103,8 +109,8 @@
                 <div class="position-relative mb-4 pb-2">
                     <div class="position-absolute bg-primary rounded-circle" style="width: 14px; height: 14px; left: -9px; top: 0;"></div>
                     <div class="ps-3">
-                        <h6 class="fw-bold mb-1 fs-6">Surat Dikirim Kominfo</h6>
-                        <p class="text-muted small mb-1">Oleh Admin Kominfo</p>
+                        <h6 class="fw-bold mb-1 fs-6">Surat Dikirim {{ $surat->pengirim->role === 'admin' ? 'Dinas Komunikasi dan Informatika Bandar Lampung' : ($surat->pengirim->nama_instansi ?: $surat->pengirim->name) }}</h6>
+                        <p class="text-muted small mb-1">Oleh {{ $surat->pengirim->role === 'admin' ? 'Dinas Komunikasi dan Informatika Bandar Lampung' : ($surat->pengirim->nama_instansi ?: $surat->pengirim->name) }}</p>
                         <span class="text-primary small fw-medium">{{ $surat->created_at->format('d M Y, H:i') }}</span>
                     </div>
                 </div>

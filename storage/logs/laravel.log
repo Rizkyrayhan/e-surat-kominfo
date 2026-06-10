@@ -3253,3 +3253,20 @@ Did you mean one of these?
 #21 C:\\laragon\\www\\e-surat-kominfo\\scratch\\test_categories.php(7): Illuminate\\Database\\Eloquent\\Builder->get()
 #22 {main}
 "} 
+[2026-06-10 13:21:06] laravel.EMERGENCY: Unable to create configured logger. Using emergency logger. {"exception":"[object] (InvalidArgumentException(code: 0): Log [] is not defined. at C:\\laragon\\www\\e-surat-kominfo\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php:210)
+[stacktrace]
+#0 C:\\laragon\\www\\e-surat-kominfo\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(135): Illuminate\\Log\\LogManager->resolve(NULL, NULL)
+#1 C:\\laragon\\www\\e-surat-kominfo\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(122): Illuminate\\Log\\LogManager->get(NULL)
+#2 C:\\laragon\\www\\e-surat-kominfo\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(645): Illuminate\\Log\\LogManager->driver()
+#3 C:\\laragon\\www\\e-surat-kominfo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(274): Illuminate\\Log\\LogManager->error('Namespace decla...', Array)
+#4 C:\\laragon\\www\\e-surat-kominfo\\vendor\\nunomaduro\\collision\\src\\Adapters\\Laravel\\ExceptionHandler.php(46): Illuminate\\Foundation\\Exceptions\\Handler->report(Object(Symfony\\Component\\ErrorHandler\\Error\\FatalError))
+#5 C:\\laragon\\www\\e-surat-kominfo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php(198): NunoMaduro\\Collision\\Adapters\\Laravel\\ExceptionHandler->report(Object(Symfony\\Component\\ErrorHandler\\Error\\FatalError))
+#6 C:\\laragon\\www\\e-surat-kominfo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php(246): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleException(Object(Symfony\\Component\\ErrorHandler\\Error\\FatalError))
+#7 C:\\laragon\\www\\e-surat-kominfo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php(270): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleShutdown()
+#8 [internal function]: Illuminate\\Foundation\\Bootstrap\\HandleExceptions->{closure:Illuminate\\Foundation\\Bootstrap\\HandleExceptions::forwardsTo():269}()
+#9 {main}
+"} 
+[2026-06-10 13:21:06] laravel.ERROR: Namespace declaration statement has to be the very first statement or after any declare call in the script {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Namespace declaration statement has to be the very first statement or after any declare call in the script at C:\\laragon\\www\\e-surat-kominfo\\app\\Providers\\AppServiceProvider.php:3)
+[stacktrace]
+#0 {main}
+"} 

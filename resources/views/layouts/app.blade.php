@@ -157,7 +157,7 @@
                         <i class="bi bi-envelope-plus me-2"></i> Kirim Surat
                     </a>
                     <a href="{{ route('opd.surat-masuk.index') }}" class="list-group-item list-group-item-action bg-transparent text-white {{ request()->routeIs('opd.surat-masuk.*') ? 'active-sidebar' : '' }}">
-                        <i class="bi bi-envelope-check me-2"></i> Surat Masuk Kominfo
+                        <i class="bi bi-envelope-check me-2"></i> Surat Masuk
                     </a>
                 @endif
                 <a href="{{ Auth::user()->role === 'admin' ? route('admin.history') : route('opd.history') }}" class="list-group-item list-group-item-action bg-transparent text-white {{ request()->routeIs('admin.history') || request()->routeIs('opd.history') ? 'active-sidebar' : '' }}">
@@ -269,6 +269,11 @@
                         <div class="d-flex align-items-center border-start ps-4">
                             <div class="text-end me-3 d-none d-sm-block">
                                 <div class="fw-bold text-dark">{{ Auth::user()->name }}</div>
+                                @if(Auth::user()->role === 'admin')
+                                    <div class="text-secondary fw-medium" style="font-size: 0.75rem;">Dinas Komunikasi dan Informatika Bandar Lampung</div>
+                                @elseif(Auth::user()->nama_instansi)
+                                    <div class="text-secondary fw-medium" style="font-size: 0.75rem;">{{ Auth::user()->nama_instansi }}</div>
+                                @endif
                                 <div class="text-muted" style="font-size: 0.8rem;">{{ Auth::user()->email }}</div>
                             </div>
                             <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=EBF4FF&color=1E3A8A" alt="Profile" class="rounded-circle" width="40" height="40">
