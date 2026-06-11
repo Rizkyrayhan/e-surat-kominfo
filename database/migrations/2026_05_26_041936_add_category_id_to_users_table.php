@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('category_id')->nullable()->constrained('categories')->nullOnDelete();
-        });
+        if (!Schema::hasColumn('users', 'category_id')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->foreignId('category_id')->nullable()->constrained('categories')->nullOnDelete();
+            });
+        }
     }
 
     /**
@@ -25,9 +27,11 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign(['category_id']);
-            $table->dropColumn('category_id');
-        });
+        if (Schema::hasColumn('users', 'category_id')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->dropForeign(['category_id']);
+                $table->dropColumn('category_id');
+            });
+        }
     }
 };

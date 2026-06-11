@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('surat_keluar', function (Blueprint $table) {
-            $table->boolean('is_read')->default(false)->after('file');
-        });
+        if (!Schema::hasColumn('surat_keluar', 'is_read')) {
+            Schema::table('surat_keluar', function (Blueprint $table) {
+                $table->boolean('is_read')->default(false)->after('file');
+            });
+        }
     }
 
     /**
@@ -25,8 +27,10 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('surat_keluar', function (Blueprint $table) {
-            $table->dropColumn('is_read');
-        });
+        if (Schema::hasColumn('surat_keluar', 'is_read')) {
+            Schema::table('surat_keluar', function (Blueprint $table) {
+                $table->dropColumn('is_read');
+            });
+        }
     }
 };

@@ -268,7 +268,7 @@
 
                         <div class="d-flex align-items-center border-start ps-4">
                             <div class="text-end me-3 d-none d-sm-block">
-                                <div class="fw-bold text-dark">{{ Auth::user()->name }}</div>
+                                <div class="fw-bold text-dark">{{ Auth::user()->role === 'admin' ? 'Administrator' : Auth::user()->name }}</div>
                                 @if(Auth::user()->role === 'admin')
                                     <div class="text-secondary fw-medium" style="font-size: 0.75rem;">Dinas Komunikasi dan Informatika Bandar Lampung</div>
                                 @elseif(Auth::user()->nama_instansi)
@@ -276,7 +276,7 @@
                                 @endif
                                 <div class="text-muted" style="font-size: 0.8rem;">{{ Auth::user()->email }}</div>
                             </div>
-                            <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=EBF4FF&color=1E3A8A" alt="Profile" class="rounded-circle" width="40" height="40">
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->role === 'admin' ? 'Administrator' : Auth::user()->name) }}&background=EBF4FF&color=1E3A8A" alt="Profile" class="rounded-circle" width="40" height="40">
                         </div>
                     </div>
                 </div>

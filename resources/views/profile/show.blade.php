@@ -9,8 +9,8 @@
 <div class="row">
     <div class="col-lg-4">
         <div class="stat-card p-4 text-center mb-4">
-            <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=EBF4FF&color=1E3A8A&size=128" alt="Profile" class="rounded-circle mb-3 shadow-sm border border-4 border-white">
-            <h4 class="fw-bold text-dark mb-1">{{ $user->name }}</h4>
+            <img src="https://ui-avatars.com/api/?name={{ urlencode($user->role === 'admin' ? 'Administrator' : $user->name) }}&background=EBF4FF&color=1E3A8A&size=128" alt="Profile" class="rounded-circle mb-3 shadow-sm border border-4 border-white">
+            <h4 class="fw-bold text-dark mb-1">{{ $user->role === 'admin' ? 'Administrator' : $user->name }}</h4>
             <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill text-uppercase small fw-bold">
                 {{ $user->role === 'admin' ? 'Administrator' : 'Admin OPD' }}
             </span>
@@ -35,7 +35,7 @@
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label text-muted small fw-bold">Nama Lengkap</label>
-                        <input type="text" class="form-control bg-light border-0" value="{{ $user->name }}" readonly>
+                        <input type="text" class="form-control bg-light border-0" value="{{ $user->role === 'admin' ? 'Administrator' : $user->name }}" readonly>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label text-muted small fw-bold">Alamat Email</label>

@@ -35,8 +35,8 @@
                     <td class="ps-4 fw-bold text-primary-blue" style="font-size: 0.9rem;">{{ $surat->nomor_surat }}</td>
                     <td>
                         <div class="d-flex align-items-center">
-                            <img src="https://ui-avatars.com/api/?name={{ urlencode($surat->tujuanOpd->name) }}&background=EBF4FF&color=1E3A8A" alt="OPD" class="rounded-circle me-2" width="24" height="24">
-                            <span class="text-dark fw-medium" style="font-size: 0.9rem;">{{ $surat->tujuanOpd->name }}</span>
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode($surat->tujuanOpd->nama_instansi ?: $surat->tujuanOpd->name) }}&background=EBF4FF&color=1E3A8A" alt="OPD" class="rounded-circle me-2" width="24" height="24">
+                            <span class="text-dark fw-medium" style="font-size: 0.9rem;">{{ $surat->tujuanOpd->nama_instansi ?: $surat->tujuanOpd->name }}</span>
                         </div>
                     </td>
                     <td class="text-muted" style="font-size: 0.9rem;">{{ $surat->tanggal->format('d M Y') }}</td>

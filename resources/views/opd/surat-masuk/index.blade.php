@@ -46,7 +46,7 @@
                     <td>
                         <div class="d-flex align-items-center">
                             <span class="badge bg-primary bg-opacity-10 text-primary rounded-1 px-2 py-1 small fw-bold me-2">KOMINFO</span>
-                            <span class="text-dark fw-medium" style="font-size: 0.9rem;">{{ $surat->pengirim->name }}</span>
+                            <span class="text-dark fw-medium" style="font-size: 0.9rem;">{{ $surat->pengirim->role === 'admin' ? 'Dinas Komunikasi dan Informatika Bandar Lampung' : ($surat->pengirim->nama_instansi ?: $surat->pengirim->name) }}</span>
                         </div>
                     </td>
                     <td class="text-muted" style="font-size: 0.9rem;">{{ $surat->tanggal->format('d M Y') }}</td>

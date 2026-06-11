@@ -111,7 +111,10 @@ class OpdController extends Controller
         }
 
         if (!empty($request->tujuan_opd_ids)) {
-            $opds = \App\Models\User::whereIn('id', $request->tujuan_opd_ids)->pluck('name')->toArray();
+            $opds = \App\Models\User::whereIn('id', $request->tujuan_opd_ids)
+                ->get()
+                ->map(fn($u) => $u->nama_instansi ?: $u->name)
+                ->toArray();
             $tujuanArray = array_merge($tujuanArray, $opds);
         }
 

@@ -14,8 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('nama_instansi')->nullable()->after('name');
-            $table->enum('status_akun', ['aktif', 'nonaktif'])->default('aktif')->after('role');
+            if (!Schema::hasColumn('users', 'nama_instansi')) {
+                $table->string('nama_instansi')->nullable()->after('name');
+            }
+            if (!Schema::hasColumn('users', 'status_akun')) {
+                $table->enum('status_akun', ['aktif', 'nonaktif'])->default('aktif')->after('role');
+            }
         });
     }
 
@@ -27,7 +31,16 @@ return new class extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['nama_instansi', 'status_akun']);
+            $columnsToDrop = [];
+            if (Schema::hasColumn('users', 'nama_instansi')) {
+                $columnsToDrop[] = 'nama_instansi';
+            }
+            if (Schema::hasColumn('users', 'status_akun')) {
+                $columnsToDrop[] = 'status_akun';
+            }
+            if (!empty($columnsToDrop)) {
+                $table->dropColumn($columnsToDrop);
+            }
         });
     }
 };

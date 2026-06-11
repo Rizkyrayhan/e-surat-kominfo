@@ -30,7 +30,7 @@
                 </div>
                 <div class="col-sm-6">
                     <p class="text-muted small mb-1 fw-medium">Tujuan OPD</p>
-                    <p class="fw-semibold text-dark mb-0">{{ $surat->tujuanOpd->name ?? '-' }}</p>
+                    <p class="fw-semibold text-dark mb-0">{{ $surat->tujuanOpd->nama_instansi ?: ($surat->tujuanOpd->name ?? '-') }}</p>
                 </div>
                 <div class="col-sm-6">
                     <p class="text-muted small mb-1 fw-medium">Tanggal Surat</p>
@@ -86,10 +86,10 @@
         <div class="stat-card p-4 mb-4">
             <h5 class="fw-bold text-primary-blue mb-3">Info Penerima</h5>
             <div class="d-flex align-items-center gap-3 p-3 bg-light rounded-3">
-                <img src="https://ui-avatars.com/api/?name={{ urlencode($surat->tujuanOpd->name ?? 'OPD') }}&background=EBF4FF&color=1E3A8A"
+                <img src="https://ui-avatars.com/api/?name={{ urlencode($surat->tujuanOpd->nama_instansi ?: ($surat->tujuanOpd->name ?? 'OPD')) }}&background=EBF4FF&color=1E3A8A"
                      alt="OPD" class="rounded-circle" width="48" height="48">
                 <div>
-                    <div class="fw-bold text-dark">{{ $surat->tujuanOpd->name ?? '-' }}</div>
+                    <div class="fw-bold text-dark">{{ $surat->tujuanOpd->nama_instansi ?: ($surat->tujuanOpd->name ?? '-') }}</div>
                     <div class="text-muted small">{{ $surat->tujuanOpd->email ?? '' }}</div>
                 </div>
             </div>
@@ -123,7 +123,7 @@
                 <div class="position-relative mb-4">
                     <div class="position-absolute bg-success rounded-circle" style="width: 14px; height: 14px; left: -9px; top: 0;"></div>
                     <div class="ps-3">
-                        <h6 class="fw-bold mb-1 fs-6">Terkirim ke {{ $surat->tujuanOpd->name ?? 'OPD' }}</h6>
+                        <h6 class="fw-bold mb-1 fs-6">Terkirim ke {{ $surat->tujuanOpd->nama_instansi ?: ($surat->tujuanOpd->name ?? 'OPD') }}</h6>
                         <p class="text-muted small mb-0">Otomatis saat surat dibuat</p>
                     </div>
                 </div>

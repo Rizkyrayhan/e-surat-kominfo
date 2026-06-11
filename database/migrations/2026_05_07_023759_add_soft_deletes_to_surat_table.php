@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('surat', function (Blueprint $table) {
-            $table->softDeletes();
-        });
+        if (!Schema::hasColumn('surat', 'deleted_at')) {
+            Schema::table('surat', function (Blueprint $table) {
+                $table->softDeletes();
+            });
+        }
     }
 
     /**
@@ -25,8 +27,10 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('surat', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });
+        if (Schema::hasColumn('surat', 'deleted_at')) {
+            Schema::table('surat', function (Blueprint $table) {
+                $table->dropSoftDeletes();
+            });
+        }
     }
 };
