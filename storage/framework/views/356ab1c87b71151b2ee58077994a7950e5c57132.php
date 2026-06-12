@@ -11,7 +11,7 @@
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="{{ asset('css/style.css') }}?v={{ time() }}" rel="stylesheet">
+    <link href="<?php echo e(asset('css/style.css')); ?>?v=<?php echo e(time()); ?>" rel="stylesheet">
     <style>
         /* Force styling for the notification pop-up chat bubble */
         .notification-popup-toast {
@@ -121,55 +121,55 @@
     </style>
 </head>
 <body class="bg-light-gray">
-    @auth
+    <?php if(auth()->guard()->check()): ?>
     <div class="d-flex" id="wrapper">
         <!-- Sidebar -->
         <div class="sidebar-bg text-white" id="sidebar-wrapper">
             <div class="sidebar-heading text-center py-4 fs-5 fw-bold border-bottom border-light border-opacity-10">
                 <div class="bg-white rounded-circle p-2 d-inline-flex align-items-center justify-content-center mb-2 shadow-sm" style="width: 56px; height: 56px;">
-                    <img src="{{ asset('images/logo-pemkot.svg') }}" alt="Logo Kominfo" style="width: 40px; height: auto;">
+                    <img src="<?php echo e(asset('images/logo-pemkot.svg')); ?>" alt="Logo Kominfo" style="width: 40px; height: auto;">
                 </div>
                 <div class="d-block">E-SURAT</div>
                 <div class="fs-6 fw-normal opacity-75" style="font-size: 0.8rem !important;">INTERNAL MANAGEMENT</div>
             </div>
             <div class="list-group list-group-flush my-3 flex-grow-1">
-                @if(Auth::user()->role === 'admin')
-                    <a href="{{ route('admin.dashboard') }}" class="list-group-item list-group-item-action bg-transparent text-white {{ request()->routeIs('admin.dashboard') ? 'active-sidebar' : '' }}">
+                <?php if(Auth::user()->role === 'admin'): ?>
+                    <a href="<?php echo e(route('admin.dashboard')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('admin.dashboard') ? 'active-sidebar' : ''); ?>">
                         <i class="bi bi-grid me-2"></i> Dashboard
                     </a>
-                    <a href="{{ route('admin.opd-accounts.index') }}" class="list-group-item list-group-item-action bg-transparent text-white {{ request()->routeIs('admin.opd-accounts.*') ? 'active-sidebar' : '' }}">
+                    <a href="<?php echo e(route('admin.opd-accounts.index')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('admin.opd-accounts.*') ? 'active-sidebar' : ''); ?>">
                         <i class="bi bi-people me-2"></i> Kelola Akun OPD
                     </a>
-                    <a href="{{ route('admin.categories.index') }}" class="list-group-item list-group-item-action bg-transparent text-white {{ request()->routeIs('admin.categories.*') ? 'active-sidebar' : '' }}">
+                    <a href="<?php echo e(route('admin.categories.index')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('admin.categories.*') ? 'active-sidebar' : ''); ?>">
                         <i class="bi bi-tags me-2"></i> Kelola Kategori
                     </a>
-                    <a href="{{ route('admin.surat-keluar.create') }}" class="list-group-item list-group-item-action bg-transparent text-white {{ request()->routeIs('admin.surat-keluar.create') ? 'active-sidebar' : '' }}">
+                    <a href="<?php echo e(route('admin.surat-keluar.create')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('admin.surat-keluar.create') ? 'active-sidebar' : ''); ?>">
                         <i class="bi bi-envelope-plus me-2"></i> Kirim Surat
                     </a>
-                    <a href="{{ route('admin.surat-keluar.index') }}" class="list-group-item list-group-item-action bg-transparent text-white {{ request()->routeIs('admin.surat-keluar.index') ? 'active-sidebar' : '' }}">
+                    <a href="<?php echo e(route('admin.surat-keluar.index')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('admin.surat-keluar.index') ? 'active-sidebar' : ''); ?>">
                         <i class="bi bi-send-check me-2"></i> Surat Keluar
                     </a>
-                @else
-                    <a href="{{ route('opd.dashboard') }}" class="list-group-item list-group-item-action bg-transparent text-white {{ request()->routeIs('opd.dashboard') ? 'active-sidebar' : '' }}">
+                <?php else: ?>
+                    <a href="<?php echo e(route('opd.dashboard')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('opd.dashboard') ? 'active-sidebar' : ''); ?>">
                         <i class="bi bi-grid me-2"></i> Dashboard
                     </a>
-                    <a href="{{ route('opd.surat.create') }}" class="list-group-item list-group-item-action bg-transparent text-white {{ request()->routeIs('opd.surat.create') ? 'active-sidebar' : '' }}">
+                    <a href="<?php echo e(route('opd.surat.create')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('opd.surat.create') ? 'active-sidebar' : ''); ?>">
                         <i class="bi bi-envelope-plus me-2"></i> Kirim Surat
                     </a>
-                    <a href="{{ route('opd.surat-masuk.index') }}" class="list-group-item list-group-item-action bg-transparent text-white {{ request()->routeIs('opd.surat-masuk.*') ? 'active-sidebar' : '' }}">
+                    <a href="<?php echo e(route('opd.surat-masuk.index')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('opd.surat-masuk.*') ? 'active-sidebar' : ''); ?>">
                         <i class="bi bi-envelope-check me-2"></i> Surat Masuk
                     </a>
-                @endif
-                <a href="{{ Auth::user()->role === 'admin' ? route('admin.history') : route('opd.history') }}" class="list-group-item list-group-item-action bg-transparent text-white {{ request()->routeIs('admin.history') || request()->routeIs('opd.history') ? 'active-sidebar' : '' }}">
+                <?php endif; ?>
+                <a href="<?php echo e(Auth::user()->role === 'admin' ? route('admin.history') : route('opd.history')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('admin.history') || request()->routeIs('opd.history') ? 'active-sidebar' : ''); ?>">
                     <i class="bi bi-clock-history me-2"></i> Riwayat
                 </a>
-                <a href="{{ route('profile') }}" class="list-group-item list-group-item-action bg-transparent text-white {{ request()->routeIs('profile') ? 'active-sidebar' : '' }}">
+                <a href="<?php echo e(route('profile')); ?>" class="list-group-item list-group-item-action bg-transparent text-white <?php echo e(request()->routeIs('profile') ? 'active-sidebar' : ''); ?>">
                     <i class="bi bi-person me-2"></i> Profil
                 </a>
             </div>
             <div class="mt-auto p-3 border-top border-light border-opacity-10">
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
+                <form action="<?php echo e(route('logout')); ?>" method="POST">
+                    <?php echo csrf_field(); ?>
                     <button type="submit" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold border-0 w-100 text-start">
                         <i class="bi bi-box-arrow-right me-2"></i> Logout
                     </button>
@@ -197,118 +197,120 @@
                         <div class="dropdown me-3">
                             <a href="#" class="text-muted fs-5 position-relative text-decoration-none" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-bell notification-bell text-primary-blue"></i>
-                                @if(isset($unreadSuratCount) && $unreadSuratCount > 0)
+                                <?php if(isset($unreadSuratCount) && $unreadSuratCount > 0): ?>
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger notification-badge animation-pulse" style="font-size: 0.55rem; padding: 0.25em 0.4em;">
-                                        {{ $unreadSuratCount }}
+                                        <?php echo e($unreadSuratCount); ?>
+
                                     </span>
                                     <div class="notification-popup-toast">
                                         <i class="bi bi-chat-dots-fill text-warning"></i> 
-                                        <span><strong>{{ $unreadSuratCount }}</strong> Notifikasi Baru</span>
+                                        <span><strong><?php echo e($unreadSuratCount); ?></strong> Notifikasi Baru</span>
                                     </div>
-                                @endif
+                                <?php endif; ?>
                             </a>
                              <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0" aria-labelledby="notificationDropdown" style="width: 340px; max-height: 400px; overflow-y: auto;">
                                 <li><h6 class="dropdown-header fw-bold text-primary-blue d-flex justify-content-between align-items-center mb-0 py-2">
                                     <span>Notifikasi Baru</span>
-                                    @if(isset($unreadSuratCount) && $unreadSuratCount > 0)
-                                        <span class="badge bg-danger rounded-pill">{{ $unreadSuratCount }}</span>
-                                    @endif
+                                    <?php if(isset($unreadSuratCount) && $unreadSuratCount > 0): ?>
+                                        <span class="badge bg-danger rounded-pill"><?php echo e($unreadSuratCount); ?></span>
+                                    <?php endif; ?>
                                 </h6></li>
                                 <li><hr class="dropdown-divider my-1"></li>
-                                @if(isset($unreadSurats) && $unreadSurats->count() > 0)
-                                    @foreach($unreadSurats as $unread)
-                                        @if(Auth::user()->role === 'opd')
+                                <?php if(isset($unreadSurats) && $unreadSurats->count() > 0): ?>
+                                    <?php $__currentLoopData = $unreadSurats; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $unread): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <?php if(Auth::user()->role === 'opd'): ?>
                                             <li>
-                                                <a class="dropdown-item py-3 border-bottom" href="{{ route('opd.surat-masuk.show', $unread->id) }}" style="transition: background-color 0.2s;">
+                                                <a class="dropdown-item py-3 border-bottom" href="<?php echo e(route('opd.surat-masuk.show', $unread->id)); ?>" style="transition: background-color 0.2s;">
                                                     <div class="d-flex align-items-start">
                                                         <div class="rounded-circle me-3 d-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary" style="width: 36px; height: 36px; min-width: 36px;">
                                                             <i class="bi bi-envelope-open" style="font-size: 1.1rem;"></i>
                                                         </div>
                                                         <div style="white-space: normal; width: 100%;">
-                                                            <div class="fw-bold text-dark" style="font-size: 0.85rem; line-height: 1.2;">{{ $unread->nomor_surat }}</div>
-                                                            <div class="text-muted small mt-1 text-truncate" style="max-width: 220px; font-size: 0.78rem;">{{ $unread->perihal }}</div>
+                                                            <div class="fw-bold text-dark" style="font-size: 0.85rem; line-height: 1.2;"><?php echo e($unread->nomor_surat); ?></div>
+                                                            <div class="text-muted small mt-1 text-truncate" style="max-width: 220px; font-size: 0.78rem;"><?php echo e($unread->perihal); ?></div>
                                                             <div class="text-muted mt-1 d-flex justify-content-between align-items-center" style="font-size: 0.7rem;">
                                                                 <span>Dari: Kominfo</span>
-                                                                <span class="text-secondary fw-semibold">{{ $unread->created_at->diffForHumans() }}</span>
+                                                                <span class="text-secondary fw-semibold"><?php echo e($unread->created_at->diffForHumans()); ?></span>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </a>
                                             </li>
-                                        @else
+                                        <?php else: ?>
                                             <li>
-                                                <a class="dropdown-item py-3 border-bottom" href="{{ route('admin.surat.show', $unread->id) }}" style="transition: background-color 0.2s;">
+                                                <a class="dropdown-item py-3 border-bottom" href="<?php echo e(route('admin.surat.show', $unread->id)); ?>" style="transition: background-color 0.2s;">
                                                     <div class="d-flex align-items-start">
                                                         <div class="rounded-circle me-3 d-flex align-items-center justify-content-center bg-warning bg-opacity-10 text-warning" style="width: 36px; height: 36px; min-width: 36px;">
                                                             <i class="bi bi-envelope-exclamation" style="font-size: 1.1rem;"></i>
                                                         </div>
                                                         <div style="white-space: normal; width: 100%;">
-                                                            <div class="fw-bold text-dark" style="font-size: 0.85rem; line-height: 1.2;">{{ $unread->nomor_surat }}</div>
-                                                            <div class="text-muted small mt-1 text-truncate" style="max-width: 220px; font-size: 0.78rem;">{{ $unread->keterangan ?? 'Perihal tidak diisi' }}</div>
+                                                            <div class="fw-bold text-dark" style="font-size: 0.85rem; line-height: 1.2;"><?php echo e($unread->nomor_surat); ?></div>
+                                                            <div class="text-muted small mt-1 text-truncate" style="max-width: 220px; font-size: 0.78rem;"><?php echo e($unread->keterangan ?? 'Perihal tidak diisi'); ?></div>
                                                             <div class="text-muted mt-1 d-flex justify-content-between align-items-center" style="font-size: 0.7rem;">
-                                                                <span class="text-truncate" style="max-width: 130px;">Dari: {{ $unread->user->name }}</span>
-                                                                <span class="text-secondary fw-semibold">{{ $unread->created_at->diffForHumans() }}</span>
+                                                                <span class="text-truncate" style="max-width: 130px;">Dari: <?php echo e($unread->user->name); ?></span>
+                                                                <span class="text-secondary fw-semibold"><?php echo e($unread->created_at->diffForHumans()); ?></span>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </a>
                                             </li>
-                                        @endif
-                                    @endforeach
+                                        <?php endif; ?>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     <li>
-                                        <a class="dropdown-item text-center text-primary fw-semibold py-2" href="{{ Auth::user()->role === 'opd' ? route('opd.surat-masuk.index') : route('admin.history') }}" style="font-size: 0.8rem;">
+                                        <a class="dropdown-item text-center text-primary fw-semibold py-2" href="<?php echo e(Auth::user()->role === 'opd' ? route('opd.surat-masuk.index') : route('admin.history')); ?>" style="font-size: 0.8rem;">
                                             Lihat Semua Surat <i class="bi bi-arrow-right ms-1"></i>
                                         </a>
                                     </li>
-                                @else
+                                <?php else: ?>
                                     <li><div class="dropdown-item text-center text-muted py-4"><i class="bi bi-envelope-open text-muted fs-3 mb-2 d-block"></i>Tidak ada notifikasi baru</div></li>
-                                @endif
+                                <?php endif; ?>
                             </ul>
                         </div>
 
                         <div class="d-flex align-items-center border-start ps-4">
                             <div class="text-end me-3 d-none d-sm-block">
-                                <div class="fw-bold text-dark">{{ Auth::user()->role === 'admin' ? 'Administrator' : Auth::user()->name }}</div>
-                                @if(Auth::user()->role === 'admin')
+                                <div class="fw-bold text-dark"><?php echo e(Auth::user()->role === 'admin' ? 'Administrator' : Auth::user()->name); ?></div>
+                                <?php if(Auth::user()->role === 'admin'): ?>
                                     <div class="text-secondary fw-medium" style="font-size: 0.75rem;">Dinas Komunikasi dan Informatika Bandar Lampung</div>
-                                @elseif(Auth::user()->nama_instansi)
-                                    <div class="text-secondary fw-medium" style="font-size: 0.75rem;">{{ Auth::user()->nama_instansi }}</div>
-                                @endif
-                                <div class="text-muted" style="font-size: 0.8rem;">{{ Auth::user()->email }}</div>
+                                <?php elseif(Auth::user()->nama_instansi): ?>
+                                    <div class="text-secondary fw-medium" style="font-size: 0.75rem;"><?php echo e(Auth::user()->nama_instansi); ?></div>
+                                <?php endif; ?>
+                                <div class="text-muted" style="font-size: 0.8rem;"><?php echo e(Auth::user()->email); ?></div>
                             </div>
-                            <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->role === 'admin' ? 'Administrator' : Auth::user()->name) }}&background=EBF4FF&color=1E3A8A" alt="Profile" class="rounded-circle" width="40" height="40">
+                            <img src="https://ui-avatars.com/api/?name=<?php echo e(urlencode(Auth::user()->role === 'admin' ? 'Administrator' : Auth::user()->name)); ?>&background=EBF4FF&color=1E3A8A" alt="Profile" class="rounded-circle" width="40" height="40">
                         </div>
                     </div>
                 </div>
             </nav>
 
             <div class="container-fluid px-4 py-4 content-area">
-                @if(session('success'))
+                <?php if(session('success')): ?>
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        {{ session('success') }}
+                        <?php echo e(session('success')); ?>
+
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                @endif
+                <?php endif; ?>
                 
-                @if($errors->any())
+                <?php if($errors->any()): ?>
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <ul class="mb-0">
-                            @foreach($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
+                            <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <li><?php echo e($error); ?></li>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </ul>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                @endif
+                <?php endif; ?>
 
-                @yield('content')
+                <?php echo $__env->yieldContent('content'); ?>
             </div>
         </div>
         <!-- /#page-content-wrapper -->
     </div>
-    @else
-        @yield('content')
-    @endauth
+    <?php else: ?>
+        <?php echo $__env->yieldContent('content'); ?>
+    <?php endif; ?>
 
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -333,7 +335,7 @@
         });
     </script>
 
-    @auth
+    <?php if(auth()->guard()->check()): ?>
     <script>
         // Realtime Polling (Every 10 seconds)
         setInterval(function() {
@@ -381,7 +383,8 @@
                 .catch(err => console.debug('Realtime sync error:', err));
         }, 10000);
     </script>
-    @endauth
-    @stack('scripts')
+    <?php endif; ?>
+    <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
 </html>
+<?php /**PATH C:\laragon\www\e-surat-kominfo\resources\views/layouts/app.blade.php ENDPATH**/ ?>
